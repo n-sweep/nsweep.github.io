@@ -10,5 +10,5 @@ I'm a data scientist, python developer, and recent graduate of [Galvanize Inc](h
 
 My intention for this blog is to be at once a journal to my future self on how to do things and an exercise in writing about the code that I write. Hopefully (/theoretically/allegedly) this exercise will lead to a better understanding of the code, the problems it hopes to solve, and perhaps even my own self. Pretty zen.
 
-If you've found yourself here, thank you for reading. I hope you read something useful here today.
+If you've found yourself here, thank you for reading. I hope you found something useful today.
 

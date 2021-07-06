@@ -15,7 +15,7 @@ Recently I learned how to use a `Dockerfile` to build custom Docker images and. 
 > Note: I completed these steps on a `Pop!_OS 21.04` machine.
 
 ## First, Some Prerequisites
-You will need Git and Docker installed. Later, we're going to use Docker to pull down a Jekyll image so we don't have to install Jekyll and all its dependencies. If you have trouble with these commands, check these installation links for [Git](https://github.com/git-guides/install-git) & [Docker](https://docs.docker.com/engine/install).
+We will need Git and Docker installed. Later, we're going to use Docker to pull down a Jekyll image so we don't have to install Jekyll and all its dependencies. If you have trouble with these commands, check these installation links for [Git](https://github.com/git-guides/install-git) & [Docker](https://docs.docker.com/engine/install).
 
 ``` bash
 # Update
@@ -32,7 +32,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 If you don't know how, just visit the link above. Your repo should be named with your github username in the format `username.github.io` for GitHub to host it correctly.
 
 ## Clone the Repo and Add Some Content!
-Next, move to the directory that you would like to store your site's files and clone the repo to your local machine. Navigate into the repo directory and create an index markdown file, which will serve as your site's home page, and finally push your changes back up to GitHub:
+Next, move to the directory where you would like to store your site's files and clone the repo to your local machine. Navigate into the repo directory and create an index markdown file, which will serve as your site's home page, and finally push your changes back up to GitHub:
 
 ``` bash
 # From pages.github.com
@@ -77,13 +77,44 @@ I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, an
 If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub. We'll run the Jekyll version 3.8 image (I had a weird permissions problem with the latest build), pull it down from the hub, and open up a bash shell inside of it.
 
 ``` bash
+# You're probably still there but if not, navigate to the repo directory
+cd /path/to/username.github.io
+
 # Pull down and open a shell in the Jekyll image
-docker run --rm -it -p 4000:4000 -v ${PWD}:/home/jekyll jekyll/jekyll:3.8 bash
+docker run --rm -p 4000:4000 -v ${PWD}:/srv/jekyll jekyll/jekyll:3.8 bash
 ```
 
 This may take a minute.
 
 <img src="{{ site.url }}/assets/images/docker_install.gif" />
+
+While you wait for the Jekyll image to download, let's talk about what this command is doing. 
+
+From the [docs](https://docs.docker.com/engine/reference/commandline/run/):
+> The `docker run` command first `creates` a writeable container layer over the specified image, and then `starts` it using the specified command.
+
+- `docker run --rm -it`
+    - create a container that will be removed (`--rm`) when we're finished with it and enble an interactive terminal connection (`-it`)*
+- `-p 4000:4000`
+    - publish (or expose) port 4000 on the local machine to the same port inside the container (this is the port Jekyll uses to serve locally)
+    - these ports do not have to match, eg. `-p 9999:80` could be a valid mapping
+    - local port is always first: `local_port:container_port`
+- `-v ${PWD}:/srv/jekyll`
+    - mount the directory we're currently in (`${PWD}`) to the directory that Jekyll uses to build the site inside the container (`/srv/jekyll`)
+    - again, local is always first: `local_dir:container_dir`
+- `jekyll/jekyll:3.8 bash`
+    - specify that we want the official `jekyll/jekyll` image version `3.8`
+    - open an interactive `bash` shell in the container
+
+You can find more information about the `docker run` flags in the [documentation](https://docs.docker.com/engine/reference/commandline/run/)  
+\* You can find a great explaination of the `-i` & `-t` flags at this StackOverflow [answer](https://stackoverflow.com/a/40026942/11737314)
+
+> ### **Important Note!**
+> In a moment, we will use Jekyll to build the structure and theme for our site.  
+> By mapping our site's local git repository to `/srv/jekyll` in the container, we allow Jekyll to save all the site files it generates locally in our repo. *These files are all GitHub needs to build our site* at **https://_username_.github.io**.  
+> This allows us to ditch our Docker container (and even the image) when we're finished, freeing up the space taken up by Jekyll and its dependencies and leaving behind the site files for us to push to GitHub for hosting.
+
+---
 
 ## Build Your Jekyll Site and Check Out the New Template!
 
@@ -101,7 +132,7 @@ This may take some time as well.
 
 <img src="{{ site.url }}/assets/images/jekyll_new_serve.gif" />
 
-Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 
+Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! :camera:
 
 <img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />
 

@@ -171,10 +171,14 @@ We'll leave further tweaking of style and layout as an exercise to the reader (b
 
 The time has come. This is what you've been training for. Unless of course you've chosen a different theme layout such as a landing page, CV, or gallery and this section is irrelevant to you.
 
-Anyway, after completing the previous steps, we should have a `_posts/` directory in our repo with and as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
+Anyway, after completing the previous steps we should have a `_posts/` directory in our repo and, as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
 
-Once you've finished your new post, push it back up to GitHub and smash F5 as the blood, sweat and tears of the giants upon whose shoulders we stand push the bits that represent your words through the tubes and out into vastness of the internet.
+Once you've finished your new post, push it back up to GitHub 
+
+todo: github commit & push example
+
+Then head back over to **https://_username_.github.io**, and smash your F5 key as the blood, sweat and tears of the giants upon whose shoulders we stand push your bits through the tubes and out into vastness of the internet *for the mother brain to consume. Refresh and do not turn away, for soon the Old Ones will return and they will reach up, grasping, and take us back to that great vastness, that endless sea. Protesting? Not us, for we go willingly, and* would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 
-Thanks for coming and have a nice day! 🌈🌞
+Thanks for reading and I hope you have a nice day! 🌈🌞

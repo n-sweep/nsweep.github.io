@@ -6,4 +6,4 @@ layout: home
 permalink: /
 ---
 
-Here is some text for a test.
+

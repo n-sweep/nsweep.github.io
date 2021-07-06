@@ -3,6 +3,7 @@ layout:     post
 title:      "How I Made This Blog With Github Pages, Jekyll and Docker"
 date:       2021-07-05
 categories: github-pages docker jekyll python github
+permalink:  /how-i-made-this-blog/
 ---
 
 Recently I learned how to use a `Dockerfile` to build custom Docker images and. After building an image based on Alpine Linux to run neovim and zsh for a consistent and portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with [Github Pages](https://pages.github.com/) and I just needed an excuse to learn how. It's all coming together.
@@ -59,7 +60,7 @@ Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_
 <img src="{{ site.url }}/assets/images/content.jpg" />
 
 ### Looks Kinda Boring Though, Doesn't It?
-Sure does. I'm no good at front end though, and rather than pretend otherwise we'll take GitHub's advice and use Jekyll, whatever that is.
+Sure does. And I'm no good at this front end stuff so rather than pretend otherwise we'll take GitHub's advice and use Jekyll, whatever that is.
 
 ---
 
@@ -70,3 +71,14 @@ From the GitHub [docs](https://docs.github.com/en/pages/setting-up-a-github-page
 > Jekyll is a static site generator with built-in support for GitHub Pages and a simplified build process. Jekyll takes Markdown and HTML files and creates a complete static website based on your choice of layouts...
 
 I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, and a quick trip to Docker Hub yields an official [Jekyll Docker image](https://hub.docker.com/r/jekyll/jekyll)! Now we can pull down the image and use Jekyll without installing it locally. Score.
+
+If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub. So lets run the Jekyll image and open up a bash shell inside of it.
+
+``` bash
+# Pull down and open a shell in the Jekyll image
+docker run --rm -it -v ${PWD}:/home/jekyll jekyll/jekyll bash
+```
+
+This may take a minute.
+
+<img src="{{ site.url }}/assets/images/docker.gif" />

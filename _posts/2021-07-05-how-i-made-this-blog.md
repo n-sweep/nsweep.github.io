@@ -104,7 +104,7 @@ From the [docs](https://docs.docker.com/engine/reference/commandline/run/):
     - again, local is always first: `local_dir:container_dir`
 - `jekyll/jekyll:3.8 bash`
     - specify that we want the official `jekyll/jekyll` image version `3.8`
-    - open an interactive `bash` shell in the container
+    - start the container and open an interactive `bash` shell
 
 You can find more information about the `docker run` flags in the [documentation](https://docs.docker.com/engine/reference/commandline/run/)  
 \* You can find a great explaination of the `-i` & `-t` flags at this StackOverflow [answer](https://stackoverflow.com/a/40026942/11737314)
@@ -132,7 +132,7 @@ This may take some time as well.
 
 <img src="{{ site.url }}/assets/images/jekyll_new_serve.gif" />
 
-Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! :camera:
+Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷
 
 <img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />
 
@@ -142,4 +142,39 @@ It's better but you've gotta admit, the default theme is still pretty boring. So
 
 ## Find A Theme!
 
-There are a lot to choose from, and the Jekyll documenatation has a [good list](https://jekyllrb.com/docs/themes/) of resources for themes. I ended up at http://jekyllthemes.org/ and found [Monophase](https://github.com/zivhub/monophase)
+There are a lot to choose from, and the Jekyll documenatation has a [good list](https://jekyllrb.com/docs/themes/) of resources for themes. I ended up at [jekyllthemes.org](http://jekyllthemes.org/) and found [Monophase](https://zivlog.io/monophase/). Not much more exciting than the Jekyll default we just saw, but I was going for minimal.  
+
+Maybe [Neumorphism](https://longpdo.github.io/neumorphism/) is more your style?  
+
+Or [Windows 95](https://h01000110.github.io/windows-95/)?
+
+<img src="{{ site.url }}/assets/images/windows95.jpg" />
+
+### Installation
+
+> Note: It probably goes without saying, but always be aware of the licensing associated with others' code you plan to download and use. Most free Jekyll themes only require attribution and already have it built into the footer of the theme.
+
+> It also absolutely goes without saying, but remember McGruff the Crime Dog says "always be mindful of any code you download from anywhere". This is (obviously) not a security blog!
+
+If you navigate to their GitHub repos, many of the themes at the links above have their own instructions for installation but for themes that don't, it's as easy as [forking](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and pulling the repo and teaking as needed.
+
+``` bash
+# First, fork the repo (see the link above)
+# Then clone locally
+git clone https://github.com/username/windows-95
+```
+Themes will have pages such as `index`, `about`, `archive`, etc... that can be edited to your liking.
+
+We'll leave further tweaking of style and layout as an exercise to the reader (because, to be honest, it's an exercise for me also). Your theme of choice's GitHub is usually a good place to start. There's also [google](https://www.google.com/search?client=firefox-b-1-d&q=customize+jekyll+theme).
+
+# Make A Post!
+
+The time has come. This is what you've been training for. Unless of course you've chosen a different theme layout such as a landing page, CV, or gallery and this section is irrelevant to you.
+
+Anyway, after completing the previous steps, we should have a `_posts/` directory in our repo with and as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
+
+Once you've finished your new post, push it back up to GitHub and smash F5 as the blood, sweat and tears of the giants upon whose shoulders we stand push the bits that represent your words through the tubes and out into vastness of the internet.
+
+<br />
+
+Thanks for coming and have a nice day! 🌈🌞

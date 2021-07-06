@@ -7,6 +7,9 @@
 - title: GitHub
   url: https://github.com/n-sweep
   icon: fab fa-github
+- title: Twitter
+  url: https://twitter.com/at_n_sweep
+  icon: fab fa-twitter
 - title: Twitch
   url: https://twitch.tv/n_sweep
   icon: fab fa-twitch

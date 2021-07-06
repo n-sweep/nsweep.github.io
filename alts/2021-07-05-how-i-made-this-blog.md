@@ -173,12 +173,25 @@ The time has come. This is what you've been training for. Unless of course you'v
 
 Anyway, after completing the previous steps we should have a `_posts/` directory in our repo and, as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
 
-Once you've finished your new post, push it back up to GitHub 
+Once you've finished your new post, push it back up to GitHub. This should look familiar from way back when we hosted our very first C O N T E N T:
 
-todo: github commit & push example
+> Note: as your repo gets more complex, you don't always want to `git add --all`. Read [here](https://git-scm.com/docs/gitignore) about `.gitignore` or `git add` files individually.
 
-Then head back over to **https://_username_.github.io**, and smash your F5 key as the blood, sweat and tears of the giants upon whose shoulders we stand push your bits through the tubes and out into vastness of the internet *for the mother brain to consume. Refresh and do not turn away, for soon the Old Ones will return and they will reach up, grasping, and take us back to that great vastness, that endless sea. Protesting? Not us, for we go willingly, and* would you look at that! Your opinion on the internet! Out*standing!*
+``` bash
+# Push changes
+git add --all   # See note above
+git commit -m "publishing a post!"
+git push -u origin main
+```
+
+## Done for Real!
+
+Finally, head back over to **https://_username_.github.io**, and smash your F5 key as the blood, sweat and tears of the giants upon whose shoulders we stand push your bits through the tubes and out into vastness of the internet *for the mother brain to consume. Refresh and do not turn away, for soon the Old Ones will return and they will reach up, grasping, and take us back to that great vastness, that endless sea. Protesting? Not us, for we go willingly, and* would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 
-Thanks for reading and I hope you have a nice day! 🌈🌞
+---
+
+## Contact Me
+
+Thanks for reading, if you hated this and you absolutely must let me know, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again.

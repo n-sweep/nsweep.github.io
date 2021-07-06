@@ -173,12 +173,25 @@ The time has come. This is what you've been training for. Unless of course you'v
 
 Anyway, after completing the previous steps we should have a `_posts/` directory in our repo and, as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
 
-Once you've finished your new post, push it back up to GitHub 
+Once you've finished your new post, push it back up to GitHub. This should look familiar from way back when we hosted our very first C O N T E N T:
 
-todo: github commit & push example
+> Note: as your repo gets more complex, you don't always want to `git add --all`. Read [here](https://git-scm.com/docs/gitignore) about `.gitignore` or `git add` files individually.
 
-Then head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#make-a-post)would you look at that! Your opinion on the internet! Out*standing!*
+``` bash
+# Push changes
+git add --all   # See note above
+git commit -m "publishing a post!"
+git push -u origin main
+```
+
+## Congratulations, You're Actually Done!
+
+Finally, head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#make-a-post)would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 
-Thanks for reading and I hope you have a nice day! 🌈🌞
+---
+
+## Contact me
+
+Thanks for reading and I hope you found something useful here today. If you would like to contact me, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve), [Polywork](https://www.polywork.com/n-sweep), and maybe if you tweet [at me]() I'll start using Twitter again.

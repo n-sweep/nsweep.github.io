@@ -60,7 +60,7 @@ Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_
 <img src="{{ site.url }}/assets/images/content.jpg" />
 
 ### Looks Kinda Boring Though, Doesn't It?
-Sure does. And I'm no good at this front end stuff so rather than pretend otherwise we'll take GitHub's advice and use Jekyll, whatever that is.
+Sure does. And I'm no good at this front end stuff so rather than pretend otherwise, we'll take GitHub's advice and use Jekyll, whatever that is.
 
 ---
 
@@ -72,13 +72,34 @@ From the GitHub [docs](https://docs.github.com/en/pages/setting-up-a-github-page
 
 I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, and a quick trip to Docker Hub yields an official [Jekyll Docker image](https://hub.docker.com/r/jekyll/jekyll)! Now we can pull down the image and use Jekyll without installing it locally. Score.
 
-If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub. So lets run the Jekyll image and open up a bash shell inside of it.
+If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub. We'll run the Jekyll version 3.8 image (I had a weird permissions problem with the latest build), pull it down from the hub, and open up a bash shell inside of it.
 
 ``` bash
+# Permissions so the dir is writable from inside the container
+sudo chown -R $USER .
+
 # Pull down and open a shell in the Jekyll image
-docker run --rm -it -v ${PWD}:/home/jekyll jekyll/jekyll bash
+docker run --rm -it -p 4000:4000 -v ${PWD}:/home/jekyll jekyll/jekyll:3.8 bash
 ```
 
 This may take a minute.
 
-<img src="{{ site.url }}/assets/images/docker.gif" />
+<img src="{{ site.url }}/assets/images/docker_install.gif" />
+
+A nice feature of Jekyll is that it can serve your site locally, so you can check that you're happy with your edits before pushing them up to your repo. So now that we're in the shell inside our container, we'll use Jekyll to create a new site, then serve it and take a look in the browser.
+
+``` bash
+# Instantiate new site
+jekyll new .
+
+# Serve the site locally
+jekyll serve
+```
+
+This may take some time as well.
+
+<img src="{{ site.url }}/assets/images/jekyll_new_serve.gif" />
+
+Great! Now we can visit **https://_username_.github.io** again and see that we have the basic Jekyll theme applied to our page.
+
+<img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />

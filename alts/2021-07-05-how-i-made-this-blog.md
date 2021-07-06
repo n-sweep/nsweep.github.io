@@ -3,7 +3,7 @@ layout:     post
 title:      "How I Made This Blog With Github Pages, Jekyll and Docker"
 date:       2021-07-05
 categories: github-pages docker jekyll python github
-permalink:  /how-i-made-this-blog/
+permalink:  /alts/how-i-made-this-blog/
 ---
 
 Recently I learned how to use a `Dockerfile` to build custom Docker images and. After building an image based on Alpine Linux to run neovim and zsh for a consistent and portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with [Github Pages](https://pages.github.com/) and I just needed an excuse to learn how. It's all coming together.
@@ -177,7 +177,7 @@ Once you've finished your new post, push it back up to GitHub
 
 todo: github commit & push example
 
-Then head back over to **https://_username_.github.io**, and would you look at that! Your opinion on the internet! Out*standing!*
+Then head back over to **https://_username_.github.io**, and smash your F5 key as the blood, sweat and tears of the giants upon whose shoulders we stand push your bits through the tubes and out into vastness of the internet *for the mother brain to consume. Refresh and do not turn away, for soon the Old Ones will return and they will reach up, grasping, and take us back to that great vastness, that endless sea. Protesting? Not us, for we go willingly, and* would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 

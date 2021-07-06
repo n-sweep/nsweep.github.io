@@ -177,7 +177,7 @@ Once you've finished your new post, push it back up to GitHub
 
 todo: github commit & push example
 
-Then head back over to **https://_username_.github.io**, and would you look at that! Your opinion on the internet! Out*standing!*
+Then head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#make-a-post)would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 

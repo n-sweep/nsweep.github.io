@@ -101,6 +101,14 @@ This may take some time as well.
 
 <img src="{{ site.url }}/assets/images/jekyll_new_serve.gif" />
 
-Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub.
+Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 
 
 <img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />
+
+todo: editing fields
+
+It's better but you've gotta admit, the default theme is still pretty boring. So now it's time to choose your own!
+
+## Find A Theme!
+
+There are a lot to choose from, and the Jekyll documenatation has a [good list](https://jekyllrb.com/docs/themes/) of resources for themes. I ended up at http://jekyllthemes.org/ and found [Monophase](https://github.com/zivhub/monophase)

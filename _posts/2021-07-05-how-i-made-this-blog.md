@@ -184,14 +184,14 @@ git commit -m "publishing a post!"
 git push -u origin main
 ```
 
-## Congratulations, You're Actually Done!
+## Done for Real!
 
-Finally, head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#make-a-post)would you look at that! Your opinion on the internet! Out*standing!*
+Finally, head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#done-for-real)would you look at that! Your opinion on the internet! Out*standing!*
 
 <br />
 
 ---
 
-## Contact me
+## Contact Me
 
-Thanks for reading and I hope you found something useful here today. If you would like to contact me, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve), [Polywork](https://www.polywork.com/n-sweep), and maybe if you tweet [at me]() I'll start using Twitter again.
+Thanks for reading, I hope you found something useful here today. If you would like to contact me, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again.

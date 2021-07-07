@@ -6,7 +6,7 @@ categories: github-pages docker jekyll python github
 permalink:  /how-i-made-this-blog/
 ---
 
-Recently I learned how to use a `Dockerfile` to build custom Docker images and. After building an image based on Alpine Linux to run neovim and zsh for a consistent and portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with [Github Pages](https://pages.github.com/) and I just needed an excuse to learn how. It's all coming together.
+Recently I learned how to use a `Dockerfile` to build custom Docker images. After building an image based on Alpine Linux to run neovim and zsh for a consistent and portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with [Github Pages](https://pages.github.com/) and I just needed an excuse to learn how. It's all coming together.
 
 ---
 
@@ -81,7 +81,7 @@ If you try to call `docker run` on an image you don't have locally, Docker will 
 cd /path/to/username.github.io
 
 # Pull down and open a shell in the Jekyll image
-docker run --rm -p 4000:4000 -v ${PWD}:/srv/jekyll jekyll/jekyll:3.8 bash
+docker run --rm -it -p 4000:4000 -v ${PWD}:/srv/jekyll jekyll/jekyll:3.8 bash
 ```
 
 This may take a minute.

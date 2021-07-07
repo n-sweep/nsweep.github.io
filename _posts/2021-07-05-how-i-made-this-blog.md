@@ -1,12 +1,31 @@
 ---
-layout:     post
-title:      "How I Made This Blog With Github Pages, Jekyll and Docker"
-date:       2021-07-05
-categories: github-pages docker jekyll python github
-permalink:  /how-i-made-this-blog/
+layout:         post
+title:          "How I Made This Blog With Github Pages, Jekyll and Docker"
+date:           2021-07-05
+description:    "Hosting on GitHub Pages with the help of Docker because I don't know a thing about Jekyll."
+categories:     github-pages docker jekyll python github
+permalink:      /how-i-made-this-blog/
 ---
 
-Recently I learned how to use a `Dockerfile` to build custom Docker images. After building an image based on Alpine Linux to run neovim and zsh for a consistent and portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with [Github Pages](https://pages.github.com/) and I just needed an excuse to learn how. It's all coming together.
+### Contents:
+
+- [Get Hosted](#hosting-with-github-pages)
+- [Add A Jekyll Theme](#adding-some-spice-with-a-jekyll-theme)
+    - [Pull Jekyll Docker Image](#pull-down-the-jekyll-docker-image)
+    - [Build Site with Default Theme](#build-your-jekyll-site-and-check-out-the-new-template)
+    - [Edit Site Fields](#editing-fields)
+    - [Custom Themes](#find-a-custom-theme)
+- [Make A Post!](#make-a-post)
+- [Remove the Docker Image](#epilogue-removing-the-docker-image)
+
+---
+### I Think Docker is Rad 🐳
+
+I was always hesitant to learn Docker. It seemed really complex and, as a hobbyist programmer, unnecessary. Turns out it isn't either of those things and also, it rules. Ever since I started to study data science, I use it regularly and I really enjoy the benefits of containerization.
+
+Recently I learned how to use a `Dockerfile` to build custom Docker images and, after building an image based on Alpine Linux to run neovim and zsh for a consistent, portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with GitHubPages and only needed an excuse to learn how. It's all coming together.
+
+We're going to go through the process of hosting a blog on [GitHub Pages](https://pages.github.com/), making posts, and building its structure and theme using [Jekyll](https://jekyllrb.com/) (whatever that is) with a little help from - you guessed it - Docker.
 
 ---
 
@@ -43,7 +62,7 @@ git clone https://github.com/username/username.github.io.git
 # Navigate into project folder
 cd username.github.io
 
-# Create index.md
+# Create index.md and add some C O N T E N T
 echo "C O N T E N T" > index.md
 
 # Push changes
@@ -59,8 +78,8 @@ Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_
  
 <img src="{{ site.url }}/assets/images/content.jpg" />
 
-### Looks Kinda Boring Though, Doesn't It?
-Sure does. Why don't we take GitHub's advice and use Jekyll, whatever that is.
+### ... Looks Kinda Boring Though, Doesn't It?
+Sure does. Why don't we take GitHub's [advice](https://docs.github.com/en/github-ae@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll) and use Jekyll, whatever that is.
 
 ---
 
@@ -72,9 +91,9 @@ From the GitHub [docs](https://docs.github.com/en/pages/setting-up-a-github-page
 
 I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, and a quick trip to Docker Hub yields an official [Jekyll Docker image](https://hub.docker.com/r/jekyll/jekyll)! Now we can pull down the image and use Jekyll without installing it locally. Radical.
 
-## Pull Down the Docker Jekyll Image
+## Pull Down the Jekyll Docker Image
 
-If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub. We'll run the Jekyll version 3.8 image (I had a weird permissions problem with the latest build), pull it down from the hub, and open up a bash shell inside of it.
+If you try to call `docker run` on an image you don't have locally, Docker will attempt to retrieve the image from Docker Hub if it exists. We'll run the Jekyll version 3.8 image (I had a weird permissions problem with the latest build), pull it down from the hub, and open up a bash shell inside of it.
 
 ``` bash
 # You're probably still there but if not, navigate to the repo directory
@@ -93,6 +112,8 @@ While you wait for the Jekyll image to download, let's talk about what this comm
 From the [docs](https://docs.docker.com/engine/reference/commandline/run/):
 > The `docker run` command first `creates` a writeable container layer over the specified image, and then `starts` it using the specified command.
 
+Simple enough. Here's what the rest of it does:
+
 - `docker run --rm -it`
     - create a container that will be removed (`--rm`) when we're finished with it and enble an interactive terminal connection (`-it`)*
 - `-p 4000:4000`
@@ -109,14 +130,17 @@ From the [docs](https://docs.docker.com/engine/reference/commandline/run/):
 You can find more information about the `docker run` flags in the [documentation](https://docs.docker.com/engine/reference/commandline/run/)  
 \* You can find a great explaination of the `-it` flags at this StackOverflow [answer](https://stackoverflow.com/a/40026942/11737314)
 
+<br />
+
 > ### **Important Note!**
+
 > In a moment, we will use Jekyll to build the structure and theme for our site.  
 > By mapping our site's local git repository to `/srv/jekyll` in the container, we allow Jekyll to save all the site files it generates locally in our repo. *These files are all GitHub needs to build our site* at **https://_username_.github.io**.  
 > This allows us to ditch our Docker container (and even the image) when we're finished, freeing up the space taken up by Jekyll and its dependencies and leaving behind the site files for us to push to GitHub for hosting.
 
 ---
 
-## Build Your Jekyll Site and Check Out the New Template!
+## Build and Preview Your Site
 
 A nice feature of Jekyll is that it can serve your site locally, so you can check that you're happy with your edits before pushing them up to your repo. So now that we're in the shell inside our container, we'll use Jekyll to create a new site, then serve it and take a look in the browser.
 
@@ -132,7 +156,7 @@ This may take some time as well.
 
 <img src="{{ site.url }}/assets/images/jekyll_new_serve.gif" />
 
-Great! Now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷
+Great, now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷
 
 <img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />
 
@@ -141,6 +165,7 @@ Great! Now we can visit **http://localhost:4000** and see that we have the basic
 You'll probably notice that your website is populated with filler text like `Your Awesome Title` and `your-email@example.com`. These values can be changed in the `_config.yml` file, which was generated when we called `jekyll new .` earlier. Different themes can have different configurations, but the basics are pretty self explanitory. Here's an exceprt from the auto-generated config file:
 
 ``` yaml
+# Excerpt from default _config.yaml
 # ...
 
 title: Your awesome title
@@ -163,7 +188,8 @@ plugins:
 # ...
 ```
 ### What to change:
-- Change the `title`, the `description`, and your `email`.
+- Change the `title`, the `description`, and your `email`
+    - express yourself, be compelling and mesmerizing, a tour de force
 - Change `url` and maybe `baseurl`
     - `url` is the url of your site: `https://username.github.io`
     - if your site files are in a subdirectory inside of your repo, `baseurl` should be equal to the path to your files, otherwise leave blank
@@ -228,7 +254,7 @@ Finally, head back over to **https://_username_.github.io**, and[ ](https://n-sw
 
 # Epilogue: Removing the Docker Image
 
-Now that you've hosted and edited your site, chosen your theme, created a blog post and pushed it all back up to GitHub, you may want to remove the Jekyll Docker image from your machine. You can always pull it back down and use it again with the `docker run` command we used to create our container initially.
+Now that you've hosted and edited your site, chosen your theme, created a blog post and pushed it all back up to GitHub, you may want to remove the Jekyll Docker image from your machine. You can always pull it back down and use it again as needed with the `docker run` command we used to create our container initially.
 
 ## If your Jekyll server is still running:
 
@@ -269,9 +295,11 @@ docker images
 docker image rm jekyll/jekyll:3.8
 ```
 
+And congratulations Hyde, you've done it!
+
 <br />
 
-Until next time.
+### Until next time
 
 <br />
 
@@ -279,4 +307,4 @@ Until next time.
 
 <br />
 
-Thanks for reading, I hope you found something useful here today. If you would like to contact me, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again.
+Welcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again. Maybe.

@@ -21,7 +21,7 @@ permalink:      /how-i-made-this-blog/
 ---
 ### I Think Docker is Rad 🐳
 
-I was always hesitant to learn Docker. It seemed really complex and, as a hobbyist programmer, unnecessary. Turns out it isn't either of those things and also, it rules. Ever since I started to study data science, I use it regularly and I really enjoy the benefits of containerization.
+I was always hesitant to learn Docker. It seemed really complex and, as a hobbyist programmer, unnecessary. Turns out it isn't either of those things and also, it rules. Ever since I started studying data science, I use it regularly and I really enjoy the benefits of containerization.
 
 Recently I learned how to use a `Dockerfile` to build custom Docker images and, after building an image based on Alpine Linux to run neovim and zsh for a consistent, portable text editor and python environment (I'll write about that soon), I wanted to document the process for my future self. Coincidentally, I had also recently read how easy it was to host a website with GitHubPages and only needed an excuse to learn how. It's all coming together.
 

@@ -60,7 +60,7 @@ Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_
 <img src="{{ site.url }}/assets/images/content.jpg" />
 
 ### Looks Kinda Boring Though, Doesn't It?
-Sure does. And I'm no good at this front end stuff so rather than pretend otherwise, we'll take GitHub's advice and use Jekyll, whatever that is.
+Sure does. Why don't we take GitHub's advice and use Jekyll, whatever that is.
 
 ---
 
@@ -70,7 +70,7 @@ From the GitHub [docs](https://docs.github.com/en/pages/setting-up-a-github-page
 
 > Jekyll is a static site generator with built-in support for GitHub Pages and a simplified build process. Jekyll takes Markdown and HTML files and creates a complete static website based on your choice of layouts...
 
-I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, and a quick trip to Docker Hub yields an official [Jekyll Docker image](https://hub.docker.com/r/jekyll/jekyll)! Now we can pull down the image and use Jekyll without installing it locally. Score.
+I'm not familiar with Jekyll in the slightest, but I am familiar with Docker, and a quick trip to Docker Hub yields an official [Jekyll Docker image](https://hub.docker.com/r/jekyll/jekyll)! Now we can pull down the image and use Jekyll without installing it locally. Radical.
 
 ## Pull Down the Docker Jekyll Image
 
@@ -103,11 +103,11 @@ From the [docs](https://docs.docker.com/engine/reference/commandline/run/):
     - mount the directory we're currently in (`${PWD}`) to the directory that Jekyll uses to build the site inside the container (`/srv/jekyll`)
     - again, local is always first: `local_dir:container_dir`
 - `jekyll/jekyll:3.8 bash`
-    - specify that we want the official `jekyll/jekyll` image version `3.8`
+    - specify that we want the official `jekyll/jekyll` image, version `3.8`
     - start the container and open an interactive `bash` shell
 
 You can find more information about the `docker run` flags in the [documentation](https://docs.docker.com/engine/reference/commandline/run/)  
-\* You can find a great explaination of the `-i` & `-t` flags at this StackOverflow [answer](https://stackoverflow.com/a/40026942/11737314)
+\* You can find a great explaination of the `-it` flags at this StackOverflow [answer](https://stackoverflow.com/a/40026942/11737314)
 
 > ### **Important Note!**
 > In a moment, we will use Jekyll to build the structure and theme for our site.  
@@ -136,11 +136,47 @@ Great! Now we can visit **http://localhost:4000** and see that we have the basic
 
 <img src="{{ site.url }}/assets/images/jekyll_basic.jpg" />
 
-todo: editing fields
+## Editing Fields
 
-It's better but you've gotta admit, the default theme is still pretty boring. So now it's time to choose your own!
+You'll probably notice that your website is populated with filler text like `Your Awesome Title` and `your-email@example.com`. These values can be changed in the `_config.yml` file, which was generated when we called `jekyll new .` earlier. Different themes can have different configurations, but the basics are pretty self explanitory. Here's an exceprt from the auto-generated config file:
 
-## Find A Theme!
+``` yaml
+# ...
+
+title: Your awesome title
+email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+# ...
+```
+### What to change:
+- Change the `title`, the `description`, and your `email`.
+- Change `url` and maybe `baseurl`
+    - `url` is the url of your site: `https://username.github.io`
+    - if your site files are in a subdirectory inside of your repo, `baseurl` should be equal to the path to your files, otherwise leave blank
+- If you choose a custome theme, you may need to change `theme`
+    - some themes come with their own `_config.yml` files
+- Change custom variables
+    - different themes have different settings
+    - the default theme has `twitter_username` and `github_username`
+    - check your theme's GitHub/documentation for instructions
+
+## Find A Custom Theme!
+
+That's better but you've gotta admit, the default theme is still pretty boring. So now it's time to choose your own!
 
 There are a lot to choose from, and the Jekyll documenatation has a [good list](https://jekyllrb.com/docs/themes/) of resources for themes. I ended up at [jekyllthemes.org](http://jekyllthemes.org/) and found [Monophase](https://zivlog.io/monophase/). Not much more exciting than the Jekyll default we just saw, but I was going for minimal.  
 
@@ -173,9 +209,9 @@ The time has come. This is what you've been training for. Unless of course you'v
 
 Anyway, after completing the previous steps we should have a `_posts/` directory in our repo and, as luck would have it, we're gonna keep our posts in there. Even if you haven't downloaded a custom theme, the standard Jekyll theme created when we called `jekyll new .` should include a sample post in this directory. The sample includes includes instructions on creating your own posts. Make a copy and use it as a template!
 
-Once you've finished your new post, push it back up to GitHub. This should look familiar from way back when we hosted our very first C O N T E N T:
+As you edit your new post, use your locally hosted site at **http://localhost:4000** to check your work.
 
-> Note: as your repo gets more complex, you don't always want to `git add --all`. Read [here](https://git-scm.com/docs/gitignore) about `.gitignore` or `git add` files individually.
+Once you've finished your post, push it back up to GitHub. This should look familiar from way back when we hosted our very first iteration:
 
 ``` bash
 # Push changes
@@ -184,14 +220,63 @@ git commit -m "publishing a post!"
 git push -u origin main
 ```
 
+> Note: as your repo gets more complex, you don't always want to `git add --all`. Read [here](https://git-scm.com/docs/gitignore) about using `.gitignore` or `git add` files individually.
+
 ## Done for Real!
 
 Finally, head back over to **https://_username_.github.io**, and[ ](https://n-sweep.github.io/alts/how-i-made-this-blog/#done-for-real)would you look at that! Your opinion on the internet! Out*standing!*
+
+# Epilogue: Removing the Docker Image
+
+Now that you've hosted and edited your site, chosen your theme, created a blog post and pushed it all back up to GitHub, you may want to remove the Jekyll Docker image from your machine. You can always pull it back down and use it again with the `docker run` command we used to create our container initially.
+
+## If your Jekyll server is still running:
+
+Press `Ctrl+C` on your keyboard to stop the server and type `exit` to close the Docker container.
+
+``` bash
+# ...
+# Auto-regeneration: enabled for '/srv/jekyll'
+#     Server address: http://0.0.0.0:4000/
+#   Server running... press ctrl-c to stop
+<Ctrl + C>
+
+# Type 'exit' to close the docker container
+exit
+```
+
+## Remove the Docker Image
+Look at your Docker images and remove the Jekyll image.
+``` bash
+# List your docker images
+docker images
+
+# REPOSITORY                    TAG        IMAGE ID       CREATED         SIZE
+# alpine                        3          d4ff818577bc   3 weeks ago     5.6MB
+# ubuntu                        latest     26b77e58432b   3 months ago    72.9MB
+# jupyter/tensorflow-notebook   latest     804645d9e7e7   4 months ago    3.75GB
+# jupyter/pyspark-notebook      latest     3eba429b2f1f   4 months ago    3.55GB
+# mongo                         latest     ca8e14b1fda6   5 months ago    493MB
+# jekyll/jekyll                 3.8        f68afd75b4c4   22 months ago   457MB
+
+# Remove the image
+# REPOSITORY:   jekyll/jekyll
+# TAG:          3.8
+# ID:           f68afd75b4c4
+
+# Either are valid:
+# docker image rm f68afd75b4c4
+docker image rm jekyll/jekyll:3.8
+```
+
+<br />
+
+Until next time.
 
 <br />
 
 ---
 
-## Contact Me
+<br />
 
 Thanks for reading, I hope you found something useful here today. If you would like to contact me, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again.

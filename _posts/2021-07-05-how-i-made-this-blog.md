@@ -305,6 +305,4 @@ And congratulations Hyde, you've done it!
 
 ---
 
-<br />
-
 Welcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again. Maybe.

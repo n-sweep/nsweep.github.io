@@ -193,7 +193,7 @@ plugins:
 - Change `url` and maybe `baseurl`
     - `url` is the url of your site: `https://username.github.io`
     - if your site files are in a subdirectory inside of your repo, `baseurl` should be equal to the path to your files, otherwise leave blank
-- If you choose a custome theme, you may need to change `theme`
+- If you choose a custom theme, you may need to change `theme`
     - some themes come with their own `_config.yml` files
 - Change custom variables
     - different themes have different settings
@@ -271,7 +271,7 @@ Press `Ctrl+C` on your keyboard to stop the server and type `exit` to close the 
 exit
 ```
 
-## Remove the Docker Image
+## Remove the Docker Image:
 Look at your Docker images and remove the Jekyll image.
 ``` bash
 # List your docker images
@@ -299,7 +299,7 @@ And congratulations Hyde, you've done it!
 
 <br />
 
-### Until next time
+#### Until next time
 
 <br />
 

@@ -218,7 +218,7 @@ Or [Windows 95](https://h01000110.github.io/windows-95/)?
 
 > It also absolutely goes without saying, but remember McGruff the Crime Dog says "always be mindful of any code you download from anywhere". This is (obviously) not a security blog!
 
-If you navigate to their GitHub repos, many of the themes at the links above have their own instructions for installation but for themes that don't, it's as easy as [forking](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and pulling the repo and teaking as needed.
+If you navigate to their GitHub repos, many of the themes at the links above have their own instructions for installation but for themes that don't, it's as easy as [forking](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and pulling the repo and tweaking as needed.
 
 ``` bash
 # First, fork the repo (see the link above)

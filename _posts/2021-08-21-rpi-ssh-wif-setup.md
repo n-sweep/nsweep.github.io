@@ -25,8 +25,6 @@ permalink:      /raspberry-pi-enable-ssh-wifi/
 
 ### I *love* [Raspberry Pi](http://www.raspberrypi.org) 🥧
 
-<br />
-
 And if you don't, well, that's an opinion and that's okay. But for those of you who share my sentiment, you've likely found yourself in a similar situation:
 
 You've got a brand new Pi, fresh from the oven - maybe it's your first one - and now it's time to boot it up! But... it's just a little circuit board, it has no screen. No keyboard, touchpad or mouse either.
@@ -37,6 +35,7 @@ And finally, hours later, your Pi is officially booted! But now it's time for di
 
 But, what if I told you it didn't have to be this way? What if I told you we could skip all this inconvenience with nothing more than a couple little text files? What if I told you I thought I was going to make a *Matrix* reference, but Laurence Fishburne never actually says the words 'what if I told you...' in his monologue to Keanu?
 
+---
 
 # Prep the SD Card
 
@@ -58,6 +57,8 @@ Most of the time I don't need a GUI for my Pis so I'm choosing Lite, but if you 
 Now to flash our OS onto the micro SD card. There are [many](https://www.raspberrypi.org/documentation/installation/installing-images/linux.md) [different](https://www.raspberrypi.org/documentation/installation/installing-images/mac.md) [ways](https://www.raspberrypi.org/documentation/installation/installing-images/windows.md) to accomplish this and today I'll be using a Windows machine to flash the disk using [balenaEcher](https://www.balena.io/etcher/) (which is also available on Mac OS). Select your OS image, **make sure you're choosing the correct drive**, and before you click **Flash!**, **_check again that you've chosen the correct drive._** The flashing process may take a few minutes. (Hopefully you chose the correct drive.)
 
 <img src="{{ site.url }}/assets/images/balena_rpi_os.jpg" />
+
+---
 
 # Enable SSH & WiFi
 
@@ -101,6 +102,8 @@ network={
 ### And That's It!
 
 Finally we can eject our SD card, insert it into the Pi and power it up! Give it a few moments to boot, and a few moments longer for it to connect to the network if you're using WiFi.
+
+---
 
 # Connecting to the Pi
 
@@ -155,10 +158,14 @@ And congratulations, your Pi is ready to go! I can't wait to see what you make w
 
 #### Until next time
 
+---
+
 <br />
 <br />
 
 # Appendix
+
+---
 
 ## Optional: Using the Desktop GUI Remotely with VNC
 
@@ -169,6 +176,8 @@ So you downloaded the Raspberry Pi OS with desktop and now you want to use the G
 
 Raspberry Pi OS comes pre-loaded with [RealVNC](https://www.realvnc.com/en/)'s
 VNC Server, allowing it to be controlled remotely by another computer. To use it, we need to:
+
+---
 
 #### - Enable VNC Server on the Raspberry Pi
 

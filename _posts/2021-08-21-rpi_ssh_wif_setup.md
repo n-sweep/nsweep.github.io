@@ -1,4 +1,3 @@
-
 ---
 layout:         post
 title:          "Raspberry Pi: Enable SSH & Wifi on First Boot"

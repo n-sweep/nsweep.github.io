@@ -29,7 +29,7 @@ github_username:  n-sweep
 
 # Build settings
 markdown: kramdown
-theme: monophase
+remote-theme: monophase
 plugins:
   - jekyll-feed
 

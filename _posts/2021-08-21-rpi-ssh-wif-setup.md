@@ -7,6 +7,8 @@ categories:     raspberry-pi raspbian ssh wifi vnc
 permalink:      /raspberry-pi-enable-ssh-wifi/
 ---
 
+<img src="{{ site.url }}/assets/images/Raspberry_pie.jpg" />
+
 ### Contents:
 - [Prep the SD Card](#prep-the-sd-card)
     - [Download an Operating System](#download-an-operating-system)

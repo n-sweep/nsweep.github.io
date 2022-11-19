@@ -5,6 +5,7 @@ permalink: /about/
 ---
 
 <img class="align-left" src="../assets/images/nnw.jpg" width="200" />
+<a rel="me" href="https://vis.social/@n_sweep"></a>
 
 I am a musician, raspberry pi lover, 3d printing & cnc enthusiast, and reformed
 Magic: the Gathering player. I'm also a lead data scientist at
@@ -16,8 +17,4 @@ self and an exercise in writing about the code that I write. Hopefully
 (/theoretically/allegedly) this exercise will lead to a better understanding of
 the code, the problems the code hopes to solve, and perhaps even my own self.
 Pretty zen.
-
-
-If you've found yourself here, thank you for reading. I hope you found
-something useful today.
 

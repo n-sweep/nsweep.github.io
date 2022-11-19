@@ -3,7 +3,7 @@ layout:         post
 title:          "Raspberry Pi: Enable SSH & Wifi on First Boot"
 date:           2021-08-21
 description:    "Enable SSH and WiFi on Your New Raspberry Pi Before Booting!"
-categories:     raspberry-pi raspbian ssh wifi vnc
+tags:           raspberry-pi raspbian ssh wifi vnc
 permalink:      /raspberry-pi-enable-ssh-wifi/
 ---
 

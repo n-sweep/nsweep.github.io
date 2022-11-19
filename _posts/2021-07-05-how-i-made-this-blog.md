@@ -3,7 +3,7 @@ layout:         post
 title:          "How I Made This Blog With Github Pages, Jekyll and Docker"
 date:           2021-07-05
 description:    "Hosting on GitHub Pages with the help of Docker because I don't know a thing about Jekyll."
-categories:     github-pages docker jekyll python github
+tags:           github-pages docker jekyll python github
 permalink:      /how-i-made-this-blog/
 ---
 

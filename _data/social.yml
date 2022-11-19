@@ -1,12 +1,12 @@
 - title: Email
   url: mailto:n@sweep.sh
   icon: fas fa-envelope
-- title: LinkedIn
-  url: https://linkedin.com/in/noah-shreve
-  icon: fab fa-linkedin
 - title: GitHub
   url: https://github.com/n-sweep
   icon: fab fa-github
+- title: LinkedIn
+  url: https://linkedin.com/in/noah-shreve
+  icon: fab fa-linkedin
 - title: Mastodon
   url: https://vis.social/@n_sweep
   icon: fab fa-mastodon

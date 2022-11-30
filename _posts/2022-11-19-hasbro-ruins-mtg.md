@@ -8,14 +8,16 @@ permalink:      /hasbro-ruins-mtg/
 ---
 
 - #### [Bank of America says Hasbro could fall 34% due to company runing 'Magic: the Gathering' card game](https://www.cnbc.com/2022/11/14/bank-of-america-says-hasbro-could-fall-34percent-as-company-kills-magic-the-gathering-card-game.html)
+
+I played *Magic* for a long time, so this article really caught my eye. It's
+behind a paywall, though, so if you don't have CNBC Pro, check out this second
+article at *Magic*-specific publication Star City Games:
+
 - #### [Hasbro Shares Plunge After Bank Of America Report Downgrades Company’s Rating](https://articles.starcitygames.com/magic-the-gathering/hasbro-shares-plunge-after-bank-of-america-report-downgrades-companys-rating/)
 
-I played *Magic* for a long time, so this first article really caught my eye.
-It's behind a paywall, though, so if you don't have CNBC Pro, check out the
-second article at *Magic*-specific publication Star City Games. This story made
-me think a lot about what I remembered and while doing some research to make
-sure I was actually remembering correctly, I wrote down a lot more than I
-expected.
+This story made me think over what I remembered about collecting and playing
+*Magic* in the 90s and 00s, and while doing some research to make sure I was
+actually remembering things correctly, I wrote down a lot more than I expected.
 
 ---
 

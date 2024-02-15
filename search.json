@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "My name is Noah and I’m a data scientist and engineer. I have worked as a CNC programmer/operator, a draftsman/technical designer, a security guard, and a guitar repair/salesman. I was a self-taught hobbyist Python developer for years before being made aware that this was a marketable skill and changing careers in my 30s.\nMore recently I have worked for Galvanize, Inc, CMS AI Health Outcomes Challenge winning startup ClosedLoop.ai, and top-ranking ACO REACH ilumed.\nToday I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.\nIf you are interested in working with me, please don’t hesitate to reach out.\nemail:      n@sweep.sh\nphone:      234.249.1314\nli:         in/noah-shreve"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "./",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  }
+]

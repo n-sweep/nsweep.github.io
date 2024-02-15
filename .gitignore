@@ -1,4 +1,8 @@
 drafts/*
+
+/.quarto/
+/_site/
+
 *.gem
 .bundle
 .jekyll-cache

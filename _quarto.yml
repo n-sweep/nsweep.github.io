@@ -2,22 +2,32 @@ project:
   type: website
 
 website:
-  title: "~/"
+  title: "cd ~/sweep.sh/website"
+
   navbar:
     search: true
+
     left:
-      - href: index.qmd
-        text: Home
+      - learn.qmd
+      - blog.qmd
       - about.qmd
+
     tools:
       - icon: linkedin
         href: https://linkedin.com/noah-shreve
       - icon: github
-        href: https://github.com/n-sweep/n-swee.github.io
+        href: https://github.com/n-sweep
+      - icon: code-slash
+        href: https://github.com/n-sweep/n-sweep.github.io
 
 format:
+
   html:
-    theme: darkly
+
+    theme:
+      dark: darkly
+      light: flatly
+
     css: styles.css
     toc: true
 

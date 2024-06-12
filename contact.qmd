@@ -1,0 +1,11 @@
+---
+title: "./contact"
+---
+
+    email:      n@sweep.sh
+    phone:      234.249.1314
+    x:          @n_sweep_on_X
+    li:         in/noah-shreve
+
+
+

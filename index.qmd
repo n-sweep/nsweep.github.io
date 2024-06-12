@@ -1,7 +1,24 @@
 ---
-title: "~/"
+title: "./index"
+listing:
+    contents: posts
+    sort: "date desc"
+    type: default
+    max-items: 2
 ---
 
-This is a Quarto website.
+# HEY, LOOK
+---
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+<figure>
+    <a href='https://xkcd.com/2582/'><img src="./assets/images/xkcd_data_trap.png" height=400px /></a>
+    <figcaption>xkcd #2582 <i>Data Trap</i></figcaption>
+</figure>
+
+My name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code. [Learn more](learn.qmd)
+
+## Blog
+
+### Recent Posts:
+
+[More Posts](./blog.qmd)

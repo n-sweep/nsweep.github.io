@@ -1,0 +1,78 @@
+---
+title: './learn'
+---
+
+<!-- Google Calendar Appointment Scheduling begin -->
+<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
+<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
+<script>
+(function() {
+  var target = document.currentScript;
+  window.addEventListener('load', function() {
+    calendar.schedulingButton.load({
+      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ13N_I7ea7dShqhl75wtAFAqCJp0ZumTQDKXJEeqJvNpx8b_1QLayG7yaeAOoIX1QORIMG-oI3n?gv=true',
+      color: '#315377',
+      label: 'Book an Intro Session',
+      target,
+    });
+  });
+})();
+</script>
+<!-- end Google Calendar Appointment Scheduling -->
+
+# Learn with Me
+---
+
+I am a data scientist and python developer with three years experience in private & group programming instruction, bootcamp coaching, and mentorship, 10 years of python programming, and more than 20 years of fooling around with Linux. Whether you're new to data or to coding entirely, a hobbyist, a career changer, or a professional looking to skill up, book an intro session today and let's start learning!
+
+## Learn to Code
+
+(learning to code for beginners)
+
+## Skill Up
+
+(linux, bash, vim, data analysis in python)
+
+## Bootcamp Support
+
+(data bootcamp coaching)
+
+<br/>
+
+<!-- Google Calendar Appointment Scheduling begin -->
+<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
+<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
+<script>
+(function() {
+  var target = document.currentScript;
+  window.addEventListener('load', function() {
+    calendar.schedulingButton.load({
+      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ13N_I7ea7dShqhl75wtAFAqCJp0ZumTQDKXJEeqJvNpx8b_1QLayG7yaeAOoIX1QORIMG-oI3n?gv=true',
+      color: '#315377',
+      label: 'Book Now',
+      target,
+    });
+  });
+})();
+</script>
+<!-- end Google Calendar Appointment Scheduling -->
+
+# Testimonials
+---
+
+> Working with Noah was like attending a masterclass on advanced Python during our time as data science residents. What I truly admire about him is his uncanny ability to expedite my learning process. While there's a plethora of topics I aim to grasp, time is often limited. Whenever I get stuck or spend excessive time on a data engineering or computer science issue, I know it's Noah-time for a swift solution session. I can't recommend Noah enough for anyone navigating Python, particularly the intricate challenges. He will save you time and eliminate frustrations. [...]
+>
+> - Lisa B
+
+---
+
+> [Noah's] ability to learn and communicate new technologies and concepts efficiently helped him onboard clients to [our] platform. Clients were also drawn to his warmth and knowledge. [...]
+>
+> - Andrew E
+
+---
+
+> I'm honored to be taught by Noah our data science residient in the data science immersive bootcamp in Galvanize Inc. I do appreciate all the time he spent with me working on variety of problems and how I was amazed by how much knowledge he have and how proficient in python and JavaScript he is, and have to mention his great experience in building Flask applications, and in linux/command line skills and how he has a sharp eye and good memory, and I have to mention how good he is a person, so kind and helpful... thanks Noah for all the good time we work on data science issues.
+>
+> - Marwah F
+

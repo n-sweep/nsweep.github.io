@@ -1,16 +1,212 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "learn.html#learn-to-code",
+    "href": "learn.html#learn-to-code",
+    "title": "./learn",
+    "section": "Learn to Code",
+    "text": "Learn to Code\n(learning to code for beginners)"
+  },
+  {
+    "objectID": "learn.html#skill-up",
+    "href": "learn.html#skill-up",
+    "title": "./learn",
+    "section": "Skill Up",
+    "text": "Skill Up\n(linux, bash, vim, data analysis in python)"
+  },
+  {
+    "objectID": "learn.html#bootcamp-support",
+    "href": "learn.html#bootcamp-support",
+    "title": "./learn",
+    "section": "Bootcamp Support",
+    "text": "Bootcamp Support\n(data bootcamp coaching)"
+  },
+  {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "./contact",
     "section": "",
-    "text": "My name is Noah and I’m a data scientist and engineer. I have worked as a CNC programmer/operator, a draftsman/technical designer, a security guard, and a guitar repair/salesman. I was a self-taught hobbyist Python developer for years before being made aware that this was a marketable skill and changing careers in my 30s.\nMore recently I have worked for Galvanize, Inc, CMS AI Health Outcomes Challenge winning startup ClosedLoop.ai, and top-ranking ACO REACH ilumed.\nToday I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.\nIf you are interested in working with me, please don’t hesitate to reach out.\nemail:      n@sweep.sh\nphone:      234.249.1314\nli:         in/noah-shreve"
+    "text": "email:      n@sweep.sh\nphone:      234.249.1314\nx:          @n_sweep_on_X\nli:         in/noah-shreve"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "./blog",
+    "section": "",
+    "text": "Has Hasbro Ruined Magic: the Gathering?\n\n\n\n\n\ntags: knee-jerk reactions\n\n\n\n\n\n\nNov 19, 2022\n\n\nn sweep\n\n\n\n\n\n\n  \n\n\n\n\nRaspberry Pi: Enable SSH & Wifi on First Boot\n\n\n\n\n\nEnable SSH and WiFi on Your New Raspberry Pi Before Booting!\n\n\n\n\n\n\nAug 21, 2021\n\n\nn sweep\n\n\n\n\n\n\n  \n\n\n\n\nHow I Made This Blog With Github Pages, Jekyll and Docker\n\n\n\n\n\n\n\n\n\n\n\n\nJul 5, 2021\n\n\nn sweep\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "",
+    "text": "Get Hosted\nAdd A Jekyll Theme\n\nPull Jekyll Docker Image\nBuild Site with Default Theme\nEdit Site Fields\nCustom Themes\n\nMake A Post!\nRemove the Docker Image"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#first-some-prerequisites",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#first-some-prerequisites",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "First, Some Prerequisites",
+    "text": "First, Some Prerequisites\nWe will need Git and Docker installed. Later, we’re going to use Docker to pull down a Jekyll image so we don’t have to install Jekyll and all its dependencies. If you have trouble with these commands, check these installation links for Git & Docker.\n# Update\nsudo apt-get update\n\n# Install Git\nsudo apt-get install git-all\n\n# Install Docker\nsudo apt-get install docker-ce docker-ce-cli containerd.io"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#create-a-new-github-repository",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#create-a-new-github-repository",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Create A New GitHub Repository",
+    "text": "Create A New GitHub Repository\nIf you don’t know how, just visit the link above. Your repo should be named with your github username in the format username.github.io for GitHub to host it correctly."
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#clone-the-repo-and-add-some-content",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#clone-the-repo-and-add-some-content",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Clone the Repo and Add Some Content!",
+    "text": "Clone the Repo and Add Some Content!\nNext, move to the directory where you would like to store your site’s files and clone the repo to your local machine. Navigate into the repo directory and create an index markdown file, which will serve as your site’s home page, and finally push your changes back up to GitHub:\n# From pages.github.com\n\n# Clone Repo\ngit clone https://github.com/username/username.github.io.git\n\n# Navigate into project folder\ncd username.github.io\n\n# Create index.md and add some C O N T E N T\necho \"C O N T E N T\" &gt; index.md\n\n# Push changes\ngit add --all\ngit commit -m \"initial commit\"\ngit push -u origin main"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#and-youre-finished",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#and-youre-finished",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "And You’re finished!",
+    "text": "And You’re finished!\nWell done. Grab a cold beverage, pat yourself on the back, and visit https://username.github.io in a browser to view your handiwork.\n\n\n… Looks Kinda Boring Though, Doesn’t It?\nSure does. Why don’t we take GitHub’s advice and use Jekyll, whatever that is."
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#pull-down-the-jekyll-docker-image",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#pull-down-the-jekyll-docker-image",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Pull Down the Jekyll Docker Image",
+    "text": "Pull Down the Jekyll Docker Image\nIf you try to call docker run on an image you don’t have locally, Docker will attempt to retrieve the image from Docker Hub if it exists. We’ll run the Jekyll version 3.8 image (I had a weird permissions problem with the latest build), pull it down from the hub, and open up a bash shell inside of it.\n# You're probably still there but if not, navigate to the repo directory\ncd /path/to/username.github.io\n\n# Pull down and open a shell in the Jekyll image\ndocker run --rm -it -p 4000:4000 -v ${PWD}:/srv/jekyll jekyll/jekyll:3.8 bash\nThis may take a minute.\n\nWhile you wait for the Jekyll image to download, let’s talk about what this command is doing.\nFrom the docs: &gt; The docker run command first creates a writeable container layer over the specified image, and then starts it using the specified command.\nSimple enough. Here’s what the rest of it does:\n\ndocker run --rm -it\n\ncreate a container that will be removed (--rm) when we’re finished with it and enble an interactive terminal connection (-it)*\n\n-p 4000:4000\n\npublish (or expose) port 4000 on the local machine to the same port inside the container (this is the port Jekyll uses to serve locally)\nthese ports do not have to match, eg. -p 9999:80 could be a valid mapping\nlocal port is always first: local_port:container_port\n\n-v ${PWD}:/srv/jekyll\n\nmount the directory we’re currently in (${PWD}) to the directory that Jekyll uses to build the site inside the container (/srv/jekyll)\nagain, local is always first: local_dir:container_dir\n\njekyll/jekyll:3.8 bash\n\nspecify that we want the official jekyll/jekyll image, version 3.8\nstart the container and open an interactive bash shell\n\n\nYou can find more information about the docker run flags in the documentation\n* You can find a great explaination of the -it flags at this StackOverflow answer\n\n\nImportant Note!\n\n\nIn a moment, we will use Jekyll to build the structure and theme for our site.\nBy mapping our site’s local git repository to /srv/jekyll in the container, we allow Jekyll to save all the site files it generates locally in our repo. These files are all GitHub needs to build our site at https://username.github.io.\nThis allows us to ditch our Docker container (and even the image) when we’re finished, freeing up the space taken up by Jekyll and its dependencies and leaving behind the site files for us to push to GitHub for hosting."
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#build-and-preview-your-site",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#build-and-preview-your-site",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Build and Preview Your Site",
+    "text": "Build and Preview Your Site\nA nice feature of Jekyll is that it can serve your site locally, so you can check that you’re happy with your edits before pushing them up to your repo. So now that we’re in the shell inside our container, we’ll use Jekyll to create a new site, then serve it and take a look in the browser.\n# Instantiate new site\njekyll new .\n\n# Serve the site locally\njekyll serve\nThis may take some time as well.\n\nGreat, now we can visit http://localhost:4000 and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#editing-fields",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#editing-fields",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Editing Fields",
+    "text": "Editing Fields\nYou’ll probably notice that your website is populated with filler text like Your Awesome Title and your-email@example.com. These values can be changed in the _config.yml file, which was generated when we called jekyll new . earlier. Different themes can have different configurations, but the basics are pretty self explanitory. Here’s an exceprt from the auto-generated config file:\n# Excerpt from default _config.yaml\n# ...\n\ntitle: Your awesome title\nemail: your-email@example.com\ndescription: &gt;- # this means to ignore newlines until \"baseurl:\"\n  Write an awesome description for your new site here. You can edit this\n  line in _config.yml. It will appear in your document head meta (for\n  Google search results) and in your feed.xml site description.\nbaseurl: \"\" # the subpath of your site, e.g. /blog\nurl: \"\" # the base hostname & protocol for your site, e.g. http://example.com\ntwitter_username: jekyllrb\ngithub_username:  jekyll\n\n# Build settings\nmarkdown: kramdown\ntheme: minima\nplugins:\n  - jekyll-feed\n\n# ...\n\nWhat to change:\n\nChange the title, the description, and your email\n\nexpress yourself, be compelling and mesmerizing, a tour de force\n\nChange url and maybe baseurl\n\nurl is the url of your site: https://username.github.io\nif your site files are in a subdirectory inside of your repo, baseurl should be equal to the path to your files, otherwise leave blank\n\nIf you choose a custom theme, you may need to change theme\n\nsome themes come with their own _config.yml files\n\nChange custom variables\n\ndifferent themes have different settings\nthe default theme has twitter_username and github_username\ncheck your theme’s GitHub/documentation for instructions"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#find-a-custom-theme",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#find-a-custom-theme",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Find A Custom Theme!",
+    "text": "Find A Custom Theme!\nThat’s better but you’ve gotta admit, the default theme is still pretty boring. So now it’s time to choose your own!\nThere are a lot to choose from, and the Jekyll documenatation has a good list of resources for themes. I ended up at jekyllthemes.org and found Monophase. Not much more exciting than the Jekyll default we just saw, but I was going for minimal.\nMaybe Neumorphism is more your style?\nOr Windows 95?\n\n\nInstallation\n\nNote: It probably goes without saying, but always be aware of the licensing associated with others’ code you plan to download and use. Most free Jekyll themes only require attribution and already have it built into the footer of the theme.\n\n\nIt also absolutely goes without saying, but remember McGruff the Crime Dog says “always be mindful of any code you download from anywhere”. This is (obviously) not a security blog!\n\nIf you navigate to their GitHub repos, many of the themes at the links above have their own instructions for installation but for themes that don’t, it’s as easy as forking and pulling the repo and tweaking as needed.\n# First, fork the repo (see the link above)\n# Then clone locally\ngit clone https://github.com/username/windows-95\nThemes will have pages such as index, about, archive, etc… that can be edited to your liking.\nWe’ll leave further tweaking of style and layout as an exercise to the reader (because, to be honest, it’s an exercise for me also). Your theme of choice’s GitHub is usually a good place to start. There’s also google."
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#done-for-real",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#done-for-real",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Done for Real!",
+    "text": "Done for Real!\nFinally, head back over to https://username.github.io, andwould you look at that! Your opinion on the internet! Outstanding!"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#if-your-jekyll-server-is-still-running",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#if-your-jekyll-server-is-still-running",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "If your Jekyll server is still running:",
+    "text": "If your Jekyll server is still running:\nPress Ctrl+C on your keyboard to stop the server and type exit to close the Docker container.\n# ...\n# Auto-regeneration: enabled for '/srv/jekyll'\n#     Server address: http://0.0.0.0:4000/\n#   Server running... press ctrl-c to stop\n&lt;Ctrl + C&gt;\n\n# Type 'exit' to close the docker container\nexit"
+  },
+  {
+    "objectID": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#remove-the-docker-image",
+    "href": "posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html#remove-the-docker-image",
+    "title": "How I Made This Blog With Github Pages, Jekyll and Docker",
+    "section": "Remove the Docker Image:",
+    "text": "Remove the Docker Image:\nLook at your Docker images and remove the Jekyll image.\n# List your docker images\ndocker images\n\n# REPOSITORY                    TAG        IMAGE ID       CREATED         SIZE\n# alpine                        3          d4ff818577bc   3 weeks ago     5.6MB\n# ubuntu                        latest     26b77e58432b   3 months ago    72.9MB\n# jupyter/tensorflow-notebook   latest     804645d9e7e7   4 months ago    3.75GB\n# jupyter/pyspark-notebook      latest     3eba429b2f1f   4 months ago    3.55GB\n# mongo                         latest     ca8e14b1fda6   5 months ago    493MB\n# jekyll/jekyll                 3.8        f68afd75b4c4   22 months ago   457MB\n\n# Remove the image\n# REPOSITORY:   jekyll/jekyll\n# TAG:          3.8\n# ID:           f68afd75b4c4\n\n# Either are valid:\n# docker image rm f68afd75b4c4\ndocker image rm jekyll/jekyll:3.8\nAnd congratulations Hyde, you’ve done it!\n\n\nUntil next time\n\nWelcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can email me. I’m also on LinkedIn and Polywork, I stream python programming very unreliably, and maybe if you tweet at me I’ll start using Twitter again. Maybe."
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#download-an-operating-system",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#download-an-operating-system",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Download an Operating System",
+    "text": "Download an Operating System\nRaspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we’re going to use the standard Raspberry Pi OS developed by the Raspberry Pi Foundation for their namesake SBC. Head on over to the downloads page and choose the version that’s best for you.\n\nMost of the time I don’t need a GUI for my Pis so I’m choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We’ll talk a little later about using the GUI remotely."
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#flash-the-micro-sd",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#flash-the-micro-sd",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Flash the Micro SD",
+    "text": "Flash the Micro SD\nNow to flash our OS onto the micro SD card. There are many different ways to accomplish this and today I’ll be using a Windows machine to flash the disk using balenaEcher (which is also available on Mac OS). Select your OS image, make sure you’re choosing the correct drive, and before you click Flash!, check again that you’ve chosen the correct drive. The flashing process may take a few minutes. (Hopefully you chose the correct drive.)"
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#enabling-ssh",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#enabling-ssh",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Enabling SSH",
+    "text": "Enabling SSH\nFirst, we’ll create an empty file named ssh with no file extension. If you’re using the terminal/command line, navigate into your mounted drive and enter one of the following commands based on your operating system. Easy!\n\nUnix (Linux / Mac OS)\ntouch ssh\n\n\nWindows\necho &gt; ssh\nIf you aren’t using the terminal/command line, this can also be done with a raw text editor like Notepad (or your favorite IDE). Simply open your editor and save the empty file with no extension - just make sure it’s a raw text editor (or IDE) and not a word processor like Microsoft Word!"
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#enabling-wifi-with-wpa_supplicant.conf",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#enabling-wifi-with-wpa_supplicant.conf",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Enabling WiFi with wpa_supplicant.conf ",
+    "text": "Enabling WiFi with wpa_supplicant.conf \nNext, we’ll specify our WiFi credentials with a file called wpa_supplicant.conf. Just like before, make sure to create this file with an IDE or raw text editor. Linux / Mac OS users can create and edit this file all in the terminal with the command nano wpa_supplicant.conf. Windows doesn’t offer a native way to edit files in the command line, but you can open Notepad easily with the command notepad wpa_supplicant.conf.\nUnlike our ssh file, this one needs some content to have an effect. The example below is pretty basic, but it works for me. (If you have any trouble, check the documentation.) Just replace network_name with the SSID you’d like the Pi to connect to and replace password with the associated password.\ncountry=us\nupdate_config=1\nctrl_interface=/var/run/wpa_supplicant\n\nnetwork={\n scan_ssid=1\n ssid=\"network_name\"\n psk=\"password\"\n}\n\nAnd That’s It!\nFinally we can eject our SD card, insert it into the Pi and power it up! Give it a few moments to boot, and a few moments longer for it to connect to the network if you’re using WiFi."
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#connect-over-the-terminal-with-ssh",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#connect-over-the-terminal-with-ssh",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Connect Over the Terminal with SSH",
+    "text": "Connect Over the Terminal with SSH\nThe time has come at last, we can finally connect with our Pi for real. Using our newly minted IP address, we’ll open up our terminal/command line and use the command ssh pi@&lt;your-ip-address&gt; to open a secure shell connection to the Pi. The default password for a new Raspberry Pi OS install is raspberry.\nConnecting for the first time will look something like this:\n\n\nA Little Housekeeping\nUsing our SSH connection, we’ll take two more quick steps to ensure our Pi is updated and secure:\n\nRemember that default password of raspberry? That’s not terribly secure, so let’s change it with the command passwd.\nWe’ll update and upgrade our software to make sure everything’s up to date. These commands will take a bit of time, but you can chain them together with “&”, automatically answer yes to the upgrade command with the flag “-y”, and go pour yourself some coffee while the process completes.\n\n# 1. Change the default password\n# Remember, your passwords will not display as you type them\n$ passwd\nChanging password for pi.\nCurrent password:\nNew password:\nRetype new password:\npasswd: password updated successfully\n\n\n# 2. Update & Upgrade\n$ sudo apt-get update\n$ sudo apt-get upgrade\n# OR\n# Chain together & answer 'yes'\n$ sudo apt-get update && sudo apt-get upgrade -y\n\n# Now we wait!\nAnd congratulations, your Pi is ready to go! I can’t wait to see what you make with it!\n\n\nUntil next time"
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#optional-using-the-desktop-gui-remotely-with-vnc",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#optional-using-the-desktop-gui-remotely-with-vnc",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Optional: Using the Desktop GUI Remotely with VNC",
+    "text": "Optional: Using the Desktop GUI Remotely with VNC\nSo you downloaded the Raspberry Pi OS with desktop and now you want to use the GUI instead of a boring old terminal connection? No problem, we can do that with VNC!\n\nFrom Wikipedia:\nVirtual Network Computing (VNC) is a graphical desktop-sharing system that uses the Remote Frame Buffer protocol (RFB) to remotely control another computer. It transmits the keyboard and mouse input from one computer to another, relaying the graphical-screen updates, over a network.\n\nRaspberry Pi OS comes pre-loaded with RealVNC’s VNC Server, allowing it to be controlled remotely by another computer. To use it, we need to:\n\n- Enable VNC Server on the Raspberry Pi\n\nConnect to your Pi via SSH using the instructions above.\nStart the configuration tool with the command sudo raspi-config. You’ll be met with a screen like this: \nNavigate to Interface Options, then VNC and answer ‘Yes’ when asked to enable VNC.\n\n\n\n- Install VNC Viewer on our Local Machine and Connect!\n\nVisit the VNC Viewer download page and install the appropriate software on your local machine.\nRun the VNC viewer and enter your Pi’s IP address in the bar at the top of the window. (The application will warn us that it doesn’t regonize this server, which is normal since this is the first time we’ve connected to it.)\nFinally, enter your credentials and voilà! You can use the Raspberry Pi’s desktop right in the VNC Viewer window!"
+  },
+  {
+    "objectID": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#troubleshooting-wifi-not-connecting",
+    "href": "posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html#troubleshooting-wifi-not-connecting",
+    "title": "Raspberry Pi: Enable SSH & Wifi on First Boot",
+    "section": "Troubleshooting: WiFi not Connecting?",
+    "text": "Troubleshooting: WiFi not Connecting?\nTrying to connect via WiFi and can’t seem to find your Pi’s IP address on your network? First, make sure your model of Pi actually supports WiFi! Once you’ve done that, you may want to double-check the credentials in your wpa_supplicant.conf file and try again, but it’s typically faster and easier to just connect via ethernet, ssh into the machine and set up WiFi manually with the raspi-config tool.\n\nConnect to your Pi via SSH using the instructions above.\nStart the configuration tool with the command sudo raspi-config. You’ll be met with a screen like the one above.\nChoose System Options and then Wireless LAN. You’ll be asked for your SSID and password, and you’re done!\n\n\nWelcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can email me. I’m also on LinkedIn and Polywork, I stream python programming very unreliably, and maybe if you tweet at me I’ll start using Twitter again. Maybe."
+  },
+  {
+    "objectID": "posts/hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html",
+    "href": "posts/hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html",
+    "title": "Has Hasbro Ruined Magic: the Gathering?",
+    "section": "",
+    "text": "Bank of America says Hasbro could fall 34% due to company runing ‘Magic: the Gathering’ card game\n\nI played Magic for a long time, so this article really caught my eye. It’s behind a paywall, though, so if you don’t have CNBC Pro, check out this second article at Magic-specific publication Star City Games:\n\nHasbro Shares Plunge After Bank Of America Report Downgrades Company’s Rating\n\nThis story made me think over what I remembered about collecting and playing Magic in the 90s and 00s, and while doing some research to make sure I was actually remembering things correctly, I wrote down a lot more than I expected.\n\n\nHasbro, Wizards of the Coast, & Magic: the Gathering\nHasbro bought Wizards of the Coast in September of 1999. A CNN Money article on the deal told readers “The agreement gives Hasbro, one of the biggest producers of toys and games, exclusive domain over Wizards’ best-known products …”, explicitly calling out “the Dungeons & Dragons role-playing game” (of course) and “particularly its Pokemon trading card game – a wildly popular game among children”. No mention of lesser-known “Magic: the Gathering” (which wasn’t based on a popular tv show, hmm..)[1], but that’s no surprise because it’s the turn of the millennium and Pokemon is positively exploding. Fast forward to October, 2022: Magic: the Gathering is Hasbro’s first BILLION dollar brand. In the face of the Pokemon behemoth of the late 90s, who could have said it would be Magic to break that ribbon? Well, some people at Hasbro, probably. But someone else too: me. Not because I knew (or know) anything, but because I loved (love) that damn game.\nIt’s September of 99, Magic is 6, Pokemon is nearly 3, and I am 11. And despite being smack in the bull’s eye of Pokemon’s target demographic, I’m already an avid Magic player, thanks in no small part to my older cousin who found and played the game long before I was old enough to (I have fond memories of looking at the wonderful artwork on his cards years before rediscovering the game in middle school). Hasbro made the purchase and I was too young to really get it, but some of the older guys at the local card shop where I sourced my habit lamented the end of an era. I got it a few years later, when they decided to update the style of the frame, or border surrounding the text and artwork of the card. I got it again years later when “double-faced” cards were introduced, which could transform (or flip) to a different card printed on the back. This one was an atrocity, the back of a Magic card is beautiful and sacred.[2] At this point I had been playing competitively for more than a decade, and not long after made the decision to spend my time and money on music instead of Magic (those cards had appreciated a bit and sure bought a lot of recording equipment).\nBut let’s be real, all that stuff is pretty much superficial. Fans care about it, I cared about it, but the brand didn’t only survive, it thrived. Certainly none of these things were the “end-of-an-era” of a caliber that warranted CNBC articles about the BoA downgrading the company’s rating. Right? Maybe:\n\nHasbro buys WotC in 1999, to the lament of some Magic players\nHasbro changes Magic cards in 2003, much to the lament of many more Magic players\n!!! from Wikipedia: “In June 2003, Nintendo transferred the publishing rights from Wizards of the Coast to The Pokémon Company”\nHasbro changes magic cards again in 2004, very much to the further lament of even more Magic players\n\nNintendo bailed when things were chaotic, perhaps it was a sign of the beginning of a slow decline? Well, we’d have to ignore the fact the Magic continued to be wildly successful for 16 more years before the next cherry-picked part of my story, but perhaps.\nDespite being years away from the game, I got it once again in 2020 when WotC announced a “The Walking Dead” crossover set, the first in what would eventually become the “Universes Beyond” sub-brand of Magic, whatever a “sub-brand” is. The game still holds a place in my heart and this decision made me feel some feelings, but I didn’t play any more so I tried not to have too many opinions. And there was also a pandemic going on I think. Anyway, WotC went on to release 10 more Universes Beyond sets between then and today, with four more on the way; these include such theme-conforming properties as Fortnite, Transformers, and Dr. Who. Grim, indeed.\nSo was the Walking Dead crossover set the real beginning of the end for Hasbro’s golden boy? If we define “end” to mean a CNBC article about the BoA downgrading the company’s rating, then yes, I think so.\nBut even given all the uncertainty around the future of Magic, we can all be sure of one thing: I sure miss playing that stupid game. And that stupid game is worth a billion dollars lol. That’s two things.\n\n[1] An astute reader has pointed out that, while not based on a tv show, Magic tournaments were indeed featured on ESPN2 - there is even footage on YouTube (warning: kind of loud).\n[2] This is an opinion, but not really."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "./",
+    "title": "./index",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "xkcd #2582 Data Trap\n\n\nMy name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code.\n\n\n\n\n\n\n\n(Learn more)\n\n\n\n\n\nMore Posts"
+  },
+  {
+    "objectID": "index.html#learn-with-me",
+    "href": "index.html#learn-with-me",
+    "title": "./index",
+    "section": "",
+    "text": "(Learn more)"
+  },
+  {
+    "objectID": "index.html#blog",
+    "href": "index.html#blog",
+    "title": "./index",
+    "section": "",
+    "text": "More Posts"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "./about_me",
+    "section": "",
+    "text": "pictured left to right: Noah Shreve, Calvin & Hobbes creator Bill Watterson\nMy name is Noah, I’m a data scientist and engineer, and I live in Ohio with my wife, our dog and 3 cats. I have worked as a CNC programmer/operator, draftsman & technical designer, security guard, and guitar repair tech & salesman. I was a self-taught hobbyist Python developer for years before being made aware that this was a marketable skill and changing careers in my 30s.\nMore recently I have worked for Galvanize, Inc, CMS AI Health Outcomes Challenge winning startup ClosedLoop.ai, and top-ranking ACO REACH ilumed.\nToday I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.\nIf you are interested in working with me, please don’t hesitate to reach out."
+  },
+  {
+    "objectID": "about.html#contact-me",
+    "href": "about.html#contact-me",
+    "title": "./about_me",
+    "section": "Contact Me",
+    "text": "Contact Me\nemail:      n@sweep.sh\nphone:      234.249.1314\nx:          @n_sweep_on_X\nli:         in/noah-shreve\n\nOr book an appointment for a more formal chat"
   }
 ]

@@ -1,0 +1,18 @@
+[
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html",
+      "/posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html",
+      "/posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html",
+      "/posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html",
+      "/posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html"
+    ]
+  }
+]

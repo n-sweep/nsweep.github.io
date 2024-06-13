@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://n-sweep.github.io/about.html</loc>
-    <lastmod>2024-02-15T19:21:03.324Z</lastmod>
+    <loc>https://n-sweep.github.io/learn.html</loc>
+    <lastmod>2024-06-13T10:24:33.283Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/contact.html</loc>
+    <lastmod>2024-06-13T10:24:32.926Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/blog.html</loc>
+    <lastmod>2024-06-13T10:24:32.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/posts/how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html</loc>
+    <lastmod>2024-06-13T10:24:32.127Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/posts/rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html</loc>
+    <lastmod>2024-06-13T10:24:31.769Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/posts/hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html</loc>
+    <lastmod>2024-06-13T10:24:32.357Z</lastmod>
   </url>
   <url>
     <loc>https://n-sweep.github.io/index.html</loc>
-    <lastmod>2024-02-15T19:12:57.137Z</lastmod>
+    <lastmod>2024-06-13T10:24:32.781Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/about.html</loc>
+    <lastmod>2024-06-13T10:24:33.110Z</lastmod>
   </url>
 </urlset>

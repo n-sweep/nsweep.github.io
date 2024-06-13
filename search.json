@@ -1,31 +1,38 @@
 [
   {
+    "objectID": "learn.html",
+    "href": "learn.html",
+    "title": "./learn",
+    "section": "",
+    "text": "I am a data scientist and python developer with three years experience in private & group programming instruction, bootcamp coaching, and mentorship, 10 years of python programming, and more than 20 years of fooling around with Linux. Whether you’re a hobbyist, a career changer, a professional looking to skill up, or brand new to coding, reach out and let’s start learning!\n\n\nAre you brand new to coding? Or maybe you’ve given it a shot (or a few) but you feel stuck in “tutorial hell”? Let’s get started (or get out) together!\n\n\n\nAre you already a programmer who wants to learn more about machine learning or maybe Linux? Or are you a sysadmin who wants to learn more about coding? Maybe you’re interested in data analysis, or curious about vim. If you’re a highly technical person looking to level up, let’s chat and find out if I can help.\n\n\n\nI changed careers by way of a full-time data science bootcamp; it was challenging and intense. If you’re struggling in your data science/data analysis bootcamp, let’s chat and find out if I can help."
+  },
+  {
     "objectID": "learn.html#learn-to-code",
     "href": "learn.html#learn-to-code",
     "title": "./learn",
-    "section": "Learn to Code",
-    "text": "Learn to Code\n(learning to code for beginners)"
+    "section": "",
+    "text": "Are you brand new to coding? Or maybe you’ve given it a shot (or a few) but you feel stuck in “tutorial hell”? Let’s get started (or get out) together!"
   },
   {
     "objectID": "learn.html#skill-up",
     "href": "learn.html#skill-up",
     "title": "./learn",
-    "section": "Skill Up",
-    "text": "Skill Up\n(linux, bash, vim, data analysis in python)"
+    "section": "",
+    "text": "Are you already a programmer who wants to learn more about machine learning or maybe Linux? Or are you a sysadmin who wants to learn more about coding? Maybe you’re interested in data analysis, or curious about vim. If you’re a highly technical person looking to level up, let’s chat and find out if I can help."
   },
   {
     "objectID": "learn.html#bootcamp-support",
     "href": "learn.html#bootcamp-support",
     "title": "./learn",
-    "section": "Bootcamp Support",
-    "text": "Bootcamp Support\n(data bootcamp coaching)"
+    "section": "",
+    "text": "I changed careers by way of a full-time data science bootcamp; it was challenging and intense. If you’re struggling in your data science/data analysis bootcamp, let’s chat and find out if I can help."
   },
   {
     "objectID": "contact.html",
     "href": "contact.html",
     "title": "./contact",
     "section": "",
-    "text": "email:      n@sweep.sh\nphone:      234.249.1314\nx:          @n_sweep_on_X\nli:         in/noah-shreve"
+    "text": "email:      n@sweep.sh\nphone:      234.249.1314\ngh:         n-sweep\nli:         in/noah-shreve\nx:          @n_sweep_on_X\n\nOr book an appointment for a more formal chat"
   },
   {
     "objectID": "blog.html",
@@ -200,13 +207,6 @@
     "href": "about.html",
     "title": "./about_me",
     "section": "",
-    "text": "pictured left to right: Noah Shreve, Calvin & Hobbes creator Bill Watterson\nMy name is Noah, I’m a data scientist and engineer, and I live in Ohio with my wife, our dog and 3 cats. I have worked as a CNC programmer/operator, draftsman & technical designer, security guard, and guitar repair tech & salesman. I was a self-taught hobbyist Python developer for years before being made aware that this was a marketable skill and changing careers in my 30s.\nMore recently I have worked for Galvanize, Inc, CMS AI Health Outcomes Challenge winning startup ClosedLoop.ai, and top-ranking ACO REACH ilumed.\nToday I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.\nIf you are interested in working with me, please don’t hesitate to reach out."
-  },
-  {
-    "objectID": "about.html#contact-me",
-    "href": "about.html#contact-me",
-    "title": "./about_me",
-    "section": "Contact Me",
-    "text": "Contact Me\nemail:      n@sweep.sh\nphone:      234.249.1314\nx:          @n_sweep_on_X\nli:         in/noah-shreve\n\nOr book an appointment for a more formal chat"
+    "text": "pictured left to right: Noah Shreve, Calvin & Hobbes creator Bill Watterson\n\n\nMy name is Noah, I’m a data scientist and engineer, and I live in Ohio with my wife, our dog and 3 cats. I have worked as a CNC programmer/operator, draftsman & technical designer, security guard, and guitar repair tech & salesman. I was a self-taught hobbyist Python developer for years before being made aware that this was a marketable skill and changing careers in my 30s.\nMore recently I have worked for Galvanize, Inc, CMS AI Health Outcomes Challenge winning startup ClosedLoop.ai, and top-ranking ACO REACH ilumed.\nToday I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.\nIf you are interested in working with me, please don’t hesitate to reach out."
   }
 ]

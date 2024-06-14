@@ -335,12 +335,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </blockquote>
 <p><code>.qmd</code> files are essentially <a href="https://www.markdownguide.org/">markdown</a> files with some special Quarto sauce. We can edit <code>index.qmd</code> and <code>about.qmd</code> to change the content of the pages, and even create new <code>.qmd</code> files for additional pages. New pages can be linked to <a href="https://quarto.org/docs/websites/#linking">from other documents</a> and <a href="https://quarto.org/docs/websites/#config-file">in the navbar</a>. Since I used the <code>quarto create project blog</code> command, the list includes a <a href="https://quarto.org/docs/websites/website-blog.html#posts-directory"><code>posts/</code> directory</a>, where blog posts like this one (also written in markdown) live.</p>
-<p>If <code>quarto preview</code> is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run <code>quarto preview</code> again:</p>
+<p>If <code>quarto preview</code> is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run <code>quarto preview</code> again to have a look:</p>
 <p><img src="new_post.png" width="800"></p>
 </section>
 <section id="publish" class="level1">
 <h1>Publish</h1>
 <p>Now the git and GitHub setup we did earlier pays off. Once we’re happy with the changes and our new blog post, we’ll run <code>quarto publish .</code></p>
+<p><img src="quarto_publish.gif" width="800"></p>
 <p>And that’s it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.</p>
 <p><img src="front_page.png" width="800"></p>
 

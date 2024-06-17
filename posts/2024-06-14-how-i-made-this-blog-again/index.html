@@ -259,7 +259,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset <span class="at">--hard</span> <span class="co"># make sure all changes are committed before running this!</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">--allow-empty</span> <span class="at">-m</span> <span class="st">"Initializing gh-pages branch"</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin gh-pages</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>[TODO] make sure github pages settings are correct</p>
+<p><strong>Note</strong> - from <a href="https://quarto.org/docs/publishing/github-pages.html#source-branch">the documentation</a>:</p>
+<blockquote class="blockquote">
+<p>Double-check that the last git push action has indeed set the Settings : Pages for your repository as expected in the previous figure. […]</p>
+</blockquote>
+<p>The screenshot from the docs is a little out of date as of my writing this. They are asking us to ensure our branch is set to “gh-pages” and our directory is set to “root” like below. (It seems that this <em>should</em> happen automatically during one of the previous steps, but best to check if the guide recommends it.)</p>
+<p><img src="gh-pages.png" width="800"></p>
 </section>
 <section id="gitignore" class="level3">
 <h3 class="anchored" data-anchor-id="gitignore"><code>.gitignore</code></h3>

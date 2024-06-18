@@ -1,1 +1,5 @@
 /* css styles */
+
+.title, .navbar-title, .menu-text, .listing-title {
+    font-family: monospace;
+}

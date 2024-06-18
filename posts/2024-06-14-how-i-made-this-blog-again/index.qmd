@@ -1,0 +1,138 @@
+---
+title:          "How I Made This Blog Again with Quarto and Github Pages"
+description:    A couple of years ago I learned how to build a static website on GitHub Pages, wrote about it, and then promptly forgot about the project. Now I'm back to do it all again!
+author:         "n sweep"
+date:           "2024-06-14"
+categories:     [github-pages, quarto, python, github]
+image:          quarto.png
+---
+
+Way back in 2021 I learned how to build a simple static website on [GitHub Pages](https://pages.github.com/), wrote a few articles (including one about [how I did it](../2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.md)), and then promptly forgot about the project amidst the noise of distractions such as my day job. Now I'm back to do it all again! Only this time, with the awesome open-source scientific and technical publishing system [Quarto](https://quarto.org/).
+
+<img src="quarto.png"/>
+
+
+# Prerequisite Packages
+
+If you want to follow along, you'll need to ensure some prerequisite packages are installed. It's a shorter list than last time:
+
+- [install git](https://git-scm.com/)
+- [install Quarto](https://quarto.org/docs/get-started/)
+
+> Note: Package installation is left as an exercise for the reader, as I am on a [non-standard operating system](https://nixos.org)
+
+
+# Hosting with Github Pages
+
+There are [a number of ways](https://quarto.org/docs/publishing/) to publish a Quarto website; we'll be using GitHub Pages. There are also a few different ways to publish to Pages; we'll be using the Quarto [publish command](https://quarto.org/docs/publishing/github-pages.html#publish-command).
+
+## Create a New GitHub Repository
+
+**Important:** Your repo should be named with your github username in the format `username.github.io` for GitHub to host it correctly.
+
+[Click here](https://docs.github.com/en/get-started/quickstart/create-a-repo) for a guide on creating a new GitHub repo.
+
+## Clone the Repo Locally
+
+Next we'll move to the directory where we want to store the site's files and clone the repo to our local machine:
+
+```sh
+# this will create a new directory at `/my/target/directory/username.github.io`
+
+cd /my/target/directory
+git clone https://github.com/username/username.github.io.git
+```
+
+## Prepare the Repo
+
+According to the [Quarto docs](https://quarto.org/docs/publishing/github-pages.html#publish-command), the repo requires a branch called `gh-pages`, which the `quarto publish` command will write the site to automatically.
+
+### Create the Source Branch
+
+```sh
+git checkout --orphan gh-pages
+git reset --hard # make sure all changes are committed before running this!
+git commit --allow-empty -m "Initializing gh-pages branch"
+git push origin gh-pages
+```
+
+**Note** - from [the documentation](https://quarto.org/docs/publishing/github-pages.html#source-branch):
+
+> Double-check that the last git push action has indeed set the Settings : Pages for your repository as expected in the previous figure. [...]
+
+The screenshot from the docs is a little out of date as of my writing this. They are asking us to ensure our branch is set to "gh-pages" and our directory is set to "root" like below. (It seems that this *should* happen automatically during one of the previous steps, but best to check if the guide recommends it.)
+
+<img src='gh-pages.png' width=800 />
+
+### `.gitignore`
+
+Quarto is going to generate some files that we don't want to check into version control. Let's add the following to lines to our repo's [`.gitignore`](https://git-scm.com/docs/gitignore) file:
+
+```sh
+/.quarto/
+/_site/
+```
+
+# Quarto
+
+Publishing is going to be a snap with all that GitHub setup out of the way. But now we need something to publish, and Quarto can help with that too.
+
+## Create and View a Template Website
+
+### `quarto create project`
+
+Quarto provides a quickstart command with two options (`website` and `blog`) for initializing a website. This command will create a new directory if we provide it a name, but we want to use our new git repository:
+
+```sh
+# we should still be in `/my/target/directory` from the previous steps
+cd username.github.io
+
+quarto create project website .
+# or
+quarto create project blog .
+```
+
+There may be other differences, but the `blog` option initializes the site with a [listing page](https://quarto.org/docs/websites/website-listings.html) as the front page while the `website` option does not.
+
+### `quarto preview`
+
+While it isn't very personal yet, we now have a skeleton of a website. Let's take a look at it with:
+
+```sh
+quarto preview
+```
+
+I chose the `blog` option, so this command will open a browser tab that looks something like this:
+
+<img src="https://quarto.org/docs/websites/images/myblog.png" width=800 />
+
+# Personalize
+
+The previous steps created a number of files in our repo. From [the documentation](https://quarto.org/docs/websites/website-blog.html):
+
+> Here’s a summary of the key files created within the starter blog project:
+>
+> File                  | Description
+> ----                  | -----------
+> `_quarto.yml`         | Quarto project file.
+> `index.qmd`           | Blog home page.
+> `about.qmd`           | Blog about page.
+> `posts/`              | Directory containing posts
+> `posts/_metadata.yml` | Shared options for posts
+> `styles.css`          | Custom CSS for website
+
+`.qmd` files are essentially [markdown](https://www.markdownguide.org/) files with some special Quarto sauce. We can edit `index.qmd` and `about.qmd` to change the content of the pages, and even create new `.qmd` files for additional pages. New pages can be linked to [from other documents](https://quarto.org/docs/websites/#linking) and [in the navbar](https://quarto.org/docs/websites/#config-file). Since I used the `quarto create project blog` command, the list includes a [`posts/` directory](https://quarto.org/docs/websites/website-blog.html#posts-directory), where blog posts like this one (also written in markdown) live.
+
+If `quarto preview` is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run `quarto preview` again to have a look:
+
+<img src="new_post.png" width=800 />
+
+# Publish
+
+Now the git and GitHub setup we did earlier pays off. Once we're happy with the changes and our new blog post, we'll run `quarto publish .`
+
+<img src="quarto_publish.gif" width=800 />
+
+And that's it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.
+
+<img src="front_page.png" width=800 />

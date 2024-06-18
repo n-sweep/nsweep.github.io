@@ -51,8 +51,6 @@ If you don't know how, just visit the link above. Your repo should be named with
 Next, move to the directory where you would like to store your site's files and clone the repo to your local machine. Navigate into the repo directory and create an index markdown file, which will serve as your site's home page, and finally push your changes back up to GitHub:
 
 ``` bash
-# From pages.github.com
-
 # Clone Repo
 git clone https://github.com/username/username.github.io.git
 
@@ -290,13 +288,4 @@ docker images
 docker image rm jekyll/jekyll:3.8
 ```
 
-And congratulations Hyde, you've done it!
-
-<br />
-
-#### Until next time
-
-<br />
-
-
-Welcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again. Maybe.
+And congratulations, you've done it!

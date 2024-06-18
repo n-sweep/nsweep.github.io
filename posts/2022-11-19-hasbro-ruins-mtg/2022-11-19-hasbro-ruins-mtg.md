@@ -1,10 +1,17 @@
 ---
 title:          "Has Hasbro Ruined Magic: the Gathering?"
 author:         "n sweep"
-description:    "tags: knee-jerk reactions"
+description:    "disclaimer: I haven't played this game in over a decade"
 date:           "2022-11-19"
 tags:           [hasbro, mtg, magic, nostolgia]
+image:          "../../assets/images/c21-145-greed.jpg"
 ---
+
+
+<figure>
+    <img src="../../assets/images/c21-145-greed.jpg" />
+    <figcaption><i>Greed</i> - Illustrated by <a href="https://www.izzymedrano.com/">Izzy</a></figcaption>
+</figure>
 
 - #### [Bank of America says Hasbro could fall 34% due to company runing 'Magic: the Gathering' card game](https://www.cnbc.com/2022/11/14/bank-of-america-says-hasbro-could-fall-34percent-as-company-kills-magic-the-gathering-card-game.html)
 

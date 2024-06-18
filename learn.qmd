@@ -2,42 +2,22 @@
 title: './learn'
 ---
 
-<!-- Google Calendar Appointment Scheduling begin -->
-<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
-<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
-<script>
-(function() {
-  var target = document.currentScript;
-  window.addEventListener('load', function() {
-    calendar.schedulingButton.load({
-      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ13N_I7ea7dShqhl75wtAFAqCJp0ZumTQDKXJEeqJvNpx8b_1QLayG7yaeAOoIX1QORIMG-oI3n?gv=true',
-      color: '#315377',
-      label: 'Book an Intro Session',
-      target,
-    });
-  });
-})();
-</script>
-<!-- end Google Calendar Appointment Scheduling -->
-
 # Learn with Me
 ---
 
-I am a data scientist and python developer with three years experience in private & group programming instruction, bootcamp coaching, and mentorship, 10 years of python programming, and more than 20 years of fooling around with Linux. Whether you're new to data or to coding entirely, a hobbyist, a career changer, or a professional looking to skill up, book an intro session today and let's start learning!
+I am a data scientist and python developer with three years experience in private & group programming instruction, bootcamp coaching, and mentorship, 10 years of python programming, and more than 20 years of fooling around with Linux. Whether you're a hobbyist, a career changer, a professional looking to skill up, or brand new to coding, [reach out](contact.qmd) and let's start learning!
 
 ## Learn to Code
 
-(learning to code for beginners)
+Are you brand new to coding? Or maybe you've given it a shot (or a few) but you feel stuck in ["tutorial hell"](https://blog.boot.dev/education/building-your-first-coding-project/)? Let's get started (or get out) together!
 
 ## Skill Up
 
-(linux, bash, vim, data analysis in python)
+Are you already a programmer who wants to learn more about machine learning or maybe Linux? Or are you a sysadmin who wants to learn more about coding? Maybe you're interested in data analysis, or curious about vim. If you're a highly technical person looking to level up, let's chat and find out if I can help.
 
 ## Bootcamp Support
 
-(data bootcamp coaching)
-
-<br/>
+I changed careers by way of a [full-time data science bootcamp](https://www.reddit.com/r/datascience/comments/outu56/galvanize_data_science_program_shutting_down/); it was challenging and intense. If you're struggling in your data science/data analysis bootcamp, let's chat and find out if I can help.
 
 <!-- Google Calendar Appointment Scheduling begin -->
 <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
@@ -76,3 +56,4 @@ I am a data scientist and python developer with three years experience in privat
 >
 > - Marwah F
 
+---

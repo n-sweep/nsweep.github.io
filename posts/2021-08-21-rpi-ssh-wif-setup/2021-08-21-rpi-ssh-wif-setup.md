@@ -4,6 +4,7 @@ author:         "n sweep"
 description:    "Enable SSH and WiFi on Your New Raspberry Pi Before Booting!"
 date:           "2021-08-21"
 tags:           [raspberry-pi, raspbian, ssh, wifi, vnc]
+image:          ../../assets/images/Raspberry_pie.jpg
 ---
 
 <img src="../../assets/images/Raspberry_pie.jpg" />
@@ -196,8 +197,3 @@ Trying to connect via WiFi and can't seem to find your Pi's IP address on your n
 1. Connect to your Pi via SSH using the [instructions above](#connect-over-the-terminal-with-ssh).
 2. Start the configuration tool with the command `sudo raspi-config`. You'll be met with a screen like [the one above](#enable-vnc-server-on-the-raspberry-pi).
 3. Choose `System Options` and then `Wireless LAN`. You'll be asked for your SSID and password, and you're done!
-
-<br />
-
-
-Welcome to the end. Thanks for reading, I hope you found something useful here today. If you would like to chat, you can [email me](mailto:n@sweep.sh). I'm also on [LinkedIn](https://linkedin.com/in/noah-shreve) and [Polywork](https://www.polywork.com/n-sweep), I [stream](https://twitch.tv/n_sweep) python programming very unreliably, and maybe if you tweet [at me](https://twitter.com/at_n_sweep) I'll start using Twitter again. Maybe.

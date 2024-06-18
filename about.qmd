@@ -14,13 +14,4 @@ More recently I have worked for **[Galvanize, Inc](https://www.galvanize.com/)**
 
 Today I work freelance as a contract data engineer, scientist, analyist & Python developer, as well as private tutor and coach focusing on python, the UNIX command line, bash, and vim.
 
-If you are interested in working with me, please don't hesitate to reach out.
-
-## Contact Me
-
-    email:      n@sweep.sh
-    phone:      234.249.1314
-    x:          @n_sweep_on_X
-    li:         in/noah-shreve
-
-### Or [book an appointment](learn.qmd) for a more formal chat
+If you are interested in working with me, please don't hesitate to [reach out](contact.qmd).

@@ -15,7 +15,29 @@ listing:
     <figcaption>xkcd #2582 <i>Data Trap</i></figcaption>
 </figure>
 
-My name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code. [Learn more](learn.qmd)
+My name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code.
+
+## Learn with Me
+
+<!-- Google Calendar Appointment Scheduling begin -->
+<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
+<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
+<script>
+(function() {
+  var target = document.currentScript;
+  window.addEventListener('load', function() {
+    calendar.schedulingButton.load({
+      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ13N_I7ea7dShqhl75wtAFAqCJp0ZumTQDKXJEeqJvNpx8b_1QLayG7yaeAOoIX1QORIMG-oI3n?gv=true',
+      color: '#315377',
+      label: 'Book an Appointment',
+      target,
+    });
+  });
+})();
+</script>
+<!-- end Google Calendar Appointment Scheduling -->
+
+[(Learn more)](learn.qmd)
 
 ## Blog
 

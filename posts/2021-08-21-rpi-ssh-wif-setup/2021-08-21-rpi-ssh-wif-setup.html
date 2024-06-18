@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="download-an-operating-system" class="level2">
 <h2 class="anchored" data-anchor-id="download-an-operating-system">Download an Operating System</h2>
 <p>Raspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we’re going to use the standard <em>Raspberry Pi OS</em> developed by the <a href="https://www.raspberrypi.org/about/">Raspberry Pi Foundation</a> for their namesake <a href="https://en.wikipedia.org/wiki/Single-board_computer">SBC</a>. Head on over to the <a href="https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit">downloads page</a> and choose the version that’s best for you.</p>
-<p><img src="../../assets/images/download_rpi_os.jpg"></p>
+<p><img src="../../assets/images/download_rpi_os.jpg" width="800"></p>
 <p>Most of the time I don’t need a GUI for my Pis so I’m choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We’ll talk a little later about <a href="#optional-using-the-desktop-gui-remotely-with-vnc">using the GUI remotely</a>.</p>
 </section>
 <section id="flash-the-micro-sd" class="level2">
@@ -378,7 +378,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <h4 class="anchored" data-anchor-id="enable-vnc-server-on-the-raspberry-pi">- Enable VNC Server on the Raspberry Pi</h4>
 <ol type="1">
 <li>Connect to your Pi via SSH using the <a href="#connect-over-the-terminal-with-ssh">instructions above</a>.</li>
-<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="../../assets/images/raspi-config.jpg"></li>
+<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="../../assets/images/raspi-config.jpg" width="800"></li>
 <li>Navigate to <code>Interface Options</code>, then <code>VNC</code> and answer ‘Yes’ when asked to enable VNC.</li>
 </ol>
 </section>
@@ -400,8 +400,6 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like <a href="#enable-vnc-server-on-the-raspberry-pi">the one above</a>.</li>
 <li>Choose <code>System Options</code> and then <code>Wireless LAN</code>. You’ll be asked for your SSID and password, and you’re done!</li>
 </ol>
-<p><br></p>
-<p>Welcome to the end, thanks for reading.</p>
 
 
 </section>

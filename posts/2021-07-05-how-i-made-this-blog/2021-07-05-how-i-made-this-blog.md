@@ -71,7 +71,7 @@ git push -u origin main
 ## And You're finished!
 Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_username_.github.io** in a browser to view your handiwork.
  
-<img src="../../assets/images/content.jpg" />
+<img src="../../assets/images/content.jpg" width=800 />
 
 ### ... Looks Kinda Boring Though, Doesn't It?
 Sure does. Why don't we take GitHub's [advice](https://docs.github.com/en/github-ae@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll) and use Jekyll, whatever that is.
@@ -151,7 +151,7 @@ This may take some time as well.
 
 Great, now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷
 
-<img src="../../assets/images/jekyll_basic.jpg" />
+<img src="../../assets/images/jekyll_basic.jpg" width=800 />
 
 ## Editing Fields
 

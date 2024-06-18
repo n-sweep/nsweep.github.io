@@ -48,7 +48,7 @@ Right, let's take a step back here. Before we can do anything with the Pi we nee
 
 Raspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we're going to use the standard *Raspberry Pi OS* developed by the [Raspberry Pi Foundation](https://www.raspberrypi.org/about/) for their namesake [SBC](https://en.wikipedia.org/wiki/Single-board_computer). Head on over to the [downloads page](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit) and choose the version that's best for you.
 
-<img src="../../assets/images/download_rpi_os.jpg" />
+<img src="../../assets/images/download_rpi_os.jpg" width=800 />
 
 Most of the time I don't need a GUI for my Pis so I'm choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We'll talk a little later about [using the GUI remotely](#optional-using-the-desktop-gui-remotely-with-vnc).
 
@@ -178,7 +178,7 @@ VNC Server, allowing it to be controlled remotely by another computer. To use it
 
 1. Connect to your Pi via SSH using the [instructions above](#connect-over-the-terminal-with-ssh).
 2. Start the configuration tool with the command `sudo raspi-config`. You'll be met with a screen like this:
-  <img src='../../assets/images/raspi-config.jpg' />
+  <img src='../../assets/images/raspi-config.jpg' width=800 />
 3. Navigate to `Interface Options`, then `VNC` and answer 'Yes' when asked to enable VNC.
 
 #### - Install VNC Viewer on our Local Machine and Connect!

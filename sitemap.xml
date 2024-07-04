@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://n-sweep.github.io/learn.html</loc>
-    <lastmod>2024-06-23T19:54:21.580Z</lastmod>
+    <lastmod>2024-07-04T14:44:35.867Z</lastmod>
   </url>
   <url>
     <loc>https://n-sweep.github.io/contact.html</loc>
@@ -17,12 +17,12 @@
     <lastmod>2024-06-23T18:32:55.961Z</lastmod>
   </url>
   <url>
-    <loc>https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html</loc>
-    <lastmod>2024-06-23T18:33:11.966Z</lastmod>
-  </url>
-  <url>
     <loc>https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html</loc>
     <lastmod>2024-06-23T18:33:04.330Z</lastmod>
+  </url>
+  <url>
+    <loc>https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html</loc>
+    <lastmod>2024-06-23T18:33:11.966Z</lastmod>
   </url>
   <url>
     <loc>https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/index.html</loc>

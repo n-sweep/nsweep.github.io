@@ -4,7 +4,7 @@ title: "./about_me"
 
 <figure>
     <a href='https://xkcd.com/2582/'><img src="assets/images/bill.jpg" height=400px /></a>
-    <figcaption>pictured left to right: Noah Shreve, <i>Calvin & Hobbes</i> creator Bill Watterson</figcaption>
+    <figcaption>pictured left to right: me, <i>Calvin & Hobbes</i> creator Bill Watterson</figcaption>
 </figure>
 
 

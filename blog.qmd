@@ -1,8 +1,9 @@
 ---
 title: "./blog"
 listing:
-    contents: posts
-    sort: "date desc"
-    type: default
+    contents:   posts
+    sort:       "date desc"
+    type:       default
+    feed:       true
 # page-layout: full
 ---

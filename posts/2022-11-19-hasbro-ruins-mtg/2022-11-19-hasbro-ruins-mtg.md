@@ -115,3 +115,7 @@ show, Magic tournaments were indeed featured on
 YouTube](https://www.youtube.com/watch?v=DQuXalg4PKs) (warning: kind of loud).
 
 <sup>[2]</sup> This is an opinion, but not really.
+
+<br />
+
+---

@@ -1,0 +1,10 @@
+---
+title:          Creating My Own Premium Feature in Google Calendar
+description:    a description
+author:         n sweep
+date:           2024-06-14
+categories:     [programming, python, google calendar]
+draft:          true
+---
+
+[TODO]: intro

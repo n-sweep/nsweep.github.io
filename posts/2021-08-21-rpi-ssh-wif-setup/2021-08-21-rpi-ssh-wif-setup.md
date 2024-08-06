@@ -197,3 +197,7 @@ Trying to connect via WiFi and can't seem to find your Pi's IP address on your n
 1. Connect to your Pi via SSH using the [instructions above](#connect-over-the-terminal-with-ssh).
 2. Start the configuration tool with the command `sudo raspi-config`. You'll be met with a screen like [the one above](#enable-vnc-server-on-the-raspberry-pi).
 3. Choose `System Options` and then `Wireless LAN`. You'll be asked for your SSID and password, and you're done!
+
+<br />
+
+---

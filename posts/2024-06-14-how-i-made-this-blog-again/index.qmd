@@ -1,5 +1,5 @@
 ---
-title:          "How I Made This Blog Again with Quarto and Github Pages"
+title:          "How I Made This Blog Again With Quarto and Github Pages"
 description:    A couple of years ago I learned how to build a static website on GitHub Pages, wrote about it, and then promptly forgot about the project. Now I'm back to do it all again!
 author:         "n sweep"
 date:           "2024-06-14"
@@ -136,3 +136,7 @@ Now the git and GitHub setup we did earlier pays off. Once we're happy with the 
 And that's it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.
 
 <img src="front_page.png" width=800 />
+
+<br />
+
+---

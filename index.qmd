@@ -15,9 +15,11 @@ listing:
     <figcaption>xkcd #2582 <i>Data Trap</i></figcaption>
 </figure>
 
-My name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code.
-
 ## Learn with Me
+
+My name is Noah and during the day I work on data, but also during the day I teach hobbyists, career changers, bootcampers, and professionals alike how to code.<br />
+
+### [Learn more](learn.qmd) or
 
 <!-- Google Calendar Appointment Scheduling begin -->
 <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
@@ -29,7 +31,7 @@ My name is Noah and during the day I work on data, but also during the day I tea
     calendar.schedulingButton.load({
       url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ13N_I7ea7dShqhl75wtAFAqCJp0ZumTQDKXJEeqJvNpx8b_1QLayG7yaeAOoIX1QORIMG-oI3n?gv=true',
       color: '#315377',
-      label: 'Book an Appointment',
+      label: 'Book an Appointment Now',
       target,
     });
   });
@@ -37,10 +39,33 @@ My name is Noah and during the day I work on data, but also during the day I tea
 </script>
 <!-- end Google Calendar Appointment Scheduling -->
 
-[(Learn more)](learn.qmd)
+## Some things that I think are neat 📸
 
-## Blog
+in no particular order
 
-### Recent Posts:
+- [Data Trap](https://xkcd.com/2582/) - the comic above, by [xkcd](https://xkcd.com/)
+- [freeasinweekend.org](https://freeasinweekend.org/) - “Free beer and free speech are all very well, but a free weekend? That's something worth paying for.”
+- [0.30000000000000004.com](https://0.30000000000000004.com/)
+- [rubber duck debugging](https://rubberduckdebugging.com/)
+- [regex 101](https://regex101.com/) online regular expression parser
+    - remember not to regex without [a license](https://regexlicensing.org/)
+- [tmux terminal multiplexer](https://github.com/tmux/tmux/wiki) - do you have to work in the terminal a lot, keeping processes such as a jupyter notebook or local web server open? you might like tmux
+- a list of [public api endpoints](https://github.com/public-apis/public-apis) to practice your programming or collecte data for analysis
+- [free programming books](https://ebookfoundation.github.io/free-programming-books/)
+- [awesome-data](https://github.com/datasets/awesome-data) - a "curated list of quality open datasets"
+- [Python Graph Gallery](https://python-graph-gallery.com/) - a website that displays "hundreds of charts made with Python" and code examples for how to make them
+- [OSSU](https://github.com/ossu) - Open Source Society University: "Empowering learners to master college curricula through free resources."
+- [project-based learning](https://github.com/practical-tutorials/project-based-learning)
+- [advent of code](https://adventofcode.com/) - an advent calendar of programming problems every year since 2015
+- [hanukkah of data](https://hanukkah.bluebird.sh/about/) - "Noah’s Rug is a set of short data challenges, first released in 2022 as Hanukkah of Data. The same fictional dataset is used for all puzzles. Explore this dataset with the tools of your choice to figure out the answers, light the Hanukkah candles, and find Noah’s missing rug."
+- [spacetraders](https://spacetraders.io/) - a game played entirely via a web api
+- [wezterm](https://wezfurlong.org/wezterm/) - a terminal emulator with config written in lua
 
-[More Posts](./blog.qmd)
+# Blog
+---
+
+Sometimes I write about some things. Neither the times nor the things are consistent.
+
+[(More Posts)](./blog.qmd)
+
+## Recent Posts:

@@ -3,6 +3,8 @@ project:
 
 website:
   title: "cd ~/sweep.sh/website"
+  site-url : https://n-sweep.github.io
+  description: a small blog allegedly about tech and data
 
   navbar:
     search: true
@@ -11,6 +13,10 @@ website:
       - learn.qmd
       - blog.qmd
       - about.qmd
+
+    right:
+      - icon: rss
+        href: blog.html
 
     tools:
       - icon: linkedin
@@ -28,8 +34,9 @@ format:
   html:
 
     theme:
-      dark: darkly
       light: flatly
+      dark: darkly
 
     css: styles.css
     toc: true
+

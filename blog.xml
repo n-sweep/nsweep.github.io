@@ -9,8 +9,1168 @@
 <link>https://n-sweep.github.io/blog.html</link>
 <atom:link href="https://n-sweep.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description>a small blog allegedly about tech and data</description>
-<generator>quarto-1.4.554</generator>
-<lastBuildDate>Sun, 23 Jun 2024 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.57</generator>
+<lastBuildDate>Thu, 24 Oct 2024 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Go in Python, Part 1</title>
+  <dc:creator>n sweep</dc:creator>
+  <link>https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>A few months ago I started playing <a href="https://en.wikipedia.org/wiki/Go_(game)">Go</a> and became a fast fan of the game. I and a few friends I have roped into learning with me have been playing on <a href="https://online-go.com">online-go.com (OGS)</a>, both via their website and a third party Android app called <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>. As with every new website I find remotely useful, I had to check if they have an <a href="https://en.wikipedia.org/wiki/Web_API">API</a>.</p>
+<p>Spoiler: they do.</p>
+<p>My goal is to make a program that, given the link to or ID of a game on OGS, will produce an animated gif of the game. Comfortable in my knowledge that OGS has an API and <a href="https://github.com/charmbracelet/vhs">charmbracelet/vhs</a> exists, I chose to start with the game engine. This could be later categorized as a mistake.</p>
+<section id="game-engine" class="level1">
+<h1>Game Engine</h1>
+<p>As I intend to use <a href="https://github.com/charmbracelet/vhs">charmbracelet/vhs</a> to generate the gif, my first concern was whether I can represent a Go board in a nice way in the terminal. The game pieces in Go are black and white stones and I already know I want to use emoji (⚫⚪) to represent them. There are plenty of <a href="https://symbl.cc/en/unicode/blocks/box-drawing/">Unicode characters</a> for drawing boxes and grids, but the trouble is that emoji are roughly two characters wide in monospace fonts. With this limitation, a grid of intersecting lines was impossible, but I eventually came up with the following ASCII board:</p>
+<pre><code>   A B C D E F G H J K L M N O P Q R S T
+19 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 19
+18 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 18
+17 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 17
+16 ╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴ 16
+15 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 15
+14 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 14
+13 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 13
+12 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 12
+11 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 11
+10 ╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴ 10
+ 9 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 9
+ 8 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 8
+ 7 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 7
+ 6 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 6
+ 5 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 5
+ 4 ╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴╶╴╶╴╺╸╶╴╶╴╶╴ 4
+ 3 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 3
+ 2 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 2
+ 1 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 1
+   A B C D E F G H J K L M N O P Q R S T</code></pre>
+<p>Note: This board mimics the default board display on OGS, which omits the letter I from the legend.</p>
+<section id="representing-the-board" class="level2">
+<h2 class="anchored" data-anchor-id="representing-the-board">Representing the Board</h2>
+<p>Considering that the board is simply a 2d array, <code>numpy</code> is the perfect choice for representing the game’s state. Zeros are empty spaces, ones will be black stones, and twos will be white stones. Let’s start with some constants and a board.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># let's start with a 9x9 board for the sake of brevity</span></span>
+<span id="cb2-4">size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span></span>
+<span id="cb2-5">state <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((size,size), dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb2-6">state[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-7">state[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(state)</span></code></pre></div>
+<pre><code>array([[0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 2, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 1, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0]])</code></pre>
+<section id="game-pieces-intersections" class="level3">
+<h3 class="anchored" data-anchor-id="game-pieces-intersections">Game Pieces &amp; Intersections</h3>
+<p>Now we can loop over the game state to make a friendlier render of the game. Default monospace fonts in browsers are often a bit tall and narrow - if this looks a little awkward, there are screenshots coming up.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb4-1">B <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"⚫"</span></span>
+<span id="cb4-2">W <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"⚪"</span></span>
+<span id="cb4-3">PT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"╶╴"</span></span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> state:</span>
+<span id="cb4-6">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([(PT,B,W)[i] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> row]))</span></code></pre></div>
+<pre><code>╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴⚪╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴⚫╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴</code></pre>
+</section>
+<section id="adding-star-points-to-the-board" class="level3">
+<h3 class="anchored" data-anchor-id="adding-star-points-to-the-board">Adding Star Points to the Board</h3>
+<p>Star points have no value or significance in Go, they are simply there to orient ourselves on the board. I just doesn’t look quite right without them though.</p>
+<p>I wrote this in a fever dream. Through liberal use of the walrus operator, we set the location of each star point to a -1. By creating an array the same size as our game board, we’ll be able to combine them.</p>
+<p>To be more specific, <code>corners</code> calculates the spacing between star points based on the size of the board (13 and 19 size boards have the same spacing), then we use <code>product()</code> to give us every combination of appropriate points on the board, adding in the middle point manually.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> itertools <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> product</span>
+<span id="cb6-2"></span>
+<span id="cb6-3">star_points <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((size,size), dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb6-4">corners <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [j <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span>((s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>i))) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> size]</span>
+<span id="cb6-5">pts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(f<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span>size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, f)] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(product(corners, repeat<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb6-6">star_points[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>pts)] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(star_points)</span></code></pre></div>
+<p>Why -1? The way things are written so far, a 3 would also work. I wanted the ability to get all stones on the board by filtering the state for any positions that are greater than zero, however I inadvertently skirted this problem by only applying the star points to the board directly before printing and the -1 stuck around.</p>
+<pre><code>array([[ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+       [ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+       [ 0,  0, -1,  0,  0,  0, -1,  0,  0],
+       [ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+       [ 0,  0,  0,  0, -1,  0,  0,  0,  0],
+       [ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+       [ 0,  0, -1,  0,  0,  0, -1,  0,  0],
+       [ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+       [ 0,  0,  0,  0,  0,  0,  0,  0,  0]])</code></pre>
+<p>“Masking” is a useful technique where we create an array of boolean values of the same <code>shape</code> as an array of data. The array of booleans, or ‘mask’, can then be applied to the array of data by indexing: <code>data[mask]</code>. This allows us to return or affect only the values that align with <code>True</code> values in the mask.</p>
+<p>By masking out the game pieces that have already been played (any points that are not 0), we can assign the star points to the game board only if a piece hasn’t already been played in that position.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb8-1">SP <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"╺╸"</span></span>
+<span id="cb8-2"></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make a copy before applying the star points; we don't want our game state to</span></span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># contain anything other than zeros, ones, and twos</span></span>
+<span id="cb8-5">board <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> state.copy()</span>
+<span id="cb8-6">mask <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>state.astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>)</span>
+<span id="cb8-7">board[mask] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> star_points[mask]</span>
+<span id="cb8-8"></span>
+<span id="cb8-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> board:</span>
+<span id="cb8-10">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([(PT,B,W,SP)[i] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> row]))</span></code></pre></div>
+<pre><code>╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╺╸⚪╶╴╶╴╺╸╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴⚫╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╺╸╶╴╶╴╶╴╺╸╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴
+╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴</code></pre>
+</section>
+<section id="labelling-the-rows-columns" class="level3">
+<h3 class="anchored" data-anchor-id="labelling-the-rows-columns">Labelling the Rows &amp; Columns</h3>
+<p>Next up are row and column labels. As mentioned above, OGS skips the letter I, so I am doing the same.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb10-1">ALPHA <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'abcdefghijklmnopqrstuvwxyz'</span></span>
+<span id="cb10-2"></span>
+<span id="cb10-3">joined <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>.join(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(ALPHA.replace(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'i'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>)[:size])).upper()</span>
+<span id="cb10-4">rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [col_label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>(d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> s)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>joined<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>]</span>
+<span id="cb10-5"></span>
+<span id="cb10-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> r, input_row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(board, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb10-7">    row <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([(PT,B,W,SP)[i] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> input_row])</span>
+<span id="cb10-8">    num <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb10-9">    lnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.rjust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb10-10">    rnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.ljust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb10-11">    rows.append(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>lnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>rnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb10-12"></span>
+<span id="cb10-13">rows.append(col_label)</span>
+<span id="cb10-14"></span>
+<span id="cb10-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.join(rows))</span></code></pre></div>
+<pre><code>--A B C D E F G H J --
+9 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 9
+8 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 8
+7 ╶╴╶╴╺╸⚪╶╴╶╴╺╸╶╴╶╴ 7
+6 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 6
+5 ╶╴╶╴╶╴╶╴⚫╶╴╶╴╶╴╶╴ 5
+4 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 4
+3 ╶╴╶╴╺╸╶╴╶╴╶╴╺╸╶╴╶╴ 3
+2 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 2
+1 ╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴╶╴ 1
+--A B C D E F G H J --</code></pre>
+</section>
+<section id="a-coat-of-paint" class="level3">
+<h3 class="anchored" data-anchor-id="a-coat-of-paint">A Coat of Paint</h3>
+<p>Let’s add some <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI color escape codes</a> to the mix to give our board that realistic wooden effect.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb12-1">BLACK <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[30m'</span></span>
+<span id="cb12-2">GRAY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[90m'</span></span>
+<span id="cb12-3">YELLOW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[33m'</span></span>
+<span id="cb12-4">BG_YELLOW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[43m'</span></span>
+<span id="cb12-5">RESET <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[0m'</span></span>
+<span id="cb12-6"></span>
+<span id="cb12-7"></span>
+<span id="cb12-8">joined <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>.join(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(ALPHA.replace(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'i'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>)[:size])).upper()</span>
+<span id="cb12-9">rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [col_label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>(d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> s)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>joined<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>]</span>
+<span id="cb12-10"></span>
+<span id="cb12-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> r, input_row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(board, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb12-12">    row <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([(PT,B,W,SP)[i] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> input_row])</span>
+<span id="cb12-13">    num <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb12-14">    lnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.rjust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb12-15">    rnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.ljust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb12-16">    rows.append(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>lnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>GRAY<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>rnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb12-17"></span>
+<span id="cb12-18">rows.append(col_label)</span>
+<span id="cb12-19">rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BG_YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>RESET<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> rows]</span>
+<span id="cb12-20"></span>
+<span id="cb12-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.join(rows))</span></code></pre></div>
+<p>Markdown doesn’t render color escape codes, so here’s a screenshot!</p>
+<p><img src="https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/images/9x9.png"></p>
+</section>
+</section>
+<section id="wrap-it-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrap-it-up">Wrap It Up</h2>
+<p>Now let’s package that all together in a class to make it easier to play a stone.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb13-1">ALPHA <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'abcdefghijklmnopqrstuvwxyz'</span></span>
+<span id="cb13-2">B <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"⚫"</span></span>
+<span id="cb13-3">W <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"⚪"</span></span>
+<span id="cb13-4">PT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"╶╴"</span></span>
+<span id="cb13-5">SP <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"╺╸"</span></span>
+<span id="cb13-6"></span>
+<span id="cb13-7">BLACK <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[30m'</span></span>
+<span id="cb13-8">GRAY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[90m'</span></span>
+<span id="cb13-9">YELLOW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[33m'</span></span>
+<span id="cb13-10">BG_YELLOW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[43m'</span></span>
+<span id="cb13-11">RESET <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\033</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">[0m'</span></span>
+<span id="cb13-12"></span>
+<span id="cb13-13"></span>
+<span id="cb13-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Board:</span>
+<span id="cb13-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, size: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>):</span>
+<span id="cb13-16">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> size</span>
+<span id="cb13-17">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.state <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((size,size), dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb13-18"></span>
+<span id="cb13-19">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> play(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, player: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb13-20">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.state[y][x] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> player</span>
+<span id="cb13-21"></span>
+<span id="cb13-22">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__str__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb13-23">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># generate star points</span></span>
+<span id="cb13-24">        star_points <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size,<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size), dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb13-25">        corners <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [j <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span>((s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>i))) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size]</span>
+<span id="cb13-26">        pts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(f<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, f)] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(product(corners, repeat<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb13-27">        star_points[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>pts)] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb13-28"></span>
+<span id="cb13-29">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># add star points to board</span></span>
+<span id="cb13-30">        board <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.state.copy()</span>
+<span id="cb13-31">        mask <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.state.astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>)</span>
+<span id="cb13-32">        board[mask] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> star_points[mask]</span>
+<span id="cb13-33"></span>
+<span id="cb13-34">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># generate plaintext board</span></span>
+<span id="cb13-35">        joined <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>.join(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(ALPHA.replace(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'i'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>)[:size])).upper()</span>
+<span id="cb13-36">        rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [col_label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>(d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> s)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>joined<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>]</span>
+<span id="cb13-37"></span>
+<span id="cb13-38">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> r, input_row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(board, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb13-39">            row <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([(PT,B,W,SP)[i] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> input_row])</span>
+<span id="cb13-40">            num <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb13-41">            lnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.rjust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb13-42">            rnum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> num.ljust(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(size))))</span>
+<span id="cb13-43">            rows.append(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>lnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>GRAY<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BLACK<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>rnum<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb13-44"></span>
+<span id="cb13-45">        rows.append(col_label)</span>
+<span id="cb13-46">        rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>BG_YELLOW<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}{</span>RESET<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> rows]</span>
+<span id="cb13-47"></span>
+<span id="cb13-48">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.join(rows)</span></code></pre></div>
+<section id="the-.__str__-method" class="level3">
+<h3 class="anchored" data-anchor-id="the-.__str__-method">The <code>.__str__()</code> method</h3>
+<p>Python class method surrounded in double underscores are called “magic methods” or “dunder methods”. <code>.__init__()</code> is also an example. <a href="https://duckduckgo.com/?q=python+magic+methods">Read more about them</a>.</p>
+<p>tl;dr, the <a href="https://docs.python.org/3/reference/datamodel.html#object.__str__"><code>__str__()</code> method</a> determines what gets sent to the console when an instance of the class is given as an argument to <code>print()</code>, allowing us to simply print a board like so:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb14-1">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Board(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>)</span>
+<span id="cb14-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(b)</span></code></pre></div>
+</section>
+<section id="the-.play-method" class="level3">
+<h3 class="anchored" data-anchor-id="the-.play-method">The <code>.play()</code> method</h3>
+<p>We’ve swapped <code>x</code> and <code>y</code> in the input arguments to be more intuitive. All we have to do is add a player number (1 for black, 2 for white) to the game’s state and the appropriate pieces will be rendered on print.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb15-1">    ...</span>
+<span id="cb15-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> play(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, player: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>, y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb15-3">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.state[y, x] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> player</span>
+<span id="cb15-4">    ...</span></code></pre></div>
+</section>
+</section>
+<section id="quick-test-drive" class="level2">
+<h2 class="anchored" data-anchor-id="quick-test-drive">Quick Test Drive</h2>
+<p>Testing the <code>play</code> method on a board of each size:</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> size <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>]:</span>
+<span id="cb16-2">    b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Board(size)</span>
+<span id="cb16-3">    b.play(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb16-4">    b.play(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb16-5">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(b)</span></code></pre></div>
+<p><img src="https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/images/all_3.png"></p>
+<p>Nice.</p>
+</section>
+</section>
+<section id="next-time-api-headaches" class="level1">
+<h1>Next Time: API Headaches</h1>
+<p>While there is more to do with regard to the game engine, it would be great to have a list of plays to loop over with our new <code>Board</code> class, and that’s exactly what the OGS API returns. Next up, we’ll talk about the first time I almost gave up on this project, and also a lot of documentation.</p>
+<p>Until then!</p>
+<p><a href="">This will be a link to part 2</a></p>
+
+
+</section>
+
+<p><br><br>This page lovingly generated by <a href="https://quarto.org/">Quarto</a> ❤️</p> ]]></description>
+  <category>go</category>
+  <category>baduk</category>
+  <category>python</category>
+  <category>programming</category>
+  <guid>https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/</guid>
+  <pubDate>Thu, 24 Oct 2024 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Copying My Voice to the Clipboard</title>
   <dc:creator>n sweep</dc:creator>
@@ -26,7 +1186,7 @@
 <p>[I work from home, therefore] <em>I already have a microphone in front of my face, and <a href="https://en.wikipedia.org/wiki/Large_language_model">LLM</a>s exist. I bet <a href="https://en.wikipedia.org/wiki/Speech_recognition">STT</a> to the clipboard would be pretty easy…</em></p>
 </blockquote>
 <p>If I’ve ever heard famous last words, those are them, but it actually did turn out to be relatively easy.</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/fry_megaphone.gif"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/fry_megaphone.gif"></p>
 <p>The goal is not just to transcribe audio, but to have a script that will listen to me speak, transcribe the audio to text, and put that text into my system clipboard so I can easily paste it into an email, Slack message, etc…, with a single command.</p>
 <section id="speech-to-text-transcription" class="level1">
 <h1>Speech-to-Text Transcription</h1>
@@ -35,7 +1195,7 @@
 <section id="recording-my-voice-from-the-command-line" class="level1">
 <h1>Recording My Voice (from the Command Line)</h1>
 <p>As I was making the mistake of searching for Python libraries to record audio, it occurred to me that I already knew my system audio was being managed by <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/">Pulse</a> and, for some unrelated reason lost to time, I had recently learned that I could play an audio file with the <code>pacat</code> command. There is probably a simple command for recording already available in the terminal. Let’s check out the man page for <code>pacat</code>:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/pacat.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/pacat.gif" width="600"></p>
 <p>Bingo - <code>pacat</code> also includes <code>parecord</code>, an alias for using the <code>-r</code> flag. A quick experiment showed no options were required to record from my default audio device:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
@@ -62,6 +1222,7 @@ font-style: inherit;">parecord</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'test.mp3'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;</span></span>
 <span id="cb2-3"></span>
 <span id="cb2-4"><span class="co" style="color: #5E5E5E;
@@ -77,6 +1238,7 @@ font-style: inherit;">$!</span></span>
 <span id="cb2-6"></span>
 <span id="cb2-7"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">:</span>  <span class="co" style="color: #5E5E5E;
@@ -84,6 +1246,7 @@ background-color: null;
 font-style: inherit;"># infinite loop</span></span>
 <span id="cb2-8"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span></span>
 <span id="cb2-9">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -101,6 +1264,7 @@ background-color: null;
 font-style: inherit;"># if a q is seen...</span></span>
 <span id="cb2-13">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="st" style="color: #20794D;
@@ -117,8 +1281,10 @@ font-style: inherit;">"q"</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb2-14">        <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -143,12 +1309,15 @@ background-color: null;
 font-style: inherit;"># break the infinite while loop</span></span>
 <span id="cb2-21">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb2-22">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb2-23"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">done</span></span></code></pre></div>
 </section>
 <section id="better-file-name-handling" class="level2">
@@ -172,6 +1341,7 @@ background-color: null;
 font-style: inherit;"># if the user has provided an argument (filename)...</span></span>
 <span id="cb3-5"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="va" style="color: #111111;
@@ -182,8 +1352,10 @@ font-style: inherit;">-gt</span> 0 <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb3-6">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -200,6 +1372,7 @@ font-style: inherit;">echo</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$@</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -209,6 +1382,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb3-8"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span></span>
 <span id="cb3-9">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -229,6 +1403,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb3-12"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb3-13"></span>
 <span id="cb3-14"><span class="co" style="color: #5E5E5E;
@@ -249,7 +1424,7 @@ font-style: inherit;">.mp3"</span></span></code></pre></div>
 <section id="the-recording-script" class="level2">
 <h2 class="anchored" data-anchor-id="the-recording-script">The Recording Script</h2>
 <p>Putting these together gives us a complete recording script (below). I’ve added some <code>echo</code> outputs for the user:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/rec_script.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/rec_script.gif" width="600"></p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#!/usr/bin/env bash</span></span>
@@ -265,6 +1440,7 @@ background-color: null;
 font-style: inherit;"># check for filename or use timestamp</span></span>
 <span id="cb4-6"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="va" style="color: #111111;
@@ -275,8 +1451,10 @@ font-style: inherit;">-gt</span> 0 <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb4-7">    <span class="va" style="color: #111111;
 background-color: null;
@@ -290,6 +1468,7 @@ font-style: inherit;">echo</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$@</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -299,6 +1478,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb4-8"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span></span>
 <span id="cb4-9">    <span class="va" style="color: #111111;
 background-color: null;
@@ -313,6 +1493,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb4-10"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb4-11"></span>
 <span id="cb4-12"><span class="va" style="color: #111111;
@@ -333,6 +1514,7 @@ font-style: inherit;">parecord</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$file_loc</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;</span></span>
 <span id="cb4-15"><span class="va" style="color: #111111;
 background-color: null;
@@ -353,11 +1535,13 @@ background-color: null;
 font-style: inherit;"># loop waits for 'q' and stops recording</span></span>
 <span id="cb4-20"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">:</span></span>
 <span id="cb4-21"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span></span>
 <span id="cb4-22">    <span class="bu" style="color: null;
 background-color: null;
@@ -368,6 +1552,7 @@ background-color: null;
 font-style: inherit;">key</span></span>
 <span id="cb4-23">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="st" style="color: #20794D;
@@ -384,13 +1569,16 @@ font-style: inherit;">"q"</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb4-24">        <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;&amp;</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
@@ -408,12 +1596,15 @@ background-color: null;
 font-style: inherit;">$parec_pid</span></span>
 <span id="cb4-27">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb4-28">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb4-29"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">done</span></span>
 <span id="cb4-30"></span>
 <span id="cb4-31"><span class="bu" style="color: null;
@@ -430,7 +1621,7 @@ font-style: inherit;"> saved."</span></span></code></pre></div>
 <section id="deepgram" class="level1">
 <h1>Deepgram</h1>
 <p>We’re saving audio successfully, so now it’s time to send it off to the Deepgram API for transcription. The <a href="https://developers.deepgram.com/docs/getting-started-with-pre-recorded-audio#curl">documentation</a> has examples for remote files and for local files - we want the local file example:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/dg_docs.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/dg_docs.gif" width="600"></p>
 <section id="editing-the-request" class="level2">
 <h2 class="anchored" data-anchor-id="editing-the-request">Editing the Request</h2>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
@@ -533,7 +1724,7 @@ font-style: inherit;">--url</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'https://api.deepgram.com/v1/listen?model=nova-2&amp;smart_format=true'</span></span></code></pre></div>
 <p>Specifically note the change from the example’s single quotes to a set of double quotes when inserting the variable:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/dg_api_key.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/dg_api_key.gif" width="600"></p>
 </section>
 </section>
 <section id="this-is-only-a-test" class="level2">
@@ -545,7 +1736,7 @@ font-style: inherit;">--data-binary</span> @/tmp/dictation/test.mp3 <span class=
 background-color: null;
 font-style: inherit;">\</span></span></code></pre></div>
 <p>And it works! But it doesn’t just return the simple text we’re looking for, the response we get back is <a href="https://www.json.org/">JSON</a>.</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/what_is_that.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/what_is_that.gif" width="600"></p>
 </section>
 <section id="parsing-the-response" class="level2">
 <h2 class="anchored" data-anchor-id="parsing-the-response">Parsing the Response</h2>
@@ -565,6 +1756,7 @@ font-style: inherit;">\</span></span>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span></span></code></pre></div>
@@ -1007,6 +2199,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1031,6 +2224,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1351,6 +2545,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1369,6 +2564,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1669,6 +2865,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1952,6 +3149,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -1986,6 +3184,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">cat</span> /tmp/dictation/test.json <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -2005,6 +3204,7 @@ background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb25-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -2014,6 +3214,7 @@ background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb25-3">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -2044,6 +3245,7 @@ font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Hi mom!"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">xclip</span> <span class="at" style="color: #657422;
@@ -2059,6 +3261,7 @@ background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb29-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -2068,6 +3271,7 @@ background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb29-3">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -2075,6 +3279,7 @@ background-color: null;
 font-style: inherit;">'s/^"\(.*\)"$/\1/'</span></span>
 <span id="cb29-4">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">xclip</span> <span class="at" style="color: #657422;
@@ -2086,7 +3291,7 @@ font-style: inherit;">-selection</span> clipboard</span></code></pre></div>
 <section id="putting-it-all-together" class="level1">
 <h1>Putting It All Together</h1>
 <p>The final script is below, see the <code>[NOTE]</code>s for explanation of things not explicitly shown above. Here it is in action:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/dg_only_a_test.gif" width="600"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-23-copying-my-voice-to-the-clipboard/images/dg_only_a_test.gif" width="600"></p>
 <div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#!/usr/bin/env bash</span></span>
@@ -2126,6 +3331,7 @@ background-color: null;
 font-style: inherit;"># check for filename or use timestamp</span></span>
 <span id="cb30-8"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="va" style="color: #111111;
@@ -2136,8 +3342,10 @@ font-style: inherit;">-gt</span> 0 <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb30-9">    <span class="va" style="color: #111111;
 background-color: null;
@@ -2151,6 +3359,7 @@ font-style: inherit;">echo</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$@</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -2160,6 +3369,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb30-10"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span></span>
 <span id="cb30-11">    <span class="va" style="color: #111111;
 background-color: null;
@@ -2174,6 +3384,7 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span id="cb30-12"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb30-13"></span>
 <span id="cb30-14"><span class="va" style="color: #111111;
@@ -2194,6 +3405,7 @@ font-style: inherit;">parecord</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$file_loc</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;</span></span>
 <span id="cb30-17"><span class="va" style="color: #111111;
 background-color: null;
@@ -2214,11 +3426,13 @@ background-color: null;
 font-style: inherit;"># loop waits for 'q' and stops recording</span></span>
 <span id="cb30-22"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">:</span></span>
 <span id="cb30-23"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span></span>
 <span id="cb30-24">    <span class="bu" style="color: null;
 background-color: null;
@@ -2229,6 +3443,7 @@ background-color: null;
 font-style: inherit;">key</span></span>
 <span id="cb30-25">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">[</span> <span class="st" style="color: #20794D;
@@ -2245,13 +3460,16 @@ font-style: inherit;">"q"</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">then</span></span>
 <span id="cb30-26">        <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;&amp;</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
@@ -2269,12 +3487,15 @@ background-color: null;
 font-style: inherit;">$parec_pid</span></span>
 <span id="cb30-29">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb30-30">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fi</span></span>
 <span id="cb30-31"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">done</span></span>
 <span id="cb30-32"></span>
 <span id="cb30-33"><span class="bu" style="color: null;
@@ -2306,6 +3527,7 @@ font-style: inherit;">echo</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$file_loc</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
@@ -2396,6 +3618,7 @@ background-color: null;
 font-style: inherit;">\</span></span>
 <span id="cb30-50">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
@@ -2417,12 +3640,14 @@ font-style: inherit;">echo</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$transcript</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'s/^"\(.*\)"$/\1/'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">xclip</span> <span class="at" style="color: #657422;
@@ -2466,7 +3691,7 @@ font-style: inherit;">'copied to clipboard'</span></span></code></pre></div>
 
 
 <p>Way back in 2021 I learned how to build a simple static website on <a href="https://pages.github.com/">GitHub Pages</a>, wrote a few articles (including one about <a href="../../posts/2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html">how I did it</a>), and then promptly forgot about the project amidst the noise of distractions such as my day job. Now I’m back to do it all again! Only this time, with the awesome open-source scientific and technical publishing system <a href="https://quarto.org/">Quarto</a>.</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/quarto.png"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/quarto.png"></p>
 <section id="prerequisite-packages" class="level1">
 <h1>Prerequisite Packages</h1>
 <p>If you want to follow along, you’ll need to ensure some prerequisite packages are installed. It’s a shorter list than last time:</p>
@@ -2534,7 +3759,7 @@ font-style: inherit;">git</span> push origin gh-pages</span></code></pre></div>
 <p>Double-check that the last git push action has indeed set the Settings : Pages for your repository as expected in the previous figure. […]</p>
 </blockquote>
 <p>The screenshot from the docs is a little out of date as of my writing this. They are asking us to ensure our branch is set to “gh-pages” and our directory is set to “root” like below. (It seems that this <em>should</em> happen automatically during one of the previous steps, but best to check if the guide recommends it.)</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/gh-pages.png" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/gh-pages.png" width="800"></p>
 </section>
 <section id="gitignore" class="level3">
 <h3 class="anchored" data-anchor-id="gitignore"><code>.gitignore</code></h3>
@@ -2590,7 +3815,7 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 <p>The previous steps created a number of files in our repo. From <a href="https://quarto.org/docs/websites/website-blog.html">the documentation</a>:</p>
 <blockquote class="blockquote">
 <p>Here’s a summary of the key files created within the starter blog project:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>File</th>
@@ -2627,14 +3852,14 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 </blockquote>
 <p><code>.qmd</code> files are essentially <a href="https://www.markdownguide.org/">markdown</a> files with some special Quarto sauce. We can edit <code>index.qmd</code> and <code>about.qmd</code> to change the content of the pages, and even create new <code>.qmd</code> files for additional pages. New pages can be linked to <a href="https://quarto.org/docs/websites/#linking">from other documents</a> and <a href="https://quarto.org/docs/websites/#config-file">in the navbar</a>. Since I used the <code>quarto create project blog</code> command, the list includes a <a href="https://quarto.org/docs/websites/website-blog.html#posts-directory"><code>posts/</code> directory</a>, where blog posts like this one (also written in markdown) live.</p>
 <p>If <code>quarto preview</code> is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run <code>quarto preview</code> again to have a look:</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/new_post.png" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/new_post.png" width="800"></p>
 </section>
 <section id="publish" class="level1">
 <h1>Publish</h1>
 <p>Now the git and GitHub setup we did earlier pays off. Once we’re happy with the changes and our new blog post, we’ll run <code>quarto publish .</code></p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/quarto_publish.gif" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/quarto_publish.gif" width="800"></p>
 <p>And that’s it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.</p>
-<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/front_page.png" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/front_page.png" width="800"></p>
 <p><br></p>
 <hr>
 
@@ -2648,7 +3873,7 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
   <category>github</category>
   <guid>https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/</guid>
   <pubDate>Fri, 14 Jun 2024 04:00:00 GMT</pubDate>
-  <media:content url="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/quarto.png" medium="image" type="image/png" height="120" width="144"/>
+  <media:content url="https://n-sweep.github.io/posts/2024-06-14-how-i-made-this-blog-again/images/quarto.png" medium="image" type="image/png" height="120" width="144"/>
 </item>
 <item>
   <title>Has Hasbro Ruined Magic: the Gathering?</title>
@@ -2661,13 +3886,13 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 
 
 <figure class="figure">
-<img src="https://n-sweep.github.io/assets/images/c21-145-greed.jpg" class="figure-img">
+<img src="https://n-sweep.github.io/posts/2022-11-19-hasbro-ruins-mtg/images/c21-145-greed.jpg" class="figure-img">
 <figcaption>
 <i>Greed</i> - Illustrated by <a href="https://www.izzymedrano.com/">Izzy</a>
 </figcaption>
 </figure>
 <ul>
-<li><h4 id="bank-of-america-says-hasbro-could-fall-34-due-to-company-runing-magic-the-gathering-card-game" class="anchored"><a href="https://www.cnbc.com/2022/11/14/bank-of-america-says-hasbro-could-fall-34percent-as-company-kills-magic-the-gathering-card-game.html">Bank of America says Hasbro could fall 34% due to company runing ‘Magic: the Gathering’ card game</a></h4></li>
+<li><h4 id="bank-of-america-says-hasbro-could-fall-34-due-to-company-ruining-magic-the-gathering-card-game" class="anchored"><a href="https://www.cnbc.com/2022/11/14/bank-of-america-says-hasbro-could-fall-34percent-as-company-kills-magic-the-gathering-card-game.html">Bank of America says Hasbro could fall 34% due to company ruining ‘Magic: the Gathering’ card game</a></h4></li>
 </ul>
 <p>I played <em>Magic</em> for a long time, so this article really caught my eye. It’s behind a paywall, though, so if you don’t have CNBC Pro, check out this second article at <em>Magic</em>-specific publication Star City Games:</p>
 <ul>
@@ -2702,7 +3927,7 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 <p><br><br>This page lovingly generated by <a href="https://quarto.org/">Quarto</a> ❤️</p> ]]></description>
   <guid>https://n-sweep.github.io/posts/2022-11-19-hasbro-ruins-mtg/2022-11-19-hasbro-ruins-mtg.html</guid>
   <pubDate>Sat, 19 Nov 2022 05:00:00 GMT</pubDate>
-  <media:content url="https://n-sweep.github.io/assets/images/c21-145-greed.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://n-sweep.github.io/posts/2022-11-19-hasbro-ruins-mtg/images/c21-145-greed.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Raspberry Pi: Enable SSH &amp; Wifi on First Boot</title>
@@ -2714,7 +3939,7 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 
 
 
-<p><img src="https://n-sweep.github.io/assets/images/Raspberry_pie.jpg"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/Raspberry_pie.jpg"></p>
 <section id="contents" class="level3">
 <h3 class="anchored" data-anchor-id="contents">Contents:</h3>
 <ul>
@@ -2745,26 +3970,26 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 <p>And if you don’t, well, that’s an opinion and that’s okay. But for those of you who share my sentiment, you’ve likely found yourself in a similar situation:</p>
 <p>You’ve got a brand new Pi, fresh from the oven - maybe it’s your first one - and now it’s time to boot it up! But… it’s just a little circuit board, it has no screen. No keyboard, touchpad or mouse either.</p>
 <p>That’s no problem, though, it has an HDMI out! And (if you have the model B) 4 whole USB ports! So you reach into the nest of cables behind your tower to unplug your second monitor. Whoops, wrong one. Okay, next is a keyboard. You want to keep using your PC in case you need to troubleshoot, though. But there’s an old wired keyboard in the closet! Hmm, it’s a PS2 connection. You’re sure have an adaptor somewhere though…</p>
-<p>And finally, hours later, your Pi is officially booted! But now it’s time for dinner and you’re kind of over the inital excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn’t.</p>
+<p>And finally, hours later, your Pi is officially booted! But now it’s time for dinner and you’re kind of over the initial excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn’t.</p>
 <p>But, what if I told you it didn’t have to be this way? What if I told you we could skip all this inconvenience with nothing more than a couple little text files? What if I told you I thought I was going to make a <em>Matrix</em> reference, but Laurence Fishburne never actually says the words ‘what if I told you…’ in his monologue to Keanu?</p>
 </section>
 <section id="prep-the-sd-card" class="level1">
 <h1>Prep the SD Card</h1>
 <blockquote class="blockquote">
 <h3 id="note" class="anchored"><strong>Note:</strong></h3>
-<p>If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and aquire yourself one! We’ll need it to move any further.</p>
+<p>If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and acquire yourself one! We’ll need it to move any further.</p>
 </blockquote>
 <p>Right, let’s take a step back here. Before we can do anything with the Pi we need to install an operating system to boot. The Raspberry Pi doesn’t use a traditional hard drive with a SATA connection - instead, the whole operating system runs from flash memory on a micro SD card. So let’s get ourselves an OS and prepare our SD card.</p>
 <section id="download-an-operating-system" class="level2">
 <h2 class="anchored" data-anchor-id="download-an-operating-system">Download an Operating System</h2>
 <p>Raspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we’re going to use the standard <em>Raspberry Pi OS</em> developed by the <a href="https://www.raspberrypi.org/about/">Raspberry Pi Foundation</a> for their namesake <a href="https://en.wikipedia.org/wiki/Single-board_computer">SBC</a>. Head on over to the <a href="https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit">downloads page</a> and choose the version that’s best for you.</p>
-<p><img src="https://n-sweep.github.io/assets/images/download_rpi_os.jpg" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/download_rpi_os.jpg" width="800"></p>
 <p>Most of the time I don’t need a GUI for my Pis so I’m choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We’ll talk a little later about using the GUI remotely.</p>
 </section>
 <section id="flash-the-micro-sd" class="level2">
 <h2 class="anchored" data-anchor-id="flash-the-micro-sd">Flash the Micro SD</h2>
 <p>Now to flash our OS onto the micro SD card. There are <a href="https://www.raspberrypi.org/documentation/installation/installing-images/linux.md">many</a> <a href="https://www.raspberrypi.org/documentation/installation/installing-images/mac.md">different</a> <a href="https://www.raspberrypi.org/documentation/installation/installing-images/windows.md">ways</a> to accomplish this and today I’ll be using a Windows machine to flash the disk using <a href="https://www.balena.io/etcher/">balenaEcher</a> (which is also available on Mac OS). Select your OS image, <strong>make sure you’re choosing the correct drive</strong>, and before you click <strong>Flash!</strong>, <strong><em>check again that you’ve chosen the correct drive.</em></strong> The flashing process may take a few minutes. (Hopefully you chose the correct drive.)</p>
-<p><img src="https://n-sweep.github.io/assets/images/balena_rpi_os.jpg"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/balena_rpi_os.jpg"></p>
 </section>
 </section>
 <section id="enable-ssh-wifi" class="level1">
@@ -2772,7 +3997,7 @@ font-style: inherit;">quarto</span> preview</span></code></pre></div>
 <blockquote class="blockquote">
 <h3 id="notes" class="anchored"><strong>Notes:</strong></h3>
 <ol type="1">
-<li>I’ve had trouble in the past getting the inital WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and set up WiFi manually.</li>
+<li>I’ve had trouble in the past getting the initial WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and set up WiFi manually.</li>
 <li>If you have a model of Pi without WiFi capabilities, skip the “Enabling WiFi with <code>wpa_supplicant.conf</code>” section. You can still enable SSH and connect to your Pi via ethernet.</li>
 </ol>
 </blockquote>
@@ -2856,7 +4081,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 <h2 class="anchored" data-anchor-id="connect-over-the-terminal-with-ssh">Connect Over the Terminal with SSH</h2>
 <p>The time has come at last, we can finally connect with our Pi for real. Using our newly minted IP address, we’ll open up our terminal/command line and use the command <code>ssh pi@&lt;your-ip-address&gt;</code> to open a <a href="https://en.wikipedia.org/wiki/Secure_Shell">secure shell</a> connection to the Pi. The default password for a new Raspberry Pi OS install is <code>raspberry</code>.</p>
 <p>Connecting for the first time will look something like this:</p>
-<p><img src="https://n-sweep.github.io/assets/images/ssh.gif"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/ssh.gif"></p>
 <section id="a-little-housekeeping" class="level3">
 <h3 class="anchored" data-anchor-id="a-little-housekeeping">A Little Housekeeping</h3>
 <p>Using our SSH connection, we’ll take two more quick steps to ensure our Pi is updated and secure:</p>
@@ -2909,6 +4134,7 @@ font-style: inherit;"># Chain together &amp; answer 'yes'</span></span>
 background-color: null;
 font-style: inherit;">$</span> sudo apt-get update <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">&amp;&amp;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sudo</span> apt-get upgrade <span class="at" style="color: #657422;
@@ -2941,7 +4167,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <h4 class="anchored" data-anchor-id="enable-vnc-server-on-the-raspberry-pi">- Enable VNC Server on the Raspberry Pi</h4>
 <ol type="1">
 <li>Connect to your Pi via SSH using the instructions above.</li>
-<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="https://n-sweep.github.io/assets/images/raspi-config.jpg" width="800"></li>
+<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/raspi-config.jpg" width="800"></li>
 <li>Navigate to <code>Interface Options</code>, then <code>VNC</code> and answer ‘Yes’ when asked to enable VNC.</li>
 </ol>
 </section>
@@ -2952,7 +4178,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <li>Run the VNC viewer and enter your Pi’s IP address in the bar at the top of the window. (The application will warn us that it doesn’t regonize this server, which is normal since this is the first time we’ve connected to it.)</li>
 <li>Finally, enter your credentials and voilà! You can use the Raspberry Pi’s desktop right in the VNC Viewer window!</li>
 </ol>
-<p><img src="https://n-sweep.github.io/assets/images/raspi-desktop.jpg"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/raspi-desktop.jpg"></p>
 </section>
 </section>
 <section id="troubleshooting-wifi-not-connecting" class="level2">
@@ -2973,7 +4199,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <p><br><br>This page lovingly generated by <a href="https://quarto.org/">Quarto</a> ❤️</p> ]]></description>
   <guid>https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/2021-08-21-rpi-ssh-wif-setup.html</guid>
   <pubDate>Sat, 21 Aug 2021 04:00:00 GMT</pubDate>
-  <media:content url="https://n-sweep.github.io/assets/images/Raspberry_pie.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://n-sweep.github.io/posts/2021-08-21-rpi-ssh-wif-setup/images/Raspberry_pie.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>How I Made This Blog With Github Pages, Jekyll and Docker</title>
@@ -3092,7 +4318,7 @@ font-style: inherit;">-u</span> origin main</span></code></pre></div>
 <section id="and-youre-finished" class="level2">
 <h2 class="anchored" data-anchor-id="and-youre-finished">And You’re finished!</h2>
 <p>Well done. Grab a cold beverage, pat yourself on the back, and visit <strong>https://<em>username</em>.github.io</strong> in a browser to view your handiwork.</p>
-<p><img src="https://n-sweep.github.io/assets/images/content.jpg" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/content.jpg" width="800"></p>
 <section id="looks-kinda-boring-though-doesnt-it" class="level3">
 <h3 class="anchored" data-anchor-id="looks-kinda-boring-though-doesnt-it">… Looks Kinda Boring Though, Doesn’t It?</h3>
 <p>Sure does. Why don’t we take GitHub’s <a href="https://docs.github.com/en/github-ae@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll">advice</a> and use Jekyll, whatever that is.</p>
@@ -3133,7 +4359,7 @@ font-style: inherit;">-v</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">${PWD}</span>:/srv/jekyll jekyll/jekyll:3.8 bash</span></code></pre></div>
 <p>This may take a minute.</p>
-<p><img src="https://n-sweep.github.io/assets/images/docker_install.gif"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/docker_install.gif"></p>
 <p>While you wait for the Jekyll image to download, let’s talk about what this command is doing.</p>
 <p>From the <a href="https://docs.docker.com/engine/reference/commandline/run/">docs</a>: &gt; The <code>docker run</code> command first <code>creates</code> a writeable container layer over the specified image, and then <code>starts</code> it using the specified command.</p>
 <p>Simple enough. Here’s what the rest of it does:</p>
@@ -3188,9 +4414,9 @@ font-style: inherit;"># Serve the site locally</span></span>
 background-color: null;
 font-style: inherit;">jekyll</span> serve</span></code></pre></div>
 <p>This may take some time as well.</p>
-<p><img src="https://n-sweep.github.io/assets/images/jekyll_new_serve.gif"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/jekyll_new_serve.gif"></p>
 <p>Great, now we can visit <strong>http://localhost:4000</strong> and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷</p>
-<p><img src="https://n-sweep.github.io/assets/images/jekyll_basic.jpg" width="800"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/jekyll_basic.jpg" width="800"></p>
 </section>
 <section id="editing-fields" class="level2">
 <h2 class="anchored" data-anchor-id="editing-fields">Editing Fields</h2>
@@ -3206,6 +4432,7 @@ font-style: inherit;"># ...</span></span>
 background-color: null;
 font-style: inherit;">title</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Your awesome title</span></span>
@@ -3213,6 +4440,7 @@ font-style: inherit;"> Your awesome title</span></span>
 background-color: null;
 font-style: inherit;">email</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> your-email@example.com</span></span>
@@ -3220,6 +4448,7 @@ font-style: inherit;"> your-email@example.com</span></span>
 background-color: null;
 font-style: inherit;">description</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">&gt;-</span><span class="co" style="color: #5E5E5E;
@@ -3232,6 +4461,7 @@ font-style: inherit;"> # this means to ignore newlines until "baseurl:"</span></
 background-color: null;
 font-style: inherit;">baseurl</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -3243,6 +4473,7 @@ font-style: inherit;"> # the subpath of your site, e.g. /blog</span></span>
 background-color: null;
 font-style: inherit;">url</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -3254,6 +4485,7 @@ font-style: inherit;"> # the base hostname &amp; protocol for your site, e.g. ht
 background-color: null;
 font-style: inherit;">twitter_username</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> jekyllrb</span></span>
@@ -3261,6 +4493,7 @@ font-style: inherit;"> jekyllrb</span></span>
 background-color: null;
 font-style: inherit;">github_username</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  jekyll</span></span>
@@ -3272,6 +4505,7 @@ font-style: inherit;"># Build settings</span></span>
 background-color: null;
 font-style: inherit;">markdown</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> kramdown</span></span>
@@ -3279,6 +4513,7 @@ font-style: inherit;"> kramdown</span></span>
 background-color: null;
 font-style: inherit;">theme</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> minima</span></span>
@@ -3286,11 +4521,13 @@ font-style: inherit;"> minima</span></span>
 background-color: null;
 font-style: inherit;">plugins</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-19"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> jekyll-feed</span></span>
@@ -3329,7 +4566,7 @@ font-style: inherit;"># ...</span></span></code></pre></div>
 <p>There are a lot to choose from, and the Jekyll documenatation has a <a href="https://jekyllrb.com/docs/themes/">good list</a> of resources for themes. I ended up at <a href="http://jekyllthemes.org/">jekyllthemes.org</a> and found <a href="https://zivlog.io/monophase/">Monophase</a>. Not much more exciting than the Jekyll default we just saw, but I was going for minimal.</p>
 <p>Maybe <a href="https://longpdo.github.io/neumorphism/">Neumorphism</a> is more your style?</p>
 <p>Or <a href="https://h01000110.github.io/windows-95/">Windows 95</a>?</p>
-<p><img src="https://n-sweep.github.io/assets/images/windows95.jpg"></p>
+<p><img src="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/windows95.jpg"></p>
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
 <blockquote class="blockquote">
@@ -3492,7 +4729,7 @@ font-style: inherit;">docker</span> image rm jekyll/jekyll:3.8</span></code></pr
   <category>github</category>
   <guid>https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html</guid>
   <pubDate>Mon, 05 Jul 2021 04:00:00 GMT</pubDate>
-  <media:content url="https://n-sweep.github.io/assets/images/content.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://n-sweep.github.io/posts/2021-07-05-how-i-made-this-blog/images/content.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

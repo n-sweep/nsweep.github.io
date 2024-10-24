@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="n sweep">
 <meta name="dcterms.date" content="2021-07-05">
 
-<title>cd ~/sweep.sh/website - How I Made This Blog With Github Pages, Jekyll and Docker</title>
+<title>How I Made This Blog With Github Pages, Jekyll and Docker – cd ~/sweep.sh/website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,6 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../.././assets/images/oldmanbyersfavicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -147,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools tools-wide">
+            <div class="quarto-navbar-tools tools-wide">
     <a href="https://linkedin.com/noah-shreve" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
     <a href="https://github.com/n-sweep" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
     <a href="https://github.com/n-sweep/n-sweep.github.io" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-code-slash"></i></a>
@@ -307,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="and-youre-finished" class="level2">
 <h2 class="anchored" data-anchor-id="and-youre-finished">And You’re finished!</h2>
 <p>Well done. Grab a cold beverage, pat yourself on the back, and visit <strong>https://<em>username</em>.github.io</strong> in a browser to view your handiwork.</p>
-<p><img src="../../assets/images/content.jpg" width="800"></p>
+<p><img src="./images/content.jpg" width="800"></p>
 <section id="looks-kinda-boring-though-doesnt-it" class="level3">
 <h3 class="anchored" data-anchor-id="looks-kinda-boring-though-doesnt-it">… Looks Kinda Boring Though, Doesn’t It?</h3>
 <p>Sure does. Why don’t we take GitHub’s <a href="https://docs.github.com/en/github-ae@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll">advice</a> and use Jekyll, whatever that is.</p>
@@ -330,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull down and open a shell in the Jekyll image</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> <span class="at">-p</span> 4000:4000 <span class="at">-v</span> <span class="va">${PWD}</span>:/srv/jekyll jekyll/jekyll:3.8 bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This may take a minute.</p>
-<p><img src="../../assets/images/docker_install.gif"></p>
+<p><img src="./images/docker_install.gif"></p>
 <p>While you wait for the Jekyll image to download, let’s talk about what this command is doing.</p>
 <p>From the <a href="https://docs.docker.com/engine/reference/commandline/run/">docs</a>: &gt; The <code>docker run</code> command first <code>creates</code> a writeable container layer over the specified image, and then <code>starts</code> it using the specified command.</p>
 <p>Simple enough. Here’s what the rest of it does:</p>
@@ -377,9 +378,9 @@ This allows us to ditch our Docker container (and even the image) when we’re f
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Serve the site locally</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">jekyll</span> serve</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This may take some time as well.</p>
-<p><img src="../../assets/images/jekyll_new_serve.gif"></p>
+<p><img src="./images/jekyll_new_serve.gif"></p>
 <p>Great, now we can visit <strong>http://localhost:4000</strong> and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷</p>
-<p><img src="../../assets/images/jekyll_basic.jpg" width="800"></p>
+<p><img src="./images/jekyll_basic.jpg" width="800"></p>
 </section>
 <section id="editing-fields" class="level2">
 <h2 class="anchored" data-anchor-id="editing-fields">Editing Fields</h2>
@@ -436,7 +437,7 @@ This allows us to ditch our Docker container (and even the image) when we’re f
 <p>There are a lot to choose from, and the Jekyll documenatation has a <a href="https://jekyllrb.com/docs/themes/">good list</a> of resources for themes. I ended up at <a href="http://jekyllthemes.org/">jekyllthemes.org</a> and found <a href="https://zivlog.io/monophase/">Monophase</a>. Not much more exciting than the Jekyll default we just saw, but I was going for minimal.</p>
 <p>Maybe <a href="https://longpdo.github.io/neumorphism/">Neumorphism</a> is more your style?</p>
 <p>Or <a href="https://h01000110.github.io/windows-95/">Windows 95</a>?</p>
-<p><img src="../../assets/images/windows95.jpg"></p>
+<p><img src="./images/windows95.jpg"></p>
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
 <blockquote class="blockquote">
@@ -697,18 +698,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -740,7 +730,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/n-sweep\.github\.io");
@@ -748,7 +760,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

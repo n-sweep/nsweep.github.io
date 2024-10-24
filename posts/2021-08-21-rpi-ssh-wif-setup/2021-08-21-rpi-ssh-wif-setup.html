@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2021-08-21">
 <meta name="description" content="Enable SSH and WiFi on Your New Raspberry Pi Before Booting!">
 
-<title>cd ~/sweep.sh/website - Raspberry Pi: Enable SSH &amp; Wifi on First Boot</title>
+<title>Raspberry Pi: Enable SSH &amp; Wifi on First Boot – cd ~/sweep.sh/website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../.././assets/images/oldmanbyersfavicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -122,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -148,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools tools-wide">
+            <div class="quarto-navbar-tools tools-wide">
     <a href="https://linkedin.com/noah-shreve" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
     <a href="https://github.com/n-sweep" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
     <a href="https://github.com/n-sweep/n-sweep.github.io" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-code-slash"></i></a>
@@ -236,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p><img src="../../assets/images/Raspberry_pie.jpg"></p>
+<p><img src="./images/Raspberry_pie.jpg"></p>
 <section id="contents" class="level3">
 <h3 class="anchored" data-anchor-id="contents">Contents:</h3>
 <ul>
@@ -267,26 +268,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>And if you don’t, well, that’s an opinion and that’s okay. But for those of you who share my sentiment, you’ve likely found yourself in a similar situation:</p>
 <p>You’ve got a brand new Pi, fresh from the oven - maybe it’s your first one - and now it’s time to boot it up! But… it’s just a little circuit board, it has no screen. No keyboard, touchpad or mouse either.</p>
 <p>That’s no problem, though, it has an HDMI out! And (if you have the model B) 4 whole USB ports! So you reach into the nest of cables behind your tower to unplug your second monitor. Whoops, wrong one. Okay, next is a keyboard. You want to keep using your PC in case you need to troubleshoot, though. But there’s an old wired keyboard in the closet! Hmm, it’s a PS2 connection. You’re sure have an adaptor somewhere though…</p>
-<p>And finally, hours later, your Pi is officially booted! But now it’s time for dinner and you’re kind of over the inital excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn’t.</p>
+<p>And finally, hours later, your Pi is officially booted! But now it’s time for dinner and you’re kind of over the initial excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn’t.</p>
 <p>But, what if I told you it didn’t have to be this way? What if I told you we could skip all this inconvenience with nothing more than a couple little text files? What if I told you I thought I was going to make a <em>Matrix</em> reference, but Laurence Fishburne never actually says the words ‘what if I told you…’ in his monologue to Keanu?</p>
 </section>
 <section id="prep-the-sd-card" class="level1">
 <h1>Prep the SD Card</h1>
 <blockquote class="blockquote">
 <h3 id="note" class="anchored"><strong>Note:</strong></h3>
-<p>If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and aquire yourself one! We’ll need it to move any further.</p>
+<p>If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and acquire yourself one! We’ll need it to move any further.</p>
 </blockquote>
 <p>Right, let’s take a step back here. Before we can do anything with the Pi we need to install an operating system to boot. The Raspberry Pi doesn’t use a traditional hard drive with a SATA connection - instead, the whole operating system runs from flash memory on a micro SD card. So let’s get ourselves an OS and prepare our SD card.</p>
 <section id="download-an-operating-system" class="level2">
 <h2 class="anchored" data-anchor-id="download-an-operating-system">Download an Operating System</h2>
 <p>Raspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we’re going to use the standard <em>Raspberry Pi OS</em> developed by the <a href="https://www.raspberrypi.org/about/">Raspberry Pi Foundation</a> for their namesake <a href="https://en.wikipedia.org/wiki/Single-board_computer">SBC</a>. Head on over to the <a href="https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit">downloads page</a> and choose the version that’s best for you.</p>
-<p><img src="../../assets/images/download_rpi_os.jpg" width="800"></p>
+<p><img src="./images/download_rpi_os.jpg" width="800"></p>
 <p>Most of the time I don’t need a GUI for my Pis so I’m choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We’ll talk a little later about <a href="#optional-using-the-desktop-gui-remotely-with-vnc">using the GUI remotely</a>.</p>
 </section>
 <section id="flash-the-micro-sd" class="level2">
 <h2 class="anchored" data-anchor-id="flash-the-micro-sd">Flash the Micro SD</h2>
 <p>Now to flash our OS onto the micro SD card. There are <a href="https://www.raspberrypi.org/documentation/installation/installing-images/linux.md">many</a> <a href="https://www.raspberrypi.org/documentation/installation/installing-images/mac.md">different</a> <a href="https://www.raspberrypi.org/documentation/installation/installing-images/windows.md">ways</a> to accomplish this and today I’ll be using a Windows machine to flash the disk using <a href="https://www.balena.io/etcher/">balenaEcher</a> (which is also available on Mac OS). Select your OS image, <strong>make sure you’re choosing the correct drive</strong>, and before you click <strong>Flash!</strong>, <strong><em>check again that you’ve chosen the correct drive.</em></strong> The flashing process may take a few minutes. (Hopefully you chose the correct drive.)</p>
-<p><img src="../../assets/images/balena_rpi_os.jpg"></p>
+<p><img src="./images/balena_rpi_os.jpg"></p>
 </section>
 </section>
 <section id="enable-ssh-wifi" class="level1">
@@ -294,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <h3 id="notes" class="anchored"><strong>Notes:</strong></h3>
 <ol type="1">
-<li>I’ve had trouble in the past getting the inital WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and <a href="#troubleshooting-wifi-not-connecting">set up WiFi manually</a>.</li>
+<li>I’ve had trouble in the past getting the initial WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and <a href="#troubleshooting-wifi-not-connecting">set up WiFi manually</a>.</li>
 <li>If you have a model of Pi without WiFi capabilities, skip the “Enabling WiFi with <code>wpa_supplicant.conf</code>” section. You can still enable SSH and connect to your Pi via ethernet.</li>
 </ol>
 </blockquote>
@@ -344,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="connect-over-the-terminal-with-ssh">Connect Over the Terminal with SSH</h2>
 <p>The time has come at last, we can finally connect with our Pi for real. Using our newly minted IP address, we’ll open up our terminal/command line and use the command <code>ssh pi@&lt;your-ip-address&gt;</code> to open a <a href="https://en.wikipedia.org/wiki/Secure_Shell">secure shell</a> connection to the Pi. The default password for a new Raspberry Pi OS install is <code>raspberry</code>.</p>
 <p>Connecting for the first time will look something like this:</p>
-<p><img src="../../assets/images/ssh.gif"></p>
+<p><img src="./images/ssh.gif"></p>
 <section id="a-little-housekeeping" class="level3">
 <h3 class="anchored" data-anchor-id="a-little-housekeeping">A Little Housekeeping</h3>
 <p>Using our SSH connection, we’ll take two more quick steps to ensure our Pi is updated and secure:</p>
@@ -393,7 +394,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <h4 class="anchored" data-anchor-id="enable-vnc-server-on-the-raspberry-pi">- Enable VNC Server on the Raspberry Pi</h4>
 <ol type="1">
 <li>Connect to your Pi via SSH using the <a href="#connect-over-the-terminal-with-ssh">instructions above</a>.</li>
-<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="../../assets/images/raspi-config.jpg" width="800"></li>
+<li>Start the configuration tool with the command <code>sudo raspi-config</code>. You’ll be met with a screen like this: <img src="./images/raspi-config.jpg" width="800"></li>
 <li>Navigate to <code>Interface Options</code>, then <code>VNC</code> and answer ‘Yes’ when asked to enable VNC.</li>
 </ol>
 </section>
@@ -404,7 +405,7 @@ Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses 
 <li>Run the VNC viewer and enter your Pi’s IP address in the bar at the top of the window. (The application will warn us that it doesn’t regonize this server, which is normal since this is the first time we’ve connected to it.)</li>
 <li>Finally, enter your credentials and voilà! You can use the Raspberry Pi’s desktop right in the VNC Viewer window!</li>
 </ol>
-<p><img src="../../assets/images/raspi-desktop.jpg"></p>
+<p><img src="./images/raspi-desktop.jpg"></p>
 </section>
 </section>
 <section id="troubleshooting-wifi-not-connecting" class="level2">
@@ -602,18 +603,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -645,7 +635,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/n-sweep\.github\.io");
@@ -653,7 +665,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

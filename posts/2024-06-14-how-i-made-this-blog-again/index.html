@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-06-14">
 <meta name="description" content="A couple of years ago I learned how to build a static website on GitHub Pages, wrote about it, and then promptly forgot about the project. Now I’m back to do it all again!">
 
-<title>cd ~/sweep.sh/website - How I Made This Blog Again With Quarto and Github Pages</title>
+<title>How I Made This Blog Again With Quarto and Github Pages – cd ~/sweep.sh/website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../.././assets/images/oldmanbyersfavicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -122,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -148,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools tools-wide">
+            <div class="quarto-navbar-tools tools-wide">
     <a href="https://linkedin.com/noah-shreve" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
     <a href="https://github.com/n-sweep" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
     <a href="https://github.com/n-sweep/n-sweep.github.io" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-code-slash"></i></a>
@@ -237,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Way back in 2021 I learned how to build a simple static website on <a href="https://pages.github.com/">GitHub Pages</a>, wrote a few articles (including one about <a href="../../posts/2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.html">how I did it</a>), and then promptly forgot about the project amidst the noise of distractions such as my day job. Now I’m back to do it all again! Only this time, with the awesome open-source scientific and technical publishing system <a href="https://quarto.org/">Quarto</a>.</p>
-<p><img src="quarto.png"></p>
+<p><img src="./images/quarto.png"></p>
 <section id="prerequisite-packages" class="level1">
 <h1>Prerequisite Packages</h1>
 <p>If you want to follow along, you’ll need to ensure some prerequisite packages are installed. It’s a shorter list than last time:</p>
@@ -279,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Double-check that the last git push action has indeed set the Settings : Pages for your repository as expected in the previous figure. […]</p>
 </blockquote>
 <p>The screenshot from the docs is a little out of date as of my writing this. They are asking us to ensure our branch is set to “gh-pages” and our directory is set to “root” like below. (It seems that this <em>should</em> happen automatically during one of the previous steps, but best to check if the guide recommends it.)</p>
-<p><img src="gh-pages.png" width="800"></p>
+<p><img src="./images/gh-pages.png" width="800"></p>
 </section>
 <section id="gitignore" class="level3">
 <h3 class="anchored" data-anchor-id="gitignore"><code>.gitignore</code></h3>
@@ -319,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The previous steps created a number of files in our repo. From <a href="https://quarto.org/docs/websites/website-blog.html">the documentation</a>:</p>
 <blockquote class="blockquote">
 <p>Here’s a summary of the key files created within the starter blog project:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>File</th>
@@ -356,14 +357,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p><code>.qmd</code> files are essentially <a href="https://www.markdownguide.org/">markdown</a> files with some special Quarto sauce. We can edit <code>index.qmd</code> and <code>about.qmd</code> to change the content of the pages, and even create new <code>.qmd</code> files for additional pages. New pages can be linked to <a href="https://quarto.org/docs/websites/#linking">from other documents</a> and <a href="https://quarto.org/docs/websites/#config-file">in the navbar</a>. Since I used the <code>quarto create project blog</code> command, the list includes a <a href="https://quarto.org/docs/websites/website-blog.html#posts-directory"><code>posts/</code> directory</a>, where blog posts like this one (also written in markdown) live.</p>
 <p>If <code>quarto preview</code> is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run <code>quarto preview</code> again to have a look:</p>
-<p><img src="new_post.png" width="800"></p>
+<p><img src="./images/new_post.png" width="800"></p>
 </section>
 <section id="publish" class="level1">
 <h1>Publish</h1>
 <p>Now the git and GitHub setup we did earlier pays off. Once we’re happy with the changes and our new blog post, we’ll run <code>quarto publish .</code></p>
-<p><img src="quarto_publish.gif" width="800"></p>
+<p><img src="./images/quarto_publish.gif" width="800"></p>
 <p>And that’s it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.</p>
-<p><img src="front_page.png" width="800"></p>
+<p><img src="./images/front_page.png" width="800"></p>
 <p><br></p>
 <hr>
 
@@ -550,18 +551,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -593,7 +583,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/n-sweep\.github\.io");
@@ -601,7 +613,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2024-06-23">
 <meta name="description" content="Pasting into the Void with Bash and Deepgram">
 
-<title>cd ~/sweep.sh/website - Copying My Voice to the Clipboard</title>
+<title>Copying My Voice to the Clipboard – cd ~/sweep.sh/website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../.././assets/images/oldmanbyersfavicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -122,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -148,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools tools-wide">
+            <div class="quarto-navbar-tools tools-wide">
     <a href="https://linkedin.com/noah-shreve" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-linkedin"></i></a>
     <a href="https://github.com/n-sweep" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
     <a href="https://github.com/n-sweep/n-sweep.github.io" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-code-slash"></i></a>
@@ -242,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>[I work from home, therefore] <em>I already have a microphone in front of my face, and <a href="https://en.wikipedia.org/wiki/Large_language_model">LLM</a>s exist. I bet <a href="https://en.wikipedia.org/wiki/Speech_recognition">STT</a> to the clipboard would be pretty easy…</em></p>
 </blockquote>
 <p>If I’ve ever heard famous last words, those are them, but it actually did turn out to be relatively easy.</p>
-<p><img src="./fry_megaphone.gif"></p>
+<p><img src="./images/fry_megaphone.gif"></p>
 <p>The goal is not just to transcribe audio, but to have a script that will listen to me speak, transcribe the audio to text, and put that text into my system clipboard so I can easily paste it into an email, Slack message, etc…, with a single command.</p>
 <section id="speech-to-text-transcription" class="level1">
 <h1>Speech-to-Text Transcription</h1>
@@ -251,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="recording-my-voice-from-the-command-line" class="level1">
 <h1>Recording My Voice (from the Command Line)</h1>
 <p>As I was making the mistake of searching for Python libraries to record audio, it occurred to me that I already knew my system audio was being managed by <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/">Pulse</a> and, for some unrelated reason lost to time, I had recently learned that I could play an audio file with the <code>pacat</code> command. There is probably a simple command for recording already available in the terminal. Let’s check out the man page for <code>pacat</code>:</p>
-<p><img src="./pacat.gif" width="600"></p>
+<p><img src="./images/pacat.gif" width="600"></p>
 <p>Bingo - <code>pacat</code> also includes <code>parecord</code>, an alias for using the <code>-r</code> flag. A quick experiment showed no options were required to record from my default audio device:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">parecord</span> test.mp3   <span class="co"># record</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pacat</span> text.mp3      <span class="co"># playback</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -311,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-recording-script" class="level2">
 <h2 class="anchored" data-anchor-id="the-recording-script">The Recording Script</h2>
 <p>Putting these together gives us a complete recording script (below). I’ve added some <code>echo</code> outputs for the user:</p>
-<p><img src="./rec_script.gif" width="600"></p>
+<p><img src="./images/rec_script.gif" width="600"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> /tmp/dictation</span>
@@ -348,7 +349,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="deepgram" class="level1">
 <h1>Deepgram</h1>
 <p>We’re saving audio successfully, so now it’s time to send it off to the Deepgram API for transcription. The <a href="https://developers.deepgram.com/docs/getting-started-with-pre-recorded-audio#curl">documentation</a> has examples for remote files and for local files - we want the local file example:</p>
-<p><img src="./dg_docs.gif" width="600"></p>
+<p><img src="./images/dg_docs.gif" width="600"></p>
 <section id="editing-the-request" class="level2">
 <h2 class="anchored" data-anchor-id="editing-the-request">Editing the Request</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="dt">\</span></span>
@@ -369,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-binary</span> @youraudio.wav <span class="dt">\</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--url</span> <span class="st">'https://api.deepgram.com/v1/listen?model=nova-2&amp;smart_format=true'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Specifically note the change from the example’s single quotes to a set of double quotes when inserting the variable:</p>
-<p><img src="./dg_api_key.gif" width="600"></p>
+<p><img src="./images/dg_api_key.gif" width="600"></p>
 </section>
 </section>
 <section id="this-is-only-a-test" class="level2">
@@ -377,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Running a test with our test recording from earlier…</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--data-binary</span> @/tmp/dictation/test.mp3 <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>And it works! But it doesn’t just return the simple text we’re looking for, the response we get back is <a href="https://www.json.org/">JSON</a>.</p>
-<p><img src="./what_is_that.gif" width="600"></p>
+<p><img src="./images/what_is_that.gif" width="600"></p>
 </section>
 <section id="parsing-the-response" class="level2">
 <h2 class="anchored" data-anchor-id="parsing-the-response">Parsing the Response</h2>
@@ -646,7 +647,7 @@ another program.</code></pre>
 <section id="putting-it-all-together" class="level1">
 <h1>Putting It All Together</h1>
 <p>The final script is below, see the <code>[NOTE]</code>s for explanation of things not explicitly shown above. Here it is in action:</p>
-<p><img src="./dg_only_a_test.gif" width="600"></p>
+<p><img src="./images/dg_only_a_test.gif" width="600"></p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="va">DEEPGRAM_API_KEY</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">head</span> <span class="at">-1</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/path/to/my/deepgram/token"</span><span class="va">)</span><span class="st">"</span></span>
@@ -889,18 +890,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -932,7 +922,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/n-sweep\.github\.io");
@@ -940,7 +952,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

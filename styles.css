@@ -1,5 +1,10 @@
 /* css styles */
 
+[data-bs-theme=dark] {
+    color-scheme:dark;
+    --bs-code-color: #ffa07a;
+}
+
 .title, .navbar-title, .menu-text, .listing-title {
     font-family: monospace;
 }

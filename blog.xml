@@ -23,7 +23,6 @@
 
 <p>A few months ago I started playing <a href="https://en.wikipedia.org/wiki/Go_(game)">Go</a> and became a fast fan of the game. I and a few friends I have roped into learning with me have been playing on <a href="https://online-go.com">online-go.com (OGS)</a>, both via their website and a third party Android app called <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>. As with every new website I find remotely useful, I had to check if they have an <a href="https://en.wikipedia.org/wiki/Web_API">API</a>.</p>
 <p>Spoiler: they do.</p>
-<p><img src="https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/images/Go_board_part.j/Go_board_part.jpg"></p>
 <p>My goal is to make a program that, given the link to or ID of a game on OGS, will produce an animated gif of the game. Comfortable in my knowledge that OGS has an API and <a href="https://github.com/charmbracelet/vhs">charmbracelet/vhs</a> exists, I chose to start with the game engine. This could be later categorized as a mistake.</p>
 <section id="game-engine" class="level1">
 <h1>Game Engine</h1>
@@ -1171,6 +1170,7 @@ font-style: inherit;">print</span>(b)</span></code></pre></div>
   <category>programming</category>
   <guid>https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/</guid>
   <pubDate>Thu, 24 Oct 2024 04:00:00 GMT</pubDate>
+  <media:content url="https://n-sweep.github.io/posts/2024-10-24-go-in-python-1/images/Zhou_Wenju_Palace_Museum_Detail_of_Go_Players.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Copying My Voice to the Clipboard</title>

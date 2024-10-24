@@ -152,7 +152,7 @@ font-style: inherit;">in</span> row]))</span></code></pre></div>
 </section>
 <section id="adding-star-points-to-the-board" class="level3">
 <h3 class="anchored" data-anchor-id="adding-star-points-to-the-board">Adding Star Points to the Board</h3>
-<p>Star points have no value or significance in Go, they are simply there to orient ourselves on the board. I just doesn’t look quite right without them though.</p>
+<p>Star points have no value or significance in Go, they are simply there to orient ourselves on the board. It just doesn’t look quite right without them though.</p>
 <p>I wrote this in a fever dream. Through liberal use of the walrus operator, we set the location of each star point to a -1. By creating an array the same size as our game board, we’ll be able to combine them.</p>
 <p>To be more specific, <code>corners</code> calculates the spacing between star points based on the size of the board (13 and 19 size boards have the same spacing), then we use <code>product()</code> to give us every combination of appropriate points on the board, adding in the middle point manually.</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;

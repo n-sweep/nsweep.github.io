@@ -50,7 +50,7 @@ in no particular order
 - [regex 101](https://regex101.com/) online regular expression parser
     - remember not to regex without [a license](https://regexlicensing.org/)
 - [tmux terminal multiplexer](https://github.com/tmux/tmux/wiki) - do you have to work in the terminal a lot, keeping processes such as a jupyter notebook or local web server open? you might like tmux
-- a list of [public api endpoints](https://github.com/public-apis/public-apis) to practice your programming or collecte data for analysis
+- a list of [public api endpoints](https://github.com/public-apis/public-apis) to practice your programming or collect data for analysis
 - [free programming books](https://ebookfoundation.github.io/free-programming-books/)
 - [awesome-data](https://github.com/datasets/awesome-data) - a "curated list of quality open datasets"
 - [Python Graph Gallery](https://python-graph-gallery.com/) - a website that displays "hundreds of charts made with Python" and code examples for how to make them

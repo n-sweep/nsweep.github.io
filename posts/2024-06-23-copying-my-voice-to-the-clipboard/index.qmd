@@ -12,7 +12,7 @@ Recently I was coaching a python programmer by way of text conversation on Disco
 
 If I've ever heard famous last words, those are them, but it actually did turn out to be relatively easy.
 
-<img src="./fry_megaphone.gif" />
+<img src="./images/fry_megaphone.gif" />
 
 The goal is not just to transcribe audio, but to have a script that will listen to me speak, transcribe the audio to text, and put that text into my system clipboard so I can easily paste it into an email, Slack message, etc..., with a single command.
 
@@ -24,7 +24,7 @@ First, I wanted to make sure the transcription step was actually as easy as I wa
 
 As I was making the mistake of searching for Python libraries to record audio, it occurred to me that I already knew my system audio was being managed by [Pulse](https://www.freedesktop.org/wiki/Software/PulseAudio/) and, for some unrelated reason lost to time, I had recently learned that I could play an audio file with the `pacat` command. There is probably a simple command for recording already available in the terminal. Let's check out the man page for `pacat`:
 
-<img src='./pacat.gif' width=600 />
+<img src='./images/pacat.gif' width=600 />
 
 Bingo - `pacat` also includes `parecord`, an alias for using the `-r` flag. A quick experiment showed no options were required to record from my default audio device:
 
@@ -98,7 +98,7 @@ file_loc="/tmp/dictation/$filename.mp3"
 
 Putting these together gives us a complete recording script (below). I've added some `echo` outputs for the user:
 
-<img src='./rec_script.gif' width=600 />
+<img src='./images/rec_script.gif' width=600 />
 
 ```sh
 #!/usr/bin/env bash
@@ -138,7 +138,7 @@ echo "${file_loc} saved."
 
 We're saving audio successfully, so now it's time to send it off to the Deepgram API for transcription. The [documentation](https://developers.deepgram.com/docs/getting-started-with-pre-recorded-audio#curl) has examples for remote files and for local files - we want the local file example:
 
-<img src='./dg_docs.gif' width=600 />
+<img src='./images/dg_docs.gif' width=600 />
 
 ## Editing the Request
 
@@ -169,7 +169,7 @@ curl \
 
 Specifically note the change from the example's single quotes to a set of double quotes when inserting the variable:
 
-<img src='./dg_api_key.gif' width=600 />
+<img src='./images/dg_api_key.gif' width=600 />
 
 ## This is Only a Test
 
@@ -181,7 +181,7 @@ Running a test with our test recording from earlier...
 
 And it works! But it doesn't just return the simple text we're looking for, the response we get back is [JSON](https://www.json.org/).
 
-<img src='./what_is_that.gif' width=600 />
+<img src='./images/what_is_that.gif' width=600 />
 
 ## Parsing the Response
 
@@ -527,7 +527,7 @@ cat /tmp/dictation/test.json \
 
 The final script is below, see the `[NOTE]`s for explanation of things not explicitly shown above. Here it is in action:
 
-<img src='./dg_only_a_test.gif' width=600 />
+<img src='./images/dg_only_a_test.gif' width=600 />
 
 ```sh
 #!/usr/bin/env bash

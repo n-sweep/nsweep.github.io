@@ -4,12 +4,12 @@ description:    A couple of years ago I learned how to build a static website on
 author:         "n sweep"
 date:           "2024-06-14"
 categories:     [github-pages, quarto, python, github]
-image:          quarto.png
+image:          ./images/quarto.png
 ---
 
 Way back in 2021 I learned how to build a simple static website on [GitHub Pages](https://pages.github.com/), wrote a few articles (including one about [how I did it](../2021-07-05-how-i-made-this-blog/2021-07-05-how-i-made-this-blog.md)), and then promptly forgot about the project amidst the noise of distractions such as my day job. Now I'm back to do it all again! Only this time, with the awesome open-source scientific and technical publishing system [Quarto](https://quarto.org/).
 
-<img src="quarto.png"/>
+<img src="./images/quarto.png"/>
 
 
 # Prerequisite Packages
@@ -62,7 +62,7 @@ git push origin gh-pages
 
 The screenshot from the docs is a little out of date as of my writing this. They are asking us to ensure our branch is set to "gh-pages" and our directory is set to "root" like below. (It seems that this *should* happen automatically during one of the previous steps, but best to check if the guide recommends it.)
 
-<img src='gh-pages.png' width=800 />
+<img src='./images/gh-pages.png' width=800 />
 
 ### `.gitignore`
 
@@ -125,17 +125,17 @@ The previous steps created a number of files in our repo. From [the documentatio
 
 If `quarto preview` is still running in your terminal, the page in your browser should reload whenever you make changes. If not, just run `quarto preview` again to have a look:
 
-<img src="new_post.png" width=800 />
+<img src="./images/new_post.png" width=800 />
 
 # Publish
 
 Now the git and GitHub setup we did earlier pays off. Once we're happy with the changes and our new blog post, we'll run `quarto publish .`
 
-<img src="quarto_publish.gif" width=800 />
+<img src="./images/quarto_publish.gif" width=800 />
 
 And that's it! The rest is automated by Quarto, and when it is finished, it will open the live, updated website in a new browser tab for us to admire.
 
-<img src="front_page.png" width=800 />
+<img src="./images/front_page.png" width=800 />
 
 <br />
 

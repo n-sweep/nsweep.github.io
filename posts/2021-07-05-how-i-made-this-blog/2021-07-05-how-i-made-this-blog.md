@@ -3,7 +3,7 @@ title:          "How I Made This Blog With Github Pages, Jekyll and Docker"
 author:         "n sweep"
 date:           "2021-07-05"
 categories:     [github-pages, docker, jekyll, python, github]
-image:          "../../assets/images/content.jpg"
+image:          "./images/content.jpg"
 ---
 
 ### Contents:
@@ -71,7 +71,7 @@ git push -u origin main
 ## And You're finished!
 Well done. Grab a cold beverage, pat yourself on the back, and visit **https://_username_.github.io** in a browser to view your handiwork.
  
-<img src="../../assets/images/content.jpg" width=800 />
+<img src="./images/content.jpg" width=800 />
 
 ### ... Looks Kinda Boring Though, Doesn't It?
 Sure does. Why don't we take GitHub's [advice](https://docs.github.com/en/github-ae@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll) and use Jekyll, whatever that is.
@@ -99,7 +99,7 @@ docker run --rm -it -p 4000:4000 -v ${PWD}:/srv/jekyll jekyll/jekyll:3.8 bash
 
 This may take a minute.
 
-<img src="../../assets/images/docker_install.gif" />
+<img src="./images/docker_install.gif" />
 
 While you wait for the Jekyll image to download, let's talk about what this command is doing. 
 
@@ -147,11 +147,11 @@ jekyll serve
 
 This may take some time as well.
 
-<img src="../../assets/images/jekyll_new_serve.gif" />
+<img src="./images/jekyll_new_serve.gif" />
 
 Great, now we can visit **http://localhost:4000** and see that we have the basic Jekyll theme applied to our page on our own machine before pushing the repo back to GitHub. Neat! 📷
 
-<img src="../../assets/images/jekyll_basic.jpg" width=800 />
+<img src="./images/jekyll_basic.jpg" width=800 />
 
 ## Editing Fields
 
@@ -203,7 +203,7 @@ Maybe [Neumorphism](https://longpdo.github.io/neumorphism/) is more your style?
 
 Or [Windows 95](https://h01000110.github.io/windows-95/)?
 
-<img src="../../assets/images/windows95.jpg" />
+<img src="./images/windows95.jpg" />
 
 ### Installation
 

@@ -1,0 +1,16 @@
+---
+title:          A Naive Introduction to Nix(OS)
+description:    a description
+author:         n sweep
+date:           yyyy-mm-dd
+categories:     []
+draft:          true
+---
+
+# What is Nix?
+
+- language
+    - DSL
+    - functional
+- package manager
+- operating system

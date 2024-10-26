@@ -5,6 +5,7 @@ website:
   title: "cd ~/sweep.sh/website"
   site-url : https://n-sweep.github.io
   description: a small blog allegedly about tech and data
+  favicon: ./assets/images/oldmanbyersfavicon.png
 
   navbar:
     search: true
@@ -40,3 +41,5 @@ format:
     css: styles.css
     toc: true
 
+resources:
+  - CNAME

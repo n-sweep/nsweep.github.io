@@ -4,10 +4,10 @@ author:         "n sweep"
 description:    "Enable SSH and WiFi on Your New Raspberry Pi Before Booting!"
 date:           "2021-08-21"
 tags:           [raspberry-pi, raspbian, ssh, wifi, vnc]
-image:          ../../assets/images/Raspberry_pie.jpg
+image:          "./images/Raspberry_pie.jpg"
 ---
 
-<img src="../../assets/images/Raspberry_pie.jpg" />
+<img src="./images/Raspberry_pie.jpg" />
 
 ### Contents:
 - [Prep the SD Card](#prep-the-sd-card)
@@ -32,7 +32,7 @@ You've got a brand new Pi, fresh from the oven - maybe it's your first one - and
 
 That's no problem, though, it has an HDMI out! And (if you have the model B) 4 whole USB ports! So you reach into the nest of cables behind your tower to unplug your second monitor. Whoops, wrong one. Okay, next is a keyboard. You want to keep using your PC in case you need to troubleshoot, though. But there's an old wired keyboard in the closet! Hmm, it's a PS2 connection. You're sure have an adaptor somewhere though...
 
-And finally, hours later, your Pi is officially booted! But now it's time for dinner and you're kind of over the inital excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn't.
+And finally, hours later, your Pi is officially booted! But now it's time for dinner and you're kind of over the initial excitement of your new toy. And boy, do you not want to have to go through all of that again when you inevitably get your next Pi. I know I didn't.
 
 But, what if I told you it didn't have to be this way? What if I told you we could skip all this inconvenience with nothing more than a couple little text files? What if I told you I thought I was going to make a *Matrix* reference, but Laurence Fishburne never actually says the words 'what if I told you...' in his monologue to Keanu?
 
@@ -40,7 +40,7 @@ But, what if I told you it didn't have to be this way? What if I told you we cou
 # Prep the SD Card
 
 > ### **Note:**
-> If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and aquire yourself one! We'll need it to move any further.
+> If you purchased a new Raspberry Pi, it probably came with a micro SD card. If it did not, pause here and acquire yourself one! We'll need it to move any further.
 
 Right, let's take a step back here. Before we can do anything with the Pi we need to install an operating system to boot. The Raspberry Pi doesn't use a traditional hard drive with a SATA connection - instead, the whole operating system runs from flash memory on a micro SD card. So let's get ourselves an OS and prepare our SD card.
 
@@ -48,7 +48,7 @@ Right, let's take a step back here. Before we can do anything with the Pi we nee
 
 Raspberry Pi is almost 10 years old now and there are a host of operating systems that the little board can run, but today we're going to use the standard *Raspberry Pi OS* developed by the [Raspberry Pi Foundation](https://www.raspberrypi.org/about/) for their namesake [SBC](https://en.wikipedia.org/wiki/Single-board_computer). Head on over to the [downloads page](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit) and choose the version that's best for you.
 
-<img src="../../assets/images/download_rpi_os.jpg" width=800 />
+<img src="./images/download_rpi_os.jpg" width=800 />
 
 Most of the time I don't need a GUI for my Pis so I'm choosing Lite, but if you want a desktop, go for it! (If you do, the middle selection is probably the best choice - we can always install more software later, and the recommended software download is almost 2.5x the size.) We'll talk a little later about [using the GUI remotely](#optional-using-the-desktop-gui-remotely-with-vnc).
 
@@ -56,13 +56,13 @@ Most of the time I don't need a GUI for my Pis so I'm choosing Lite, but if you 
 
 Now to flash our OS onto the micro SD card. There are [many](https://www.raspberrypi.org/documentation/installation/installing-images/linux.md) [different](https://www.raspberrypi.org/documentation/installation/installing-images/mac.md) [ways](https://www.raspberrypi.org/documentation/installation/installing-images/windows.md) to accomplish this and today I'll be using a Windows machine to flash the disk using [balenaEcher](https://www.balena.io/etcher/) (which is also available on Mac OS). Select your OS image, **make sure you're choosing the correct drive**, and before you click **Flash!**, **_check again that you've chosen the correct drive._** The flashing process may take a few minutes. (Hopefully you chose the correct drive.)
 
-<img src="../../assets/images/balena_rpi_os.jpg" />
+<img src="./images/balena_rpi_os.jpg" />
 
 
 # Enable SSH & WiFi
 
 > ### **Notes:**
-> 1. I've had trouble in the past getting the inital WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and [set up WiFi manually](#troubleshooting-wifi-not-connecting).
+> 1. I've had trouble in the past getting the initial WiFi setup to work with other operating systems, such as DietPi. However, enabling SSH has always worked for me. If this is the case for you, just enable SSH, connect via ethernet and [set up WiFi manually](#troubleshooting-wifi-not-connecting).
 > 2. If you have a model of Pi without WiFi capabilities, skip the "Enabling WiFi with `wpa_supplicant.conf`" section. You can still enable SSH and connect to your Pi via ethernet.
 
 You may need to eject and re-insert the card for it to show up in your filesystem. Once we've done that, you'll notice the drive has been renamed `boot` and is full of new files. We don't want to change anything in here, we'll only be adding two new configuration files. Follow the instructions below to create the necessary files.
@@ -120,7 +120,7 @@ The time has come at last, we can finally connect with our Pi for real. Using ou
 
 Connecting for the first time will look something like this:
 
-<img src='../../assets/images/ssh.gif' />
+<img src="./images/ssh.gif" />
 
 ### A Little Housekeeping
 
@@ -178,7 +178,7 @@ VNC Server, allowing it to be controlled remotely by another computer. To use it
 
 1. Connect to your Pi via SSH using the [instructions above](#connect-over-the-terminal-with-ssh).
 2. Start the configuration tool with the command `sudo raspi-config`. You'll be met with a screen like this:
-  <img src='../../assets/images/raspi-config.jpg' width=800 />
+  <img src="./images/raspi-config.jpg" width=800 />
 3. Navigate to `Interface Options`, then `VNC` and answer 'Yes' when asked to enable VNC.
 
 #### - Install VNC Viewer on our Local Machine and Connect!
@@ -188,7 +188,7 @@ VNC Server, allowing it to be controlled remotely by another computer. To use it
 3. Finally, enter your credentials and voilà! You can use the Raspberry Pi's desktop right in the VNC Viewer window!
 
 
-<img src='../../assets/images/raspi-desktop.jpg'/>
+<img src="./images/raspi-desktop.jpg"/>
 
 ## Troubleshooting: WiFi not Connecting?
 

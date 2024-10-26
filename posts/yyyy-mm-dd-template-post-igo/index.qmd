@@ -1,0 +1,29 @@
+---
+title:          Go in Python, Part 2
+description:    This Is Still Not An Article About Golang
+author:         n sweep
+date:           yyyy-mm-dd
+categories:     [go, baduk, python, programming]
+draft:          true
+---
+
+I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in [episode 1](https://sweep.sh/posts/2024-10-24-go-in-python-1/), I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in [JSON](https://en.wikipedia.org/wiki/JSON) or something called an SGF file (more on that later). When I reached this point and was working through this initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already spent so much time building the engine. Luckily it all worked out in the end! (Thanks Walken)
+
+TODO: An image, perhaps?
+
+- OGS API
+    - https://ogs.readme.io/docs/real-time-api
+    - https://apidocs.online-go.com/
+    - https://ogs.docs.apiary.io/#
+    - thanks to [walken at ogs forums](https://forums.online-go.com/t/ogs-api-notes/17136)
+- Smart Game Format
+    - https://www.red-bean.com/sgf/index.html
+- game engine
+    - finding neighbors
+    - finding groups
+- vhs
+    - nixos
+    - docker
+- plotly
+- discord
+- docker

@@ -39,14 +39,6 @@ Are you already a programmer who wants to learn more about machine learning or m
 
 I changed careers by way of a [full-time data science bootcamp](https://www.reddit.com/r/datascience/comments/outu56/galvanize_data_science_program_shutting_down/); it was challenging and intense. If you're struggling in your data science/data analysis bootcamp, let's chat and find out if I can help.
 
-# Rates
-
-Session Type      | Cost $/30m | Session Length | Total per Sess.
------------------ | ---------- | -------------- | ---------------
-1 on 1 by Month   | $20 / 30m  | Choice (90m*)  |   Varies ($60**)
-1 on 1 by Session | $30 / 30m  | Choice (90m*)  |   Varies ($90**)
-Class by Month^   | $15 / 30m  |         120m   |             $60
-
 <!-- Google Calendar Appointment Scheduling begin -->
 <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
 <script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>

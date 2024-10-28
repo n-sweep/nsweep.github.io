@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2024-10-28-go-in-python-2/index.html",
       "/posts/2024-10-24-go-in-python-1/index.html",
       "/posts/2024-06-23-copying-my-voice-to-the-clipboard/index.html",
       "/posts/2024-06-14-how-i-made-this-blog-again/index.html",
@@ -13,6 +14,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/2024-10-28-go-in-python-2/index.html",
       "/posts/2024-10-24-go-in-python-1/index.html",
       "/posts/2024-06-23-copying-my-voice-to-the-clipboard/index.html",
       "/posts/2024-06-14-how-i-made-this-blog-again/index.html",

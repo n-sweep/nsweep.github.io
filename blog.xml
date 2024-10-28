@@ -10,7 +10,647 @@
 <atom:link href="https://n-sweep.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description>a small blog allegedly about tech and data</description>
 <generator>quarto-1.5.57</generator>
-<lastBuildDate>Thu, 24 Oct 2024 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 28 Oct 2024 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Go in Python, Part 2</title>
+  <dc:creator>n sweep</dc:creator>
+  <link>https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">Go in Python, Part 1</a></p>
+<figure class="figure">
+<img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/go_weird_ai_image.png" class="figure-img">
+<figcaption>
+<i>Some weird generative AI art “about Go”. White seems to be in trouble.</i>
+</figcaption>
+</figure>
+<p>I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> or something called an SGF file (more on that later). When I reached this point and was working through this initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.</p>
+<section id="documentation-important" class="level1">
+<h1>Documentation Important</h1>
+<p><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/ogs_api_search.png"></p>
+<p>Searching for the OGS API yields a number of results, which boil down to a few contradicting pieces of documentation and some forums.</p>
+<ul>
+<li><a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a></li>
+<li><a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a></li>
+<li><a href="https://apidocs.online-go.com/">apidocs.online-go.com</a></li>
+<li>+ <a href="https://forums.online-go.com">some forums</a></li>
+</ul>
+<p>On my initial visits, <a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a> looks like what I need. <a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a> looks like it might be relevant but only has information on the real time API, which isn’t necessarily what I need. <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> seems out of date, with no information regarding authentication.</p>
+<p>Acting on these assumptions, I spent a week or two failing to implement anything working. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
+<p>I had two major takeaways from this post that allowed me to move forward with this project:</p>
+<ol type="1">
+<li>Authentication is done comepletely differently than in the documentation I was attempting to follow
+<ul>
+<li><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/ogs_auth.png"></li>
+</ul></li>
+<li>It turns out that, despite the lack of information on authentication, <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> is the appropriate documentation
+<ul>
+<li>This means no authentication is required to request public games. Works for me!</li>
+</ul></li>
+</ol>
+</section>
+<section id="its-apiing-time" class="level1">
+<h1>It’s APIing Time</h1>
+<section id="retrieving-game-data" class="level2">
+<h2 class="anchored" data-anchor-id="retrieving-game-data">Retrieving Game Data</h2>
+<p>Games on OGS have IDs, which are included in their url: <code>https://online-go.com/game/########</code>. According to the documentation, this ID is what is required for the <code>/games</code> endpoint on the API:</p>
+<p><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/ogs_games_doc.png"></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> requests</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">BASE_URL <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://online-go.com/api/v1/games/"</span></span>
+<span id="cb1-4">game_id <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"68984609"</span></span>
+<span id="cb1-5">request_url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> BASE_URL <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> game_id</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(request_url)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(r)</span>
+<span id="cb1-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(r.url)</span></code></pre></div>
+<pre><code>&lt;Response [200]&gt;
+https://online-go.com/api/v1/games/68984609</code></pre>
+<p>200, success! The response comes with a sizeable piece of JSON data, which I’ve heavily truncated for brevity. It includes a list of moves that make up the game so far:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb3-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"id"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">68984609</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"all_players"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1606336</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1605683</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-4">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"name"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Friendly Match"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-5">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"players"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb3-6">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb3-7">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"gamedata"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb3-8">    <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb3-9">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"moves"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-10">    <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb3-12">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb3-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</section>
+<section id="smart-game-format" class="level2">
+<h2 class="anchored" data-anchor-id="smart-game-format">Smart Game Format</h2>
+<p>However, as I mentioned at the top and as you can see in the previous documentation screenshot, we can also get something called an SGF, or “Smart Game Format”, file. The above JSON response is very data-rich, but it’s also very specific to OGS. This Smart Game Format seems like it would be a bit more platform agnostic, so I think it makes sense to build against that as input.</p>
+<p>A quick search rendered some <a href="https://www.red-bean.com/sgf/index.html">SGF Documentation</a>; using this as a reference, we’ll grab the SGF file for our game. I’ve chosen an ongoing game with only a few moves, again for the sake of brevity:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb4-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> requests</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">BASE_URL <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://online-go.com/api/v1/games"</span></span>
+<span id="cb4-5">game_id <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"68984609"</span></span>
+<span id="cb4-6">request_url <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(BASE_URL, game_id, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'sgf'</span>)</span>
+<span id="cb4-7"></span>
+<span id="cb4-8">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(request_url)</span>
+<span id="cb4-9"></span>
+<span id="cb4-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(r)</span>
+<span id="cb4-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(r.url, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb4-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(r.content.decode(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'utf-8'</span>))</span></code></pre></div>
+<pre><code>&lt;Response [200]&gt;
+https://online-go.com/api/v1/games/68984609/sgf
+
+(;FF[4]
+CA[UTF-8]
+GM[1]
+DT[2024-10-26]
+PC[OGS: https://online-go.com/game/68984609]
+GN[Friendly Match]
+PB[8675threeohnine]
+PW[n_sweep]
+BR[25k]
+WR[18k]
+TM[604800]OT[7x604800 byo-yomi]
+RE[?]
+SZ[13]
+KM[6.5]
+RU[Japanese]
+C[Game chats will be available in SGF downloads once the game has finished.
+]
+;B[if]
+(;W[eh]
+(;B[hj]
+(;W[gd]
+(;B[df]
+(;W[dd]
+))))))</code></pre>
+<p>A few observations:</p>
+<ul>
+<li>the nested parentheses are an interesting choice</li>
+<li>moves appear to come at the end, separated by semicolons</li>
+<li>before the moves comes metadata about the game</li>
+<li>each piece of data is preceded by a 1- or 2-letter code</li>
+</ul>
+<p>First, let’s parse this out into a more workable data structure. I want a dictionary for all of the metadata, and then a list of moves.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> re</span>
+<span id="cb6-2"></span>
+<span id="cb6-3">sgf <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> r.content.decode(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'utf-8'</span>)</span>
+<span id="cb6-4">text <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sgf.strip(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">')'</span>).split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">';'</span>)</span>
+<span id="cb6-5">meta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(re.findall(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r'(\w+)\[(.*?)\]\n?'</span>, text[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))</span>
+<span id="cb6-6">moves <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">tuple</span>(m.strip(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">()]'</span>).split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'['</span>)) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> text[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:]]</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(meta)</span>
+<span id="cb6-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(moves)</span></code></pre></div>
+<pre><code># metadata
+{'FF': '4',
+ 'CA': 'UTF-8',
+ 'GM': '1',
+ 'DT': '2024-10-26',
+ 'PC': 'OGS: https://online-go.com/game/68984609',
+ 'GN': 'Friendly Match',
+ 'PB': '8675threeohnine',
+ 'PW': 'n_sweep',
+ 'BR': '25k',
+ 'WR': '18k',
+ 'TM': '604800',
+ 'OT': '7x604800 byo-yomi',
+ 'RE': '?',
+ 'SZ': '13',
+ 'KM': '6.5',
+ 'RU': 'Japanese'}
+
+# moves
+[('B', 'if'), ('W', 'eh'), ('B', 'hj'), ('W', 'gd'), ('B', 'df'), ('W', 'dd')]</code></pre>
+<section id="a-quick-tangent" class="level3">
+<h3 class="anchored" data-anchor-id="a-quick-tangent">A Quick Tangent</h3>
+<p>I want my program to have a human-readable index for these codes. A bit of searching around the aforementioned SGF documentation page yielded a <a href="https://www.red-bean.com/sgf/proplist_ff.html">property index</a> consisting of some fixed width text including an ID field (letter codes) and a Description field for each code. Let’s scrape it!</p>
+<p>This is a webpage rather than an API, which means this response will contain HTML data rather than JSON or plain text. With the help of <a href="https://beautiful-soup-4.readthedocs.io/en/latest/">Beautiful Soup</a>, two quick lines parse the fixed width table into a list of strings:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> bs4 <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BeautifulSoup <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> bs</span>
+<span id="cb8-2"></span>
+<span id="cb8-3">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://www.red-bean.com/sgf/proplist_ff.html'</span>)</span>
+<span id="cb8-4">soup <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bs(r.content, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'html.parser'</span>)</span>
+<span id="cb8-5">lines <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> soup.find(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'pre'</span>).text.strip().split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb8-6"></span>
+<span id="cb8-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Total lines:'</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(lines), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb8-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(lines[:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>])  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># show the first ten lines</span></span></code></pre></div>
+<pre><code>Total lines: 91
+
+['ID   FF   Description     property type    property value',
+ '--  ----  --------------  ---------------  ---------------------------------',
+ 'AB  1234  Add Black       setup            list of stone',
+ 'AE  1234  Add Empty       setup            list of point',
+ 'AN  --34  Annotation      game-info        simpletext',
+ 'AP  ---4  Application     root             composed simpletext : simpletext',
+ 'AR  ---4  Arrow           -                list of composed point : point',
+ 'AS  ---4  Who adds stones - (LOA)          simpletext',
+ 'AW  1234  Add White       setup            list of stone',
+ 'B   1234  Black           move             move']</code></pre>
+<p>I want to remove that second line that just has dashes, but it actually contains some useful information: the maximum number of characters present in each column…</p>
+<p><a href="https://www.youtube.com/watch?v=e3JUD4RXj7c&amp;t=0s">Or does it?</a> As I am writing this, I noticed that the 8th line in the above output, <code>Who adds stones</code>, goes one letter beyond the dashes in its header. Revisiting the page I’m scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.</p>
+<p><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/index_issues.png"></p>
+<p>I did not really end up using this in the project (so far), so I’ll share the original code I wrote for this problem here and move on from the subject.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> itertools <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> accumulate</span>
+<span id="cb10-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> bs4 <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BeautifulSoup <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> bs</span>
+<span id="cb10-3"></span>
+<span id="cb10-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> sgf_data() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>:</span>
+<span id="cb10-5">    r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> requests.get(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://www.red-bean.com/sgf/proplist_ff.html'</span>)</span>
+<span id="cb10-6">    soup <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bs(r.content, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'html.parser'</span>)</span>
+<span id="cb10-7">    lines <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> soup.find(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'pre'</span>).text.strip().split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># pyright: ignore</span></span>
+<span id="cb10-8">    field_lengths <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(d) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> d <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> lines.pop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>).split(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> d]</span>
+<span id="cb10-9"></span>
+<span id="cb10-10">    coords <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(</span>
+<span id="cb10-11">        accumulate(field_lengths, <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">lambda</span> a, v: a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, initial<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),</span>
+<span id="cb10-12">        field_lengths</span>
+<span id="cb10-13">    ))</span>
+<span id="cb10-14"></span>
+<span id="cb10-15">    processed_lines <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">lambda</span> ln: [ln[x:x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>l].strip() <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> x, l <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> coords], lines))</span>
+<span id="cb10-16">    keys <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [field.lower().replace(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'_'</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> field <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> processed_lines.pop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)]</span>
+<span id="cb10-17"></span>
+<span id="cb10-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> {ln[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(keys[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:], ln[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:])) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> ln <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> processed_lines}</span></code></pre></div>
+</section>
+</section>
+<section id="thats-it-actually" class="level2">
+<h2 class="anchored" data-anchor-id="thats-it-actually">That’s It, Actually!</h2>
+<p>We have all the data we need from the API! This is a shorter post (or at least it has less code), but this step took up a disproportionate amount of time in this project, the opening ‘Documentation Important’ section especially. This was one of two times I almost shelved this project; the second also took up a disproportionate amount of time and I expect to talk more about it in part 4.</p>
+</section>
+</section>
+<section id="one-more-thing" class="level1">
+<h1>One More Thing</h1>
+<p>In <a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">part 1</a> we built a game board, now we have a list of moves. Let’s put them together before we wrap it up for the day. Remeber that, with our Board class, we can make plays with the user number, and an x and y location on the board:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb11-1">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Board(size)</span>
+<span id="cb11-2">b.play(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb11-3">b.play(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<p>And we’ve already parsed our SGF moves into a list:</p>
+<pre><code>[('B', 'if'), ('W', 'eh'), ('B', 'hj'), ('W', 'gd'), ('B', 'df'), ('W', 'dd')]</code></pre>
+<p>So let’s make that data compatible with the expected input to <code>Board.play()</code>:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb13-1">ALPHA <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'abcdefghijklmnopqrstuvwxyz'</span></span>
+<span id="cb13-2"></span>
+<span id="cb13-3">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Board(size)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the Board class comes from Part 1</span></span>
+<span id="cb13-4"></span>
+<span id="cb13-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> player, move <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> moves:</span>
+<span id="cb13-6">    player_num <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'BW'</span>.index(player) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb13-7"></span>
+<span id="cb13-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> move:  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># an empty move is a pass</span></span>
+<span id="cb13-9">        x, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (ALPHA.index(c) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> c <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> move)</span>
+<span id="cb13-10">        b.play(player_num, x, y)</span>
+<span id="cb13-11"></span>
+<span id="cb13-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(b)</span></code></pre></div>
+<figure class="figure">
+<img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/first_sgf_example.png" height="300" class="figure-img"> <img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/first_sgf_example_ogs.png" height="300" class="figure-img">
+<figcaption>
+<i>Program output (left), Current game on OGS (right)</i>
+</figcaption>
+</figure>
+<p>Nice.</p>
+</section>
+<section id="next-time-part-3-game-engine-pt-2-neighbors-groups" class="level1">
+<h1>Next Time: Part 3: Game Engine, Pt 2: Neighbors &amp; Groups</h1>
+<p>Next time we’ll revisit the game engine, highlight a pretty egregious bug, and talk a little bit about depth-first search algorithms. Or maybe it’s breadth-first.</p>
+<p>Until then!</p>
+<p><a href="">This will be a link to part 3</a></p>
+
+
+</section>
+
+<p><br><br>This page lovingly generated by <a href="https://quarto.org/">Quarto</a> ❤️</p> ]]></description>
+  <category>go</category>
+  <category>baduk</category>
+  <category>python</category>
+  <category>programming</category>
+  <guid>https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/</guid>
+  <pubDate>Mon, 28 Oct 2024 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Go in Python, Part 1</title>
   <dc:creator>n sweep</dc:creator>
@@ -1164,7 +1804,7 @@ font-style: inherit;">print</span>(b)</span></code></pre></div>
 <h1>Next Time: API Headaches</h1>
 <p>While there is more to do with regard to the game engine, it would be great to have a list of plays to loop over with our new <code>Board</code> class, and that’s exactly what the OGS API returns. Next up, we’ll talk about the first time I almost gave up on this project, and also a lot of documentation.</p>
 <p>Until then!</p>
-<p><a href="">This will be a link to part 2</a></p>
+<p><a href="../../posts/2024-10-28-go-in-python-2/index.html">Read part 2</a></p>
 
 
 </section>

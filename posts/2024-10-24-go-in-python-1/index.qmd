@@ -330,4 +330,4 @@ While there is more to do with regard to the game engine, it would be great to h
 
 Until then!
 
-[This will be a link to part 2]()
+[Read part 2](../2024-10-28-go-in-python-2/index.qmd)

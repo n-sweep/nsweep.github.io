@@ -182,7 +182,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 </section>
 <section id="smart-game-format" class="level2">
 <h2 class="anchored" data-anchor-id="smart-game-format">Smart Game Format</h2>
-<p>However, as I mentioned at the top and as you can see in the previous documentation screenshot, we can also get something called an SGF, or “Smart Game Format”, file. The above JSON response is very data-rich, but it’s also very specific to OGS. This Smart Game Format seems like it would be a bit more platform agnostic, so I think it makes sense to build against that as input.</p>
+<p>However, as I mentioned at the top and as you can see in the previous documentation screenshot, we can also get something called an SGF, or “Smart Game Format”, file. The above JSON response is very data-rich, but it’s also very specific to OGS. This Smart Game Format seems like something a bit more platform agnostic, so I think it makes sense to build against that as input.</p>
 <p>A quick search rendered some <a href="https://www.red-bean.com/sgf/index.html">SGF Documentation</a>; using this as a reference, we’ll grab the SGF file for our game. I’ve chosen an ongoing game with only a few moves, again for the sake of brevity:</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -556,7 +556,7 @@ font-style: inherit;">in</span> processed_lines}</span></code></pre></div>
 </section>
 <section id="one-more-thing" class="level1">
 <h1>One More Thing</h1>
-<p>In <a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">part 1</a> we built a game board, now we have a list of moves. Let’s put them together before we wrap it up for the day. Remeber that, with our Board class, we can make plays with the user number, and an x and y location on the board:</p>
+<p>In <a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">part 1</a> we built a game board, now we have a list of moves. Let’s put them together before we wrap it up for the day. Remember that, with our Board class, we can make plays with the user number, and an x and y location on the board:</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb11-1">b <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> Board(size)</span>
@@ -636,7 +636,7 @@ font-style: inherit;">print</span>(b)</span></code></pre></div>
 </section>
 <section id="next-time-part-3-game-engine-pt-2-neighbors-groups" class="level1">
 <h1>Next Time: Part 3: Game Engine, Pt 2: Neighbors &amp; Groups</h1>
-<p>Next time we’ll revisit the game engine, highlight a pretty egregious bug, and talk a little bit about depth-first search algorithms. Or maybe it’s breadth-first.</p>
+<p>Next time we’ll revisit the game engine, highlight a pretty egregious bug in the game logic, and talk a little bit about depth-first search algorithms. Or maybe it’s breadth-first.</p>
 <p>Until then!</p>
 <p><a href="">This will be a link to part 3</a></p>
 

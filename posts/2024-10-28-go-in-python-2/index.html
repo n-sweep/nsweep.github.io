@@ -244,9 +244,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a></li>
 <li><a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a></li>
 <li><a href="https://apidocs.online-go.com/">apidocs.online-go.com</a></li>
-<li>+ <a href="https://forums.online-go.com">some forums</a></li>
+<li><a href="https://forums.online-go.com">some forums</a></li>
 </ul>
-<p>On my initial visits, <a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a> looks like what I need. <a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a> looks like it might be relevant but only has information on the real time API, which isn’t necessarily what I need. <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> seems out of date, with no information regarding authentication.</p>
+<p>On my initial visits, <a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a> looks like what I need; <a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a> looks like it might be relevant but only has information on the real time API, which isn’t necessarily what I’m after; <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> seems out of date, with no information regarding authentication.</p>
 <p>Acting on these assumptions, I spent a week or two failing to implement anything working. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
 <p>I had two major takeaways from this post that allowed me to move forward with this project:</p>
 <ol type="1">
@@ -343,7 +343,7 @@ C[Game chats will be available in SGF downloads once the game has finished.
 <li>before the moves comes metadata about the game</li>
 <li>each piece of data is preceded by a 1- or 2-letter code</li>
 </ul>
-<p>First, let’s parse this out into a more workable data structure. I want a dictionary for all of the metadata, and then a list of moves.</p>
+<p>First, let’s parse this out into a more workable data structure. I want a dictionary for all of the metadata, and then a list of moves. With the <code>re</code> library, we can extract all the metadata with <a href="https://regexlicensing.org/">regular expressions</a> and then the list of moves are a simple split:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sgf <span class="op">=</span> r.content.decode(<span class="st">'utf-8'</span>)</span>

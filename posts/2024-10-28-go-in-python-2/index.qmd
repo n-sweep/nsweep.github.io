@@ -6,14 +6,14 @@ date:           2024-10-28
 categories:     [go, baduk, python, programming]
 ---
 
-[Go in Python, Part 1](https://sweep.sh/posts/2024-10-24-go-in-python-1/)
+Read: [Go in Python, Part 1](https://sweep.sh/posts/2024-10-24-go-in-python-1/)
 
 <figure>
     <img src='./images/go_weird_ai_image.png' />
     <figcaption><i>Some weird generative AI art "about Go". White seems to be in trouble.</i></figcaption>
 </figure>
 
-I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in [JSON](https://en.wikipedia.org/wiki/JSON) or something called an SGF file (more on that later). When I reached this point and was working through this initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.
+I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in [JSON](https://en.wikipedia.org/wiki/JSON) or something called an SGF file (more on that later). When I reached this point and was working through this problem initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.
 
 # Documentation Important
 
@@ -24,11 +24,11 @@ Searching for the OGS API yields a number of results, which boil down to a few c
 - [ogs.docs.apiary.io]( https://ogs.docs.apiary.io/# )
 - [ogs.readme.io]( https://ogs.readme.io/docs/real-time-api )
 - [apidocs.online-go.com]( https://apidocs.online-go.com/ )
-- \+ [some forums]( https://forums.online-go.com )
+- [some forums]( https://forums.online-go.com )
 
-On my initial visits, [ogs.docs.apiary.io]( https://ogs.docs.apiary.io/# ) looks like what I need. [ogs.readme.io]( https://ogs.readme.io/docs/real-time-api ) looks like it might be relevant but only has information on the real time API, which isn't necessarily what I need. [apidocs.online-go.com]( https://apidocs.online-go.com/ ) seems out of date, with no information regarding authentication.
+On my initial visits, [ogs.docs.apiary.io]( https://ogs.docs.apiary.io/# ) looks like what I need; [ogs.readme.io]( https://ogs.readme.io/docs/real-time-api ) looks like it might be relevant but only has information on the real time API, which isn't necessarily what I'm after; [apidocs.online-go.com]( https://apidocs.online-go.com/ ) seems out of date, with no information regarding authentication.
 
-Acting on these assumptions, I spent a week or two failing to implement anything working. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, [Sente](https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&hl=en_US), which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the [magic forum post that would make all my dreams come true]( https://forums.online-go.com/t/ogs-api-notes/17136 ) (major thanks to forum poster walken).
+Acting on these assumptions, I spent a week or two failing to implement anything successfully. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, [Sente](https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&hl=en_US), which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the [magic forum post that would make all my dreams come true]( https://forums.online-go.com/t/ogs-api-notes/17136 ) (major thanks to forum poster walken).
 
 I had two major takeaways from this post that allowed me to move forward with this project:
 
@@ -139,7 +139,7 @@ A few observations:
 - before the moves comes metadata about the game
 - each piece of data is preceded by a 1- or 2-letter code
 
-First, let's parse this out into a more workable data structure. I want a dictionary for all of the metadata, and then a list of moves.
+First, let's parse this out into a more workable data structure. I want a dictionary for all of the metadata, and then a list of moves. With the `re` library, we can extract all the metadata with [regular expressions](https://regexlicensing.org/) and then the list of moves are a simple split:
 
 ```py
 import re
@@ -210,12 +210,16 @@ Total lines: 91
 
 I want to remove that second line that just has dashes, but it actually contains some useful information: the maximum number of characters present in each column...
 
-[Or does it?](https://www.youtube.com/watch?v=e3JUD4RXj7c&t=0s) As I am writing this, I noticed that the 8th line in the above output, `Who adds stones`, goes one letter beyond the dashes in its header. Revisiting the page I'm scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.
+[Or does it?](https://www.youtube.com/watch?v=e3JUD4RXj7c&t=0s)
+
+While writing this section, I noticed that the 8th line in the above output, `Who adds stones`, goes one letter beyond the dashes in its header. Revisiting the page I'm scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.
 
 <img src='./images/index_issues.png' />
 
-I did not really end up using this in the project (so far), so I'll share the original code I wrote for this problem here and move on from the subject.
+I did not really end up requiring this in the project (yet), so I'll collapse the unused code below for the curious and move on from the subject.
 
+::: {.callout-note collapse="true"}
+## Unused SGF Scraping Code
 ```py
 from itertools import accumulate
 from bs4 import BeautifulSoup as bs
@@ -236,6 +240,7 @@ def sgf_data() -> dict:
 
     return {ln[0]: dict(zip(keys[1:], ln[1:])) for ln in processed_lines}
 ```
+:::
 
 ## That's It, Actually!
 

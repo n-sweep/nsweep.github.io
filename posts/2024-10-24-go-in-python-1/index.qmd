@@ -250,40 +250,40 @@ RESET = '\033[0m'
 
 
 class Board:
-    def __init__(self, size: int = 19):
+    def __init__(self, size: int = 19) -> None:
         self.size = size
         self.state = np.zeros((size,size), dtype=int)
 
     def play(self, player: int, x: int, y: int) -> None:
         self.state[y][x] = player
 
-    def __str__(self) -> str:
-        # generate star points
+    def plaintext_board(self) -> str:
         star_points = np.zeros((self.size,self.size), dtype=int)
         corners = [j for i in range(3) if (j:=((s:=2+(self.size>9))+(2*s*i))) < self.size]
         pts = [(f:=self.size//2, f)] + list(product(corners, repeat=2))
         star_points[*zip(*pts)] = -1
 
-        # add star points to board
         board = self.state.copy()
         mask = ~self.state.astype(bool)
         board[mask] = star_points[mask]
 
-        # generate plaintext board
-        joined = ' '.join(list(ALPHA.replace('i', '')[:size])).upper()
-        rows = [col_label:=f"{YELLOW}{(d:=' ' * s)}{BLACK}{joined} {YELLOW}{d}"]
+        joined = ' '.join(list(ALPHA.replace('i', '')[:self.size])).upper()
+        rows = [col_label:=f"{YELLOW}{(d:='-' * s)}{BLACK}{joined} {YELLOW}{d}"]
 
         for r, input_row in enumerate(board, 1):
             row = ''.join([(PT,B,W,SP)[i] for i in input_row])
-            num = str(size - r + 1)
-            lnum = num.rjust(int(len(str(size))))
-            rnum = num.ljust(int(len(str(size))))
+            num = str(self.size - r + 1)
+            lnum = num.rjust(int(len(str(self.size))))
+            rnum = num.ljust(int(len(str(self.size))))
             rows.append(f'{BLACK}{lnum} {GRAY}{row} {BLACK}{rnum}')
 
         rows.append(col_label)
         rows = [f'{BG_YELLOW}{row}{RESET}' for row in rows]
 
         return '\n'.join(rows)
+
+    def __str__(self) -> str:
+        return self.plaintext_board()
 ```
 
 ### The `.__str__()` method

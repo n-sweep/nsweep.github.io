@@ -43,6 +43,7 @@ My name is Noah and during the day I work on data, but also during the day I tea
 
 in no particular order
 
+- [SMALL DATA](https://www.youtube.com/watch?v=eDr6_cMtfdA)
 - [Data Trap](https://xkcd.com/2582/) - the comic above, by [xkcd](https://xkcd.com/)
 - [freeasinweekend.org](https://freeasinweekend.org/) - “Free beer and free speech are all very well, but a free weekend? That's something worth paying for.”
 - [0.30000000000000004.com](https://0.30000000000000004.com/)

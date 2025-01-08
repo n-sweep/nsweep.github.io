@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-07ba0ad10f5680c660e360ac31d2f3b6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8b864f0777c60eecff11d75b6b2e1175.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-0ac8b102c8b4e166eab4b77b8526d00a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bf48894771b67497380a4a71ed34500b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -426,40 +426,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Board:</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">19</span>):</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">19</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.size <span class="op">=</span> size</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> np.zeros((size,size), dtype<span class="op">=</span><span class="bu">int</span>)</span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> play(<span class="va">self</span>, player: <span class="bu">int</span>, x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state[y][x] <span class="op">=</span> player</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># generate star points</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        star_points <span class="op">=</span> np.zeros((<span class="va">self</span>.size,<span class="va">self</span>.size), dtype<span class="op">=</span><span class="bu">int</span>)</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        corners <span class="op">=</span> [j <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>) <span class="cf">if</span> (j<span class="op">:=</span>((s<span class="op">:=</span><span class="dv">2</span><span class="op">+</span>(<span class="va">self</span>.size<span class="op">&gt;</span><span class="dv">9</span>))<span class="op">+</span>(<span class="dv">2</span><span class="op">*</span>s<span class="op">*</span>i))) <span class="op">&lt;</span> <span class="va">self</span>.size]</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        pts <span class="op">=</span> [(f<span class="op">:=</span><span class="va">self</span>.size<span class="op">//</span><span class="dv">2</span>, f)] <span class="op">+</span> <span class="bu">list</span>(product(corners, repeat<span class="op">=</span><span class="dv">2</span>))</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        star_points[<span class="op">*</span><span class="bu">zip</span>(<span class="op">*</span>pts)] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># add star points to board</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        board <span class="op">=</span> <span class="va">self</span>.state.copy()</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span><span class="va">self</span>.state.astype(<span class="bu">bool</span>)</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        board[mask] <span class="op">=</span> star_points[mask]</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># generate plaintext board</span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        joined <span class="op">=</span> <span class="st">' '</span>.join(<span class="bu">list</span>(ALPHA.replace(<span class="st">'i'</span>, <span class="st">''</span>)[:size])).upper()</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>        rows <span class="op">=</span> [col_label<span class="op">:=</span><span class="ss">f"</span><span class="sc">{</span>YELLOW<span class="sc">}{</span>(d<span class="op">:=</span><span class="st">' '</span> <span class="op">*</span> s)<span class="sc">}{</span>BLACK<span class="sc">}{</span>joined<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>YELLOW<span class="sc">}{</span>d<span class="sc">}</span><span class="ss">"</span>]</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> r, input_row <span class="kw">in</span> <span class="bu">enumerate</span>(board, <span class="dv">1</span>):</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>            row <span class="op">=</span> <span class="st">''</span>.join([(PT,B,W,SP)[i] <span class="cf">for</span> i <span class="kw">in</span> input_row])</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>            num <span class="op">=</span> <span class="bu">str</span>(size <span class="op">-</span> r <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>            lnum <span class="op">=</span> num.rjust(<span class="bu">int</span>(<span class="bu">len</span>(<span class="bu">str</span>(size))))</span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>            rnum <span class="op">=</span> num.ljust(<span class="bu">int</span>(<span class="bu">len</span>(<span class="bu">str</span>(size))))</span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>            rows.append(<span class="ss">f'</span><span class="sc">{</span>BLACK<span class="sc">}{</span>lnum<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>GRAY<span class="sc">}{</span>row<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>BLACK<span class="sc">}{</span>rnum<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> plaintext_board(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        star_points <span class="op">=</span> np.zeros((<span class="va">self</span>.size,<span class="va">self</span>.size), dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        corners <span class="op">=</span> [j <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>) <span class="cf">if</span> (j<span class="op">:=</span>((s<span class="op">:=</span><span class="dv">2</span><span class="op">+</span>(<span class="va">self</span>.size<span class="op">&gt;</span><span class="dv">9</span>))<span class="op">+</span>(<span class="dv">2</span><span class="op">*</span>s<span class="op">*</span>i))) <span class="op">&lt;</span> <span class="va">self</span>.size]</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        pts <span class="op">=</span> [(f<span class="op">:=</span><span class="va">self</span>.size<span class="op">//</span><span class="dv">2</span>, f)] <span class="op">+</span> <span class="bu">list</span>(product(corners, repeat<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        star_points[<span class="op">*</span><span class="bu">zip</span>(<span class="op">*</span>pts)] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        board <span class="op">=</span> <span class="va">self</span>.state.copy()</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span><span class="va">self</span>.state.astype(<span class="bu">bool</span>)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        board[mask] <span class="op">=</span> star_points[mask]</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>        joined <span class="op">=</span> <span class="st">' '</span>.join(<span class="bu">list</span>(ALPHA.replace(<span class="st">'i'</span>, <span class="st">''</span>)[:<span class="va">self</span>.size])).upper()</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>        rows <span class="op">=</span> [col_label<span class="op">:=</span><span class="ss">f"</span><span class="sc">{</span>YELLOW<span class="sc">}{</span>(d<span class="op">:=</span><span class="st">'-'</span> <span class="op">*</span> s)<span class="sc">}{</span>BLACK<span class="sc">}{</span>joined<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>YELLOW<span class="sc">}{</span>d<span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> r, input_row <span class="kw">in</span> <span class="bu">enumerate</span>(board, <span class="dv">1</span>):</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>            row <span class="op">=</span> <span class="st">''</span>.join([(PT,B,W,SP)[i] <span class="cf">for</span> i <span class="kw">in</span> input_row])</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>            num <span class="op">=</span> <span class="bu">str</span>(<span class="va">self</span>.size <span class="op">-</span> r <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>            lnum <span class="op">=</span> num.rjust(<span class="bu">int</span>(<span class="bu">len</span>(<span class="bu">str</span>(<span class="va">self</span>.size))))</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>            rnum <span class="op">=</span> num.ljust(<span class="bu">int</span>(<span class="bu">len</span>(<span class="bu">str</span>(<span class="va">self</span>.size))))</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>            rows.append(<span class="ss">f'</span><span class="sc">{</span>BLACK<span class="sc">}{</span>lnum<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>GRAY<span class="sc">}{</span>row<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>BLACK<span class="sc">}{</span>rnum<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>        rows.append(col_label)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>        rows <span class="op">=</span> [<span class="ss">f'</span><span class="sc">{</span>BG_YELLOW<span class="sc">}{</span>row<span class="sc">}{</span>RESET<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> row <span class="kw">in</span> rows]</span>
 <span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        rows.append(col_label)</span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>        rows <span class="op">=</span> [<span class="ss">f'</span><span class="sc">{</span>BG_YELLOW<span class="sc">}{</span>row<span class="sc">}{</span>RESET<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> row <span class="kw">in</span> rows]</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(rows)</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.plaintext_board()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="the-.__str__-method" class="level3">
 <h3 class="anchored" data-anchor-id="the-.__str__-method">The <code>.__str__()</code> method</h3>
 <p>Python class method surrounded in double underscores are called “magic methods” or “dunder methods”. <code>.__init__()</code> is also an example. <a href="https://duckduckgo.com/?q=python+magic+methods">Read more about them</a>.</p>

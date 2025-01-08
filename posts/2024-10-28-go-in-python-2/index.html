@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-07ba0ad10f5680c660e360ac31d2f3b6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8b864f0777c60eecff11d75b6b2e1175.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-0ac8b102c8b4e166eab4b77b8526d00a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bf48894771b67497380a4a71ed34500b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -228,14 +228,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p><a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">Go in Python, Part 1</a></p>
+<p>Read: <a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">Go in Python, Part 1</a></p>
 <figure class="figure">
 <img src="./images/go_weird_ai_image.png" class="figure-img">
 <figcaption>
 <i>Some weird generative AI art “about Go”. White seems to be in trouble.</i>
 </figcaption>
 </figure>
-<p>I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> or something called an SGF file (more on that later). When I reached this point and was working through this initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.</p>
+<p>I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> or something called an SGF file (more on that later). When I reached this point and was working through this problem initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.</p>
 <section id="documentation-important" class="level1">
 <h1>Documentation Important</h1>
 <p><img src="./images/ogs_api_search.png"></p>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://forums.online-go.com">some forums</a></li>
 </ul>
 <p>On my initial visits, <a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a> looks like what I need; <a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a> looks like it might be relevant but only has information on the real time API, which isn’t necessarily what I’m after; <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> seems out of date, with no information regarding authentication.</p>
-<p>Acting on these assumptions, I spent a week or two failing to implement anything working. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
+<p>Acting on these assumptions, I spent a week or two failing to implement anything successfully. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
 <p>I had two major takeaways from this post that allowed me to move forward with this project:</p>
 <ol type="1">
 <li>Authentication is done comepletely differently than in the documentation I was attempting to follow
@@ -398,9 +398,22 @@ C[Game chats will be available in SGF downloads once the game has finished.
  'AW  1234  Add White       setup            list of stone',
  'B   1234  Black           move             move']</code></pre>
 <p>I want to remove that second line that just has dashes, but it actually contains some useful information: the maximum number of characters present in each column…</p>
-<p><a href="https://www.youtube.com/watch?v=e3JUD4RXj7c&amp;t=0s">Or does it?</a> As I am writing this, I noticed that the 8th line in the above output, <code>Who adds stones</code>, goes one letter beyond the dashes in its header. Revisiting the page I’m scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.</p>
+<p><a href="https://www.youtube.com/watch?v=e3JUD4RXj7c&amp;t=0s">Or does it?</a></p>
+<p>While writing this section, I noticed that the 8th line in the above output, <code>Who adds stones</code>, goes one letter beyond the dashes in its header. Revisiting the page I’m scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.</p>
 <p><img src="./images/index_issues.png"></p>
-<p>I did not really end up using this in the project (so far), so I’ll share the original code I wrote for this problem here and move on from the subject.</p>
+<p>I did not really end up requiring this in the project (yet), so I’ll collapse the unused code below for the curious and move on from the subject.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unused SGF Scraping Code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb10"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> accumulate</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup <span class="im">as</span> bs</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -419,6 +432,9 @@ C[Game chats will be available in SGF downloads once the game has finished.
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    keys <span class="op">=</span> [field.lower().replace(<span class="st">' '</span>, <span class="st">'_'</span>) <span class="cf">for</span> field <span class="kw">in</span> processed_lines.pop(<span class="dv">0</span>)]</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {ln[<span class="dv">0</span>]: <span class="bu">dict</span>(<span class="bu">zip</span>(keys[<span class="dv">1</span>:], ln[<span class="dv">1</span>:])) <span class="cf">for</span> ln <span class="kw">in</span> processed_lines}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="thats-it-actually" class="level2">

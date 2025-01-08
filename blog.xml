@@ -9,7 +9,7 @@
 <link>https://n-sweep.github.io/blog.html</link>
 <atom:link href="https://n-sweep.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description>a small blog allegedly about tech and data</description>
-<generator>quarto-1.5.57</generator>
+<generator>quarto-1.6.33</generator>
 <lastBuildDate>Mon, 28 Oct 2024 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Go in Python, Part 2</title>
@@ -21,14 +21,14 @@
 
 
 
-<p><a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">Go in Python, Part 1</a></p>
+<p>Read: <a href="https://sweep.sh/posts/2024-10-24-go-in-python-1/">Go in Python, Part 1</a></p>
 <figure class="figure">
 <img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/go_weird_ai_image.png" class="figure-img">
 <figcaption>
 <i>Some weird generative AI art “about Go”. White seems to be in trouble.</i>
 </figcaption>
 </figure>
-<p>I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> or something called an SGF file (more on that later). When I reached this point and was working through this initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.</p>
+<p>I have worked with a lot of web APIs, and I typically feel very comfortable with them. As I mentioned in last time, I was mostly satisfied by the simple existence of the API, though I stuck around long enough to note that the data we could request included a set of moves, either in <a href="https://en.wikipedia.org/wiki/JSON">JSON</a> or something called an SGF file (more on that later). When I reached this point and was working through this problem initially, I felt I had made a mistake not going deeper on the API before beginning the game engine. However, in hindsight, I may have given up after failing this step for the third time had I not already built the engine.</p>
 <section id="documentation-important" class="level1">
 <h1>Documentation Important</h1>
 <p><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/ogs_api_search.png"></p>
@@ -40,7 +40,7 @@
 <li><a href="https://forums.online-go.com">some forums</a></li>
 </ul>
 <p>On my initial visits, <a href="https://ogs.docs.apiary.io/#">ogs.docs.apiary.io</a> looks like what I need; <a href="https://ogs.readme.io/docs/real-time-api">ogs.readme.io</a> looks like it might be relevant but only has information on the real time API, which isn’t necessarily what I’m after; <a href="https://apidocs.online-go.com/">apidocs.online-go.com</a> seems out of date, with no information regarding authentication.</p>
-<p>Acting on these assumptions, I spent a week or two failing to implement anything working. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
+<p>Acting on these assumptions, I spent a week or two failing to implement anything successfully. I found forum posts complaining of incomplete and contradicting documentation, GitHub repos of other python implementations that no longer worked, and frustrated, I stepped away for a few days. But it kept eating at me that we were still able to play via a 3rd party Android app, <a href="https://play.google.com/store/apps/details?id=io.zenandroid.onlinego&amp;hl=en_US">Sente</a>, which is built specifically to play on OGS. They must have a functional API. Finally I stumbled on the <a href="https://forums.online-go.com/t/ogs-api-notes/17136">magic forum post that would make all my dreams come true</a> (major thanks to forum poster walken).</p>
 <p>I had two major takeaways from this post that allowed me to move forward with this project:</p>
 <ol type="1">
 <li>Authentication is done comepletely differently than in the documentation I was attempting to follow
@@ -403,9 +403,22 @@ font-style: inherit;"># show the first ten lines</span></span></code></pre></div
  'AW  1234  Add White       setup            list of stone',
  'B   1234  Black           move             move']</code></pre>
 <p>I want to remove that second line that just has dashes, but it actually contains some useful information: the maximum number of characters present in each column…</p>
-<p><a href="https://www.youtube.com/watch?v=e3JUD4RXj7c&amp;t=0s">Or does it?</a> As I am writing this, I noticed that the 8th line in the above output, <code>Who adds stones</code>, goes one letter beyond the dashes in its header. Revisiting the page I’m scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.</p>
+<p><a href="https://www.youtube.com/watch?v=e3JUD4RXj7c&amp;t=0s">Or does it?</a></p>
+<p>While writing this section, I noticed that the 8th line in the above output, <code>Who adds stones</code>, goes one letter beyond the dashes in its header. Revisiting the page I’m scraping, there is even an instance where a description goes beyond the start of the next column, making this much less feasible to parse automatically.</p>
 <p><img src="https://n-sweep.github.io/posts/2024-10-28-go-in-python-2/images/index_issues.png"></p>
-<p>I did not really end up using this in the project (so far), so I’ll share the original code I wrote for this problem here and move on from the subject.</p>
+<p>I did not really end up requiring this in the project (yet), so I’ll collapse the unused code below for the curious and move on from the subject.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unused SGF Scraping Code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> itertools <span class="im" style="color: #00769E;
@@ -547,6 +560,9 @@ font-style: inherit;">for</span> ln <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">in</span> processed_lines}</span></code></pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="thats-it-actually" class="level2">
@@ -1399,7 +1415,11 @@ font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">19</span>):</span>
+font-style: inherit;">19</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
 <span id="cb13-16">        <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.size <span class="op" style="color: #5E5E5E;
@@ -1440,19 +1460,14 @@ font-style: inherit;">=</span> player</span>
 <span id="cb13-22">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__str__</span>(<span class="va" style="color: #111111;
+font-style: inherit;">def</span> plaintext_board(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>:</span>
-<span id="cb13-23">        <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># generate star points</span></span>
-<span id="cb13-24">        star_points <span class="op" style="color: #5E5E5E;
+<span id="cb13-23">        star_points <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.zeros((<span class="va" style="color: #111111;
 background-color: null;
@@ -1463,7 +1478,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">int</span>)</span>
-<span id="cb13-25">        corners <span class="op" style="color: #5E5E5E;
+<span id="cb13-24">        corners <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [j <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1505,7 +1520,7 @@ background-color: null;
 font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.size]</span>
-<span id="cb13-26">        pts <span class="op" style="color: #5E5E5E;
+<span id="cb13-25">        pts <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [(f<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1524,7 +1539,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span>))</span>
-<span id="cb13-27">        star_points[<span class="op" style="color: #5E5E5E;
+<span id="cb13-26">        star_points[<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span><span class="bu" style="color: null;
 background-color: null;
@@ -1537,16 +1552,13 @@ background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span></span>
-<span id="cb13-28"></span>
-<span id="cb13-29">        <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># add star points to board</span></span>
-<span id="cb13-30">        board <span class="op" style="color: #5E5E5E;
+<span id="cb13-27"></span>
+<span id="cb13-28">        board <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.state.copy()</span>
-<span id="cb13-31">        mask <span class="op" style="color: #5E5E5E;
+<span id="cb13-29">        mask <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1555,14 +1567,11 @@ background-color: null;
 font-style: inherit;">self</span>.state.astype(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">bool</span>)</span>
-<span id="cb13-32">        board[mask] <span class="op" style="color: #5E5E5E;
+<span id="cb13-30">        board[mask] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> star_points[mask]</span>
-<span id="cb13-33"></span>
-<span id="cb13-34">        <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># generate plaintext board</span></span>
-<span id="cb13-35">        joined <span class="op" style="color: #5E5E5E;
+<span id="cb13-31"></span>
+<span id="cb13-32">        joined <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1572,8 +1581,10 @@ font-style: inherit;">list</span>(ALPHA.replace(<span class="st" style="color: #
 background-color: null;
 font-style: inherit;">'i'</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">''</span>)[:size])).upper()</span>
-<span id="cb13-36">        rows <span class="op" style="color: #5E5E5E;
+font-style: inherit;">''</span>)[:<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size])).upper()</span>
+<span id="cb13-33">        rows <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [col_label<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1587,7 +1598,7 @@ font-style: inherit;">}{</span>(d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">' '</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">'-'</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> s)<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1606,8 +1617,8 @@ background-color: null;
 font-style: inherit;">}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>]</span>
-<span id="cb13-37"></span>
-<span id="cb13-38">        <span class="cf" style="color: #003B4F;
+<span id="cb13-34"></span>
+<span id="cb13-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">for</span> r, input_row <span class="kw" style="color: #003B4F;
@@ -1618,7 +1629,7 @@ background-color: null;
 font-style: inherit;">enumerate</span>(board, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>):</span>
-<span id="cb13-39">            row <span class="op" style="color: #5E5E5E;
+<span id="cb13-36">            row <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1629,18 +1640,20 @@ font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">in</span> input_row])</span>
-<span id="cb13-40">            num <span class="op" style="color: #5E5E5E;
+<span id="cb13-37">            num <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">str</span>(size <span class="op" style="color: #5E5E5E;
+font-style: inherit;">str</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span> r <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb13-41">            lnum <span class="op" style="color: #5E5E5E;
+<span id="cb13-38">            lnum <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> num.rjust(<span class="bu" style="color: null;
 background-color: null;
@@ -1648,8 +1661,10 @@ font-style: inherit;">int</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">len</span>(<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">str</span>(size))))</span>
-<span id="cb13-42">            rnum <span class="op" style="color: #5E5E5E;
+font-style: inherit;">str</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size))))</span>
+<span id="cb13-39">            rnum <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> num.ljust(<span class="bu" style="color: null;
 background-color: null;
@@ -1657,8 +1672,10 @@ font-style: inherit;">int</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">len</span>(<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">str</span>(size))))</span>
-<span id="cb13-43">            rows.append(<span class="ss" style="color: #20794D;
+font-style: inherit;">str</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.size))))</span>
+<span id="cb13-40">            rows.append(<span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1685,9 +1702,9 @@ background-color: null;
 font-style: inherit;">}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'</span>)</span>
-<span id="cb13-44"></span>
-<span id="cb13-45">        rows.append(col_label)</span>
-<span id="cb13-46">        rows <span class="op" style="color: #5E5E5E;
+<span id="cb13-41"></span>
+<span id="cb13-42">        rows.append(col_label)</span>
+<span id="cb13-43">        rows <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="ss" style="color: #20794D;
 background-color: null;
@@ -1708,8 +1725,8 @@ font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">in</span> rows]</span>
-<span id="cb13-47"></span>
-<span id="cb13-48">        <span class="cf" style="color: #003B4F;
+<span id="cb13-44"></span>
+<span id="cb13-45">        <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> <span class="st" style="color: #20794D;
@@ -1718,7 +1735,26 @@ font-style: inherit;">'</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'</span>.join(rows)</span></code></pre></div>
+font-style: inherit;">'</span>.join(rows)</span>
+<span id="cb13-46"></span>
+<span id="cb13-47">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__str__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb13-48">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.plaintext_board()</span></code></pre></div>
 <section id="the-.__str__-method" class="level3">
 <h3 class="anchored" data-anchor-id="the-.__str__-method">The <code>.__str__()</code> method</h3>
 <p>Python class method surrounded in double underscores are called “magic methods” or “dunder methods”. <code>.__init__()</code> is also an example. <a href="https://duckduckgo.com/?q=python+magic+methods">Read more about them</a>.</p>
